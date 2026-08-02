@@ -1,0 +1,66 @@
+generated: '2026-07-21'
+method: searched
+source: https://dashboard.api.b2b.tourradar.com/config.js
+notes: >-
+  OAuth scope list published in the public config.js of the TourRadar partner
+  dashboard (dashboard.api.b2b.tourradar.com). Scopes follow an AWS Cognito
+  resource-server convention (com.tourradar.<resource>/<action>). Descriptions
+  below are mechanical readings of the scope identifier, not provider-authored
+  text. Notably, the com.tourradar.partners.openapi/read scope indicates an
+  OpenAPI definition is served to authenticated partners.
+schemes:
+  - name: TourRadarB2BOAuth
+    source: https://dashboard.api.b2b.tourradar.com/config.js
+    flows:
+      - flow: authorizationCode
+        authorizationUrl: https://auth.tourradar.com/oauth2/authorize
+        tokenUrl: https://auth.tourradar.com/oauth2/token
+scopes:
+  - scope: com.tourradar.bookings.affiliate/read
+    description: Read affiliate bookings.
+  - scope: com.tourradar.bookings/read
+    description: Read bookings.
+  - scope: com.tourradar.bookings/selfRead
+    description: Read the caller's own bookings.
+  - scope: com.tourradar.credentials/read
+    description: Read API credentials.
+  - scope: com.tourradar.credentials/write
+    description: Manage API credentials.
+  - scope: com.tourradar.operators/read
+    description: Read tour operator data.
+  - scope: com.tourradar.partners.apps/read
+    description: Read partner applications.
+  - scope: com.tourradar.partners.apps/write
+    description: Manage partner applications.
+  - scope: com.tourradar.partners.customizations/read
+    description: Read partner customizations.
+  - scope: com.tourradar.partners.customizations/write
+    description: Manage partner customizations.
+  - scope: com.tourradar.partners.domains/read
+    description: Read partner domains.
+  - scope: com.tourradar.partners.domains/write
+    description: Manage partner domains.
+  - scope: com.tourradar.partners.openapi/read
+    description: Read the partner-facing OpenAPI definition.
+  - scope: com.tourradar.partners.payments.methods/read
+    description: Read partner payment methods.
+  - scope: com.tourradar.partners.payments.methods/write
+    description: Manage partner payment methods.
+  - scope: com.tourradar.partners.users/read
+    description: Read partner users.
+  - scope: com.tourradar.partners.users/selfWrite
+    description: Update the caller's own partner user profile.
+  - scope: com.tourradar.partners.users/write
+    description: Manage partner users.
+  - scope: com.tourradar.partners/admin
+    description: Administer the partner account.
+  - scope: com.tourradar.partners/read
+    description: Read partner account data.
+  - scope: com.tourradar.partners/write
+    description: Manage partner account data.
+  - scope: openid
+    description: OpenID Connect authentication.
+  - scope: email
+    description: OIDC email claim.
+  - scope: profile
+    description: OIDC profile claims.

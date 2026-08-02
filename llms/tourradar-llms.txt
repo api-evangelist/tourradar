@@ -1,0 +1,107 @@
+# TourRadar - Book Tours & Travel Packages
+
+## About TourRadar
+TourRadar is the world's leading online marketplace for multi-day tours and travel packages. With more than 50,000 tours and over 2 million departures worldwide, our mission is to make it easy for travelers to find and book the right tour at the best price, guaranteed. We connect adventurous travelers with local tour operators and provide a seamless booking experience for unforgettable journeys across the globe.
+
+## How TourRadar Works
+TourRadar connects travelers with trusted tour operators worldwide. Customers can effortlessly search, compare, and book multi-day tours through our user-friendly website and mobile app. We provide detailed tour itineraries, transparent pricing, authentic traveler reviews, and inspiring photos to help users make informed decisions. Bookings are instantly confirmed, and we offer dedicated 24/7 customer support for peace of mind. For our tour operator partners, we offer a powerful platform to reach a global audience and efficiently manage their bookings.
+
+## Main Tour Categories & Travel Types
+
+### Explore Tours by Interest & Style
+Travelers can find adventures based on their preferences, ensuring a personalized journey:
+
+* **Organized Adventures** (https://www.tourradar.com/organized-adventures): Classic group tours designed for social interaction and shared discoveries.
+* **Private Adventures** (https://www.tourradar.com/f/private): Ready-to-book private tours for personalized and exclusive experiences.
+* **Empowering Solo Travelers** (https://www.tourradar.com/s/solo): Tours specifically curated for solo travelers to connect with like-minded adventurers and explore independently.
+* **Adventure Tours** (https://www.tourradar.com/f/adventure): Thrilling experiences designed for the adventurous spirit.
+* **Active Adventures:** Explore hiking, biking, kayaking, and other outdoor activities within tours.
+* **Hiking & Trekking** (https://www.tourradar.com/f/hiking-trekking): Guided and self-guided trails across stunning landscapes.
+* **Cycling** (https://www.tourradar.com/f/bicycle): Two-wheeled adventures exploring diverse terrains.
+* **Safari** (https://www.tourradar.com/f/safari): Wildlife expeditions to observe animals in their natural habitats.
+* **Wildlife & Nature Tours:** Discover incredible wildlife encounters and breathtaking natural landscapes.
+* **In-Depth Cultural** (https://www.tourradar.com/f/in-depth-cultural): Immersive experiences diving deep into local traditions, history, and unique cultural encounters.
+* **Food & Culinary** (https://www.tourradar.com/f/food-culinary): Savor culinary delights, participate in cooking classes, and enjoy local tastings.
+* **Festivals & Events** (https://www.tourradar.com/f/festivals-and-events): Tours centered around iconic global celebrations.
+* **River Cruise** (https://www.tourradar.com/f/river-cruise): Scenic and relaxing voyages along the world's great rivers.
+* **Sailing** (https://www.tourradar.com/f/sailing): Nautical adventures exploring coasts and islands.
+* **Explorer** (https://www.tourradar.com/f/explorer): Comprehensive journeys designed for discovery.
+* **Health, Spa & Wellness** (https://www.tourradar.com/f/health-spa-wellness): Rejuvenating escapes focused on well-being.
+* **Overland Trucks** (https://www.tourradar.com/f/overland-truck): Rugged group travel covering long distances.
+
+## Tour Operators
+- [Shop 2,500+ operators](https://www.tourradar.com/trust): Explore a wide range of trusted travel operators offering diverse tours and packages.
+- [G Adventures](https://www.tourradar.com/o/g-adventures): Rated 4.7 with 14,064 reviews, known for sustainable and immersive travel experiences.
+- [Contiki](https://www.tourradar.com/o/contiki): Rated 4.7 with 6,179 reviews, specializing in vibrant youth travel.
+- [Trafalgar](https://www.tourradar.com/o/trafalgar): Rated 4.5 with 2,071 reviews, offering premium guided vacations.
+- [Globus](https://www.tourradar.com/o/globus): Rated 5.0 with 37,854 reviews, renowned for exceptional guided tours.
+- [Collette](https://www.tourradar.com/o/collette-vacations): Rated 4.6 with 6,778 reviews, providing enriching and cultural travel experiences.
+- [Cosmos](https://www.tourradar.com/o/cosmos): Rated 4.9 with 10,434 reviews, offering affordable and diverse guided tours.
+- [Intrepid Premium](https://www.tourradar.com/o/intrepid-premium): Rated 4.4 with 291 reviews, focusing on small group adventures with a premium touch.
+- [Topdeck](https://www.tourradar.com/o/topdeck): Rated 4.6 with 4,674 reviews, catering to young, adventurous travelers.
+- [Expat Explore Travel](https://www.tourradar.com/o/expat-explore-travel): Rated 4.5 with 5,410 reviews, offering a variety of group travel experiences.
+
+## Customer Reviews
+- [4.6 stars based on 8,662 reviews](https://www.tourradar.com/reviews-of-tourradar): Our overall customer satisfaction rating reflects the quality and reliability of tours offered.
+
+## Travel Deals
+### Featured Discounts
+- [See all deals](https://www.tourradar.com/deals/anywhere): Browse all current travel deals available worldwide.
+
+## Destinations
+- [Explore All Destinations](https://www.tourradar.com/deals/anywhere): Discover a wide array of travel destinations and deals offered by TourRadar.
+- [Europe](https://www.tourradar.com/d/europe): Find tours and deals across Europe.
+- [Asia](https://www.tourradar.com/d/asia): Explore diverse tours and deals across Asia.
+- [Canada](https://www.tourradar.com/d/canada): Find adventures in Canada.
+- [Costa Rica](https://www.tourradar.com/d/costa-rica): Explore tropical excursions in Costa Rica.
+- [Ecuador](https://www.tourradar.com/d/ecuador): Find tours in Ecuador.
+- [Egypt](https://www.tourradar.com/d/egypt): Uncover unique travel experiences in Egypt.
+- [Greece](https://www.tourradar.com/d/greece): Discover beautiful tours and deals in Greece.
+- [Iceland](https://www.tourradar.com/d/iceland): See special offers for tours in Iceland.
+- [India](https://www.tourradar.com/d/india): Find amazing tours across India.
+- [Italy](https://www.tourradar.com/d/italy): Explore tours and deals in Italy.
+- [Japan](https://www.tourradar.com/d/japan): Discover special packages and tours in Japan.
+- [Morocco](https://www.tourradar.com/d/morocco): Discover vibrant tours in Morocco.
+- [Philippines](https://www.tourradar.com/d/philippines): Explore the islands of the Philippines.
+- [Portugal](https://www.tourradar.com/d/portugal): Find wonderful deals in Portugal.
+- [South Africa](https://www.tourradar.com/d/south-africa): Discover incredible tours in South Africa.
+- [Sri Lanka](https://www.tourradar.com/d/sri-lanka): Uncover unique experiences in Sri Lanka.
+- [Switzerland](https://www.tourradar.com/d/switzerland): Discover breathtaking tours in Switzerland.
+- [Thailand](https://www.tourradar.com/d/thailand): Explore diverse tours in Thailand.
+- [Turkey](https://www.tourradar.com/d/turkey): Discover tours and deals in Turkey.
+- [USA](https://www.tourradar.com/d/usa): Explore amazing tours and deals in the USA.
+- [Vietnam](https://www.tourradar.com/d/vietnam): Find special offers for tours and deals in Vietnam.
+
+## Travel Services
+- [Travel Insurance](https://www.tourradar.com/travel-insurance): Learn more about comprehensive travel insurance options available.
+
+---
+## Help and Support
+We offer comprehensive support to ensure a smooth travel experience for our customers.
+- [24/7 Customer Support](https://www.tourradar.com/contact): Contact our dedicated customer support team for assistance at any time regarding bookings, cancellations, or general inquiries.
+- [Help Center / FAQs](https://www.tourradar.com/help): Find answers to frequently asked questions on topics such as managing bookings, payment inquiries, and account management.
+
+---
+
+## Key Policies
+Our policies are designed to ensure a safe, fair, and enjoyable experience for all users of our platform.
+- [Legal Notice](https://www.tourradar.com/legal-notice): Important legal information regarding the use of the site, outlining terms of service and disclaimers.
+- [Privacy Policy](https://www.tourradar.com/privacy): Details on how TourRadar collects, uses, and protects user data, ensuring your privacy.
+
+---
+
+## Career Opportunities - Join Our Team!
+Are you passionate about travel and innovation? Do you want to help millions discover incredible travel experiences? TourRadar is growing, and we're looking for talented individuals to join our vibrant team!
+- [Explore exciting career opportunities at TourRadar](https://www.tourradar.com/careers): Find your next adventure with us.
+- [Perks at TourRadar](https://www.tourradar.com/careers#perks): Discover the benefits and advantages of working with us.
+
+---
+
+## Additional Resources
+- [TourRadar Moments](https://www.tourradar.com/tourradar-moments): Authentic travel videos and photos shared by fellow travelers.
+- [Days to Come Magazine](https://www.tourradar.com/days-to-come/): Insights, articles, and inspiration on upcoming travel trends and destinations.
+- [Win an Adventure](https://www.tourradar.com/contests): Enter exciting contests for a chance to win incredible travel experiences.
+- [Travel & Earn](https://www.tourradar.com/invite): Opportunities to earn rewards and save on your next adventure.
+
+## Company Information
+- [About Us](https://www.tourradar.com/about): Learn more about TourRadar's mission, vision, and commitment to unforgettable travel.

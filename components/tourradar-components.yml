@@ -1,0 +1,33 @@
+generated: '2026-07-21'
+method: searched
+source: https://assets.api.b2b.tourradar.com/widgets/loader.js
+notes: >-
+  TourRadar ships embeddable B2B widgets as web components (custom elements) for
+  partner sites, loaded via a script loader that bootstraps an ES module
+  (loader.mjs). Element names were extracted from the published loader module.
+  Widgets render tour content, departures, reviews and book-now flows inside a
+  partner page; a use-staging attribute switches to the staging environment.
+loader:
+  script: https://assets.api.b2b.tourradar.com/widgets/loader.js
+  module: https://assets.api.b2b.tourradar.com/widgets/loader.mjs
+  technology: web-components
+components:
+  - family: tour-content
+    elements:
+      - x-tr-tour
+      - x-tr-tour-itinerary
+      - x-tr-tour-included
+      - x-tr-tour-departures
+      - x-tr-tour-brochure
+      - x-tr-in-body
+  - family: reviews
+    elements:
+      - x-tr-tour-reviews
+      - x-tr-operator-reviews
+  - family: booking
+    elements:
+      - x-tr-tour-book-now
+      - x-tr-tour-book-now-buttons
+  - family: engagement
+    elements:
+      - x-tr-question-form

@@ -1,0 +1,19 @@
+generated: '2026-07-21'
+method: searched
+source: https://dashboard.api.b2b.tourradar.com/config.js
+standards:
+  - id: oauth2
+    conforms: true
+    evidence: B2B Distribution API partners authenticate via OAuth 2.0 (oauth.api.b2b.tourradar.com; AWS Cognito resource-server scopes published in the partner dashboard config.js).
+  - id: oidc
+    conforms: true
+    evidence: OpenID Connect discovery document served for the B2B Cognito user pool (cognito-idp.us-east-1.amazonaws.com/us-east-1_AzhYLFMIv/.well-known/openid-configuration, HTTP 200); openid/email/profile scopes in use.
+  - id: rfc9116-security-txt
+    conforms: true
+    evidence: https://www.tourradar.com/.well-known/security.txt returns 200 with a Contact field (saved at well-known/tourradar-security.txt).
+  - id: llms-txt
+    conforms: true
+    evidence: https://www.tourradar.com/llms.txt returns 200 with a full llms.txt document (saved at llms/tourradar-llms.txt).
+  - id: rfc9457-problem-details
+    conforms: false
+    evidence: No public OpenAPI or error documentation available to verify (API docs are behind the partner dashboard login).

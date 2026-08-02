@@ -1,22 +1,120 @@
 aid: tourradar
-name: Tourradar
-description: Tourradar is a company surfaced as a portfolio company of speedinvest and added to the API
-  Evangelist network as a stub for enrichment. This profile is a lead awaiting the enrichment pipeline.
+name: TourRadar
+description: >-
+  TourRadar is the world's largest online marketplace for multi-day organized
+  adventures, connecting travelers with more than 50,000 tours, safaris, and
+  river cruises from over 2,500 vetted operators worldwide. Headquartered in
+  Vienna, Austria, the company also operates a B2B Distribution API that lets
+  OTAs, airlines, GDSs, and travel agencies search tour content and book
+  departures through a unified API, alongside embeddable booking widgets and an
+  affiliate program (RISE) for creators and publishers.
 url: https://raw.githubusercontent.com/api-evangelist/tourradar/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
 x-backed-by:
 - speedinvest
-x-tier: stub
-x-tier-reason: portfolio-lead
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-21'
+image: https://cdn.tourradar.com/s3/content-pages/391/1200x630/j705A8.png
 tags:
-- Company
-apis: []
+- Travel
+- Tours
+- Booking
+- Marketplace
+- Adventure Travel
+- Distribution
+- Affiliates
+apis:
+- aid: tourradar:distribution-api
+  name: TourRadar Distribution API
+  description: >-
+    Unified B2B API giving platforms, travel agencies, airlines, and GDSs access
+    to TourRadar's network of 2,500+ organized adventure operators and 50,000+
+    experiences. Offered in three tiers - a Search & Content API for affiliates,
+    a wholesale Booking API that keeps bookings on the partner platform, and a
+    Booking API Direct that uses the partner's own commercial agreements with
+    TourRadar handling backend transactions. Prices, dates, and content are
+    validated daily. Partners authenticate with OAuth 2.0 (AWS Cognito) and
+    manage credentials through the partner dashboard, where the API
+    documentation and an OpenAPI definition are available after login.
+  humanURL: https://www.tourradar.com/distribution-api
+  baseURL: https://api.b2b.tourradar.com
+  tags:
+  - Travel
+  - Tours
+  - Booking
+  - Distribution
+  - Affiliates
+  properties:
+  - type: Documentation
+    url: https://dashboard.api.b2b.tourradar.com/docs
+  - type: Authentication
+    url: authentication/tourradar-authentication.yml
+  - type: OAuthScopes
+    url: scopes/tourradar-scopes.yml
+common:
+- type: DomainSecurity
+  url: security/tourradar-domain-security.yml
+- type: Website
+  url: https://www.tourradar.com
+- type: DeveloperPortal
+  url: https://dashboard.api.b2b.tourradar.com
+- type: Documentation
+  url: https://dashboard.api.b2b.tourradar.com/docs
+- type: Login
+  url: https://dashboard.api.b2b.tourradar.com/signin
+- type: Support
+  url: https://customer.help.tourradar.com/wiki/spaces/CS/overview
+- type: Blog
+  url: https://www.daystocome.com
+- type: GitHubOrganization
+  url: https://github.com/TourRadar
+- type: TermsOfService
+  url: https://www.tourradar.com/terms-conditions
+- type: PrivacyPolicy
+  url: https://www.tourradar.com/privacy
+- type: About
+  url: https://www.tourradar.com/about
+- type: Authentication
+  url: authentication/tourradar-authentication.yml
+- type: OAuthScopes
+  url: scopes/tourradar-scopes.yml
+- type: OpenIDConnect
+  url: well-known/tourradar-openid-configuration.json
+- type: WellKnown
+  url: well-known/tourradar-well-known.yml
+- type: SecurityTxt
+  url: well-known/tourradar-security.txt
+- type: LLMsTxt
+  url: llms/tourradar-llms.txt
+- type: Conformance
+  url: conformance/tourradar-conformance.yml
+- type: Components
+  url: components/tourradar-components.yml
+- type: VulnerabilityDisclosure
+  url: security/tourradar-vulnerability-disclosure.yml
+- type: Security
+  url: https://www.tourradar.com/.well-known/security.txt
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
+x-enrichment:
+  date: '2026-07-21'
+  status: enriched
+  artifacts_added: 10
+  pass: local-v1

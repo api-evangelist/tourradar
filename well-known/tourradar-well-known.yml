@@ -1,0 +1,38 @@
+generated: '2026-07-21'
+method: searched
+hosts:
+  - host: https://www.tourradar.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 200
+        file: tourradar-security.txt
+      - path: /.well-known/openid-configuration
+        status: 410
+      - path: /.well-known/oauth-authorization-server
+        status: 410
+      - path: /.well-known/api-catalog
+        status: 410
+      - path: /.well-known/ai-plugin.json
+        status: 410
+      - path: /llms.txt
+        status: 200
+        file: ../llms/tourradar-llms.txt
+  - host: https://api.b2b.tourradar.com
+    notes: B2B Distribution API host; rejects unauthenticated requests.
+    documents:
+      - path: /.well-known/security.txt
+        status: 403
+      - path: /.well-known/openid-configuration
+        status: 403
+  - host: https://oauth.api.b2b.tourradar.com
+    documents:
+      - path: /.well-known/openid-configuration
+        status: 403
+      - path: /.well-known/oauth-authorization-server
+        status: 403
+  - host: https://cognito-idp.us-east-1.amazonaws.com/us-east-1_AzhYLFMIv
+    notes: AWS Cognito user pool backing the B2B partner identity (issuer); custom auth domain auth.tourradar.com.
+    documents:
+      - path: /.well-known/openid-configuration
+        status: 200
+        file: tourradar-openid-configuration.json

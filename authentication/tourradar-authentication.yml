@@ -1,0 +1,34 @@
+generated: '2026-07-21'
+method: searched
+source: https://dashboard.api.b2b.tourradar.com/config.js
+docs: https://www.tourradar.com/distribution-api
+notes: >-
+  TourRadar's Distribution API (B2B partner platform for OTAs, airlines and GDSs)
+  authenticates partners with OAuth 2.0 / OpenID Connect issued by an AWS Cognito
+  user pool (us-east-1_AzhYLFMIv). The partner dashboard's public config.js exposes
+  the OAuth endpoint, the Cognito hosted domain, the client id used by the dashboard
+  SPA, and the full resource-server scope list. The API itself (api.b2b.tourradar.com)
+  rejects unauthenticated requests (HTTP 403). Detailed developer documentation sits
+  behind the partner dashboard login (dashboard.api.b2b.tourradar.com/docs).
+summary:
+  types: [oauth2, openIdConnect]
+  oauth2_flows: [authorizationCode]
+  issuer: https://cognito-idp.us-east-1.amazonaws.com/us-east-1_AzhYLFMIv
+schemes:
+  - name: TourRadarB2BOAuth
+    type: oauth2
+    description: OAuth 2.0 for the TourRadar B2B Distribution API, fronted by oauth.api.b2b.tourradar.com and backed by an AWS Cognito user pool.
+    endpoints:
+      oauth: https://oauth.api.b2b.tourradar.com
+      authorization: https://auth.tourradar.com/oauth2/authorize
+      revocation: https://auth.tourradar.com/oauth2/revoke
+      cognito_hosted_domain: https://b2b-tourradar-production.auth.us-east-1.amazoncognito.com
+      login_spa: https://login.tourradar.com
+    scopes_count: 24
+    scopes_ref: scopes/tourradar-scopes.yml
+  - name: TourRadarB2BOIDC
+    type: openIdConnect
+    description: OpenID Connect discovery for the B2B partner identity pool (openid, email, profile scopes).
+    openIdConnectUrl: https://cognito-idp.us-east-1.amazonaws.com/us-east-1_AzhYLFMIv/.well-known/openid-configuration
+    discovery_status: 200
+    discovery_file: well-known/tourradar-openid-configuration.json
