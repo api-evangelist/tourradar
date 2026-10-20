@@ -1,0 +1,438 @@
+openapi: 3.2.0
+info:
+  title: Tourradar Bulk API
+  version: '2025-08-11T15:08:05Z'
+  x-logo:
+    url: https://assets.api.sandbox.b2b.tourradar.com/logo/tourradar.svg
+    altText: TourRadar Partner API
+  description: 'Operations tagged Bulk across 2 of this provider''s published API definitions: tourradar-partner-api-openapi.json, tourradar-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.sandbox.b2b.tourradar.com
+tags:
+- name: Bulk
+  description: ''
+paths:
+  /v1/operators/{operator}/bulk/departures:
+    get:
+      tags:
+      - Bulk
+      summary: /v1/operators/{operator}/bulk/departures
+      description: 'Downloads an operator''s available departure dates in bulk.
+
+
+        This endpoint is supposed to be used to download large amount of data, and import them into the partner''s own database or system for faster access.
+
+
+        The response of this endpoint will be a list of URLs.
+
+        Each one of them points to a (gzip-compressed) JSON file containing up to 500 tours.
+
+        For each tour, all available departure dates will be listed.
+
+
+        The URLs are signed for download, and are only valid for a limited amount of time (10 minutes).
+
+        After the expiration, the links will not be valid anymore, and a new request to this endpoint has to be made to obtain new download links.
+
+
+        An example of the response for this call could be:
+
+
+        ```json
+
+        {
+
+        "urls": [
+
+        "https://s3.us-east-1.amazonaws.com/tour-inventory.b2b.tourradar.com/bulk_data/operators/operator_id%3D204/locale_id%3D1/tour_departures.2021-11-03.13-29-08.229377.0.json.gz?X-Amz-Algorithm=AWS4-HMAC-SHA256[...]&x-id=GetObject",
+
+        "https://s3.us-east-1.amazonaws.com/tour-inventory.b2b.tourradar.com/bulk_data/operators/operator_id%3D204/locale_id%3D1/tour_departures.2021-11-03.13-29-08.229377.1.json.gz?X-Amz-Algorithm=AWS4-HMAC-SHA256[...]x-id=GetObject",
+
+        "https://s3.us-east-1.amazonaws.com/tour-inventory.b2b.tourradar.com/bulk_data/operators/operator_id%3D204/locale_id%3D1/tour_departures.2021-11-03.13-29-08.229377.2.json.gz?X-Amz-Algorithm=AWS4-HMAC-SHA256[...]&x-id=GetObject"
+
+        ],
+
+        "expires_in": 600
+
+        }
+
+        ```
+
+
+        The content of the files that will be downloaded will look like this:
+
+
+        ```json
+
+        [
+
+        {
+
+        "tour_id": 1492,
+
+        "departure_dates": [
+
+        {
+
+        "id": 722685916,
+
+        "date": "2022-05-07",
+
+        "type": "scheduled",
+
+        "guide_languages": [
+
+        1
+
+        ]
+
+        },
+
+        {
+
+        "id": 722685917,
+
+        "date": "2022-05-21",
+
+        "type": "scheduled",
+
+        "guide_languages": [
+
+        1
+
+        ]
+
+        }
+
+        ]
+
+        },
+
+        {
+
+        "tour_id": 1493,
+
+        "departure_dates": [
+
+        {
+
+        "id": 722685694,
+
+        "date": "2022-04-23",
+
+        "type": "scheduled",
+
+        "guide_languages": [
+
+        1
+
+        ]
+
+        }
+
+        ]
+
+        }
+
+        ]
+
+        ```
+
+
+        For each departure, the file contains the identifier, date, type, and languages the tour is offered in.
+
+        Those data are the same available in the **tours/{tourId}/departures** endpoint.
+
+
+        Bulk data is updated regularly at least once per day (schedule may vary for different operators).'
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+      - name: operator
+        in: path
+        description: Operator integer ID
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperatorBulkFiles'
+        '401':
+          description: 'This status code indicates that the credentials used for the request are not valid.
+
+
+            The error code is `UNAUTHORIZED`. An additional message may provide more information about the error.
+
+
+            Causes for this error may be:
+
+
+            - invalid authorization token
+
+            - operation not allowed by authorization scope
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError401'
+        '404':
+          description: 404 response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: The error code
+                    enum:
+                    - UNKNOWN_ERROR
+                    - UNKNOWN_ERROR
+                  message:
+                    type: string
+                    description: The error message, if available
+                  context:
+                    type: object
+                    description: Additional data relative to the error condition
+                  validation_errors:
+                    type: array
+                    description: In case of validation error, all the elements that didn't pass validation
+                    items:
+                      type: string
+        '500':
+          description: 'This status code indicates that there was an unmanaged error.
+
+
+            The error code is `UNKNOWN_ERROR`. An additional message may provide more information about the error.
+
+
+            Causes for this error may be:
+
+
+            - failure on the TourRadar system
+
+            - unexpected conditions
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError500'
+      security:
+      - application:
+        - com.tourradar.operators/read
+      operationId: getV1OperatorsByOperatorBulkDepartures
+      x-operation-id-source: derived
+    servers:
+    - url: https://api.sandbox.b2b.tourradar.com
+  /v1/operators/{operator}/bulk/tours:
+    get:
+      tags:
+      - Bulk
+      summary: /v1/operators/{operator}/bulk/tours
+      description: 'Downloads an operator''s tour data in bulk.
+
+
+        This endpoint is supposed to be used to download large amount of data, and import them into the partner''s own database or system for faster access.
+
+
+        The response of this endpoint will be a list of URLs.
+
+        Each one of them points to a (gzip-compressed) JSON file containing up to 500 tours.
+
+        The schema for each tour is exactly the one used in the **/tours/{tourId}** endpoint.
+
+
+        The URLs are signed for download, and are only valid for a limited amount of time (10 minutes).
+
+        After the expiration, the links will not be valid anymore, and a new request to this endpoint has to be made to obtain new download links.
+
+
+        An example of the response for this call could be:
+
+
+        ```json
+
+        {
+
+        "urls": [
+
+        "https://s3.us-east-1.amazonaws.com/tour-inventory.b2b.tourradar.com/bulk_data/operators/operator_id%3D204/locale_id%3D1/tour_data.2021-11-03.13-29-08.229377.0.json.gz?X-Amz-Algorithm=AWS4-HMAC-SHA256[...]&x-id=GetObject",
+
+        "https://s3.us-east-1.amazonaws.com/tour-inventory.b2b.tourradar.com/bulk_data/operators/operator_id%3D204/locale_id%3D1/tour_data.2021-11-03.13-29-08.229377.1.json.gz?X-Amz-Algorithm=AWS4-HMAC-SHA256[...]x-id=GetObject",
+
+        "https://s3.us-east-1.amazonaws.com/tour-inventory.b2b.tourradar.com/bulk_data/operators/operator_id%3D204/locale_id%3D1/tour_data.2021-11-03.13-29-08.229377.2.json.gz?X-Amz-Algorithm=AWS4-HMAC-SHA256[...]&x-id=GetObject"
+
+        ],
+
+        "expires_in": 600
+
+        }
+
+        ```
+
+
+        Bulk data is updated regularly at least once per day (schedule may vary for different operators).'
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+      - name: operator
+        in: path
+        description: Operator integer ID
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperatorBulkFiles'
+        '401':
+          description: 'This status code indicates that the credentials used for the request are not valid.
+
+
+            The error code is `UNAUTHORIZED`. An additional message may provide more information about the error.
+
+
+            Causes for this error may be:
+
+
+            - invalid authorization token
+
+            - operation not allowed by authorization scope
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError401'
+        '404':
+          description: 404 response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: The error code
+                    enum:
+                    - UNKNOWN_ERROR
+                    - UNKNOWN_ERROR
+                  message:
+                    type: string
+                    description: The error message, if available
+                  context:
+                    type: object
+                    description: Additional data relative to the error condition
+                  validation_errors:
+                    type: array
+                    description: In case of validation error, all the elements that didn't pass validation
+                    items:
+                      type: string
+        '500':
+          description: 'This status code indicates that there was an unmanaged error.
+
+
+            The error code is `UNKNOWN_ERROR`. An additional message may provide more information about the error.
+
+
+            Causes for this error may be:
+
+
+            - failure on the TourRadar system
+
+            - unexpected conditions
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError500'
+      security:
+      - application:
+        - com.tourradar.operators/read
+      operationId: getV1OperatorsByOperatorBulkTours
+      x-operation-id-source: derived
+    servers:
+    - url: https://api.sandbox.b2b.tourradar.com
+components:
+  schemas:
+    OperatorBulkFiles:
+      type: object
+      properties:
+        urls:
+          type: array
+          description: List of files that can be downloaded for this data set.
+          items:
+            type: string
+            format: uri
+            description: File URL containing requested data in compressed JSON format.
+        expires_in:
+          type: integer
+          description: Validity, in seconds, of the URLS. For example, the value `600` indicates that the URL will expire in 10 minutes from the time the response was generated.
+          example: 600
+    DefaultError401:
+      type: object
+      properties:
+        error:
+          type: string
+          description: The error code
+          enum:
+          - UNAUTHORIZED
+        message:
+          type: string
+          description: The error message, if available
+        context:
+          type: object
+          description: Additional data relative to the error condition
+        validation_errors:
+          type: array
+          description: In case of validation error, all the elements that didn't pass validation
+          items:
+            type: string
+    DefaultError500:
+      type: object
+      properties:
+        error:
+          type: string
+          description: The error code
+          enum:
+          - UNKNOWN_ERROR
+        message:
+          type: string
+          description: The error message, if available
+        context:
+          type: object
+          description: Additional data relative to the error condition
+        validation_errors:
+          type: array
+          description: In case of validation error, all the elements that didn't pass validation
+          items:
+            type: string
+  securitySchemes:
+    application:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://oauth.api.sandbox.b2b.tourradar.com/oauth2/token
+          scopes:
+            com.tourradar.bookings/read: Read booking information
+            com.tourradar.bookings/write: Create new bookings
+            com.tourradar.bookings.affiliate/read: Read booking information
+            com.tourradar.operators/read: Read operators information
+            com.tourradar.tours/read: Read tours informations
+x-refined-from:
+- tourradar-partner-api-openapi.json
+- tourradar-openapi.yml

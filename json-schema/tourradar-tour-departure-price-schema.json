@@ -1,0 +1,425 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/tourradar/main/json-schema/tourradar-tour-departure-price-schema.json",
+  "title": "TourDeparturePrice",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/tourradar-openapi.yml#/components/schemas/TourDeparturePrice",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "description": "Identifier of the departure date."
+    },
+    "tour_id": {
+      "type": "integer",
+      "description": "Identifier of the tour."
+    },
+    "date": {
+      "type": "string"
+    },
+    "departure_type": {
+      "type": "string",
+      "description": "Type of departure.",
+      "enum": [
+        "guaranteed",
+        "scheduled",
+        "request"
+      ]
+    },
+    "prices": {
+      "type": "object",
+      "description": "Pricing information.",
+      "properties": {
+        "currency": {
+          "type": "string",
+          "description": "Currency code for the reported prices."
+        },
+        "price_base": {
+          "type": "number",
+          "description": "Base price of the tour, also referenced as brochure price, for all passengers."
+        },
+        "price_addons": {
+          "type": "number",
+          "description": "Sum of the addons that the passenger will have to pay."
+        },
+        "price_promotion": {
+          "type": "number",
+          "description": "Discounted price, or base price minus the promotion."
+        },
+        "price_total": {
+          "type": "number",
+          "description": "Final sale price, composed by the base price, minus the applied promotion, plus the local and upfront addons."
+        },
+        "price_total_upfront": {
+          "type": "number",
+          "description": "Final sale price, composed by the base price, minus the applied promotion, plus the upfront addons."
+        },
+        "promotion": {
+          "$ref": "#/$defs/ToursPromotion"
+        },
+        "payment_schedule": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Defines how the payment for the tour must be performed (deposit, pay by installments, final payment date).",
+          "properties": {
+            "deposit": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "description": "The amount that must be paid as deposit. If no deposit is required for this tour, the value will be `null`."
+            },
+            "pay_by_installments": {
+              "type": "boolean",
+              "description": "Indicates if pay by installments is available for this tour."
+            },
+            "final_payment_date": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "Date by which the price must be paid in full."
+            }
+          }
+        },
+        "based_on": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "If available, the type of accommodation that the base price refers to."
+        },
+        "mandatory_addons": {
+          "type": "array",
+          "description": "Mandatory addons (extra price elements).",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "description": "Identifier of the addon in the TourRadar system."
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the addon."
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of the addon."
+              },
+              "payment_type": {
+                "type": "string",
+                "enum": [
+                  "upfront",
+                  "local"
+                ],
+                "description": "The payment type (upfront or local)."
+              },
+              "code": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "If available, the operator code associated with this item."
+              },
+              "prices": {
+                "type": "array",
+                "description": "Price information for this item.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "number",
+                      "description": "Price for this item."
+                    },
+                    "price_category_id": {
+                      "type": "integer",
+                      "description": "Identifier of the price category."
+                    },
+                    "quantity": {
+                      "type": "integer",
+                      "description": "Number of passengers for which this item was requested."
+                    },
+                    "local_currency": {
+                      "type": [
+                        "null",
+                        "string"
+                      ],
+                      "description": "Local currency, if set."
+                    },
+                    "local_value": {
+                      "type": [
+                        "null",
+                        "number"
+                      ],
+                      "description": "Value for local currency, if set."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "accommodations": {
+          "type": "array",
+          "description": "Accommodation items.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "description": "Identifier of the accommodation option in the TourRadar system."
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the accommodation option."
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of the accommodation option."
+              },
+              "payment_type": {
+                "type": "string",
+                "enum": [
+                  "upfront",
+                  "local"
+                ],
+                "description": "The payment type (upfront or local)."
+              },
+              "beds_number": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "description": "Number of beds."
+              },
+              "is_shared": {
+                "type": [
+                  "boolean",
+                  "null"
+                ],
+                "description": "If true, this accommodation is shared with other participants of the tour."
+              },
+              "code": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "If available, the operator code associated with this item."
+              },
+              "prices": {
+                "type": "array",
+                "description": "Price information for this item.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "number",
+                      "description": "Price for this item."
+                    },
+                    "price_category_id": {
+                      "type": "integer",
+                      "description": "Identifier of the price category."
+                    },
+                    "quantity": {
+                      "type": "integer",
+                      "description": "Number of passengers for which this item was requested."
+                    },
+                    "local_currency": {
+                      "type": [
+                        "null",
+                        "string"
+                      ],
+                      "description": "Local currency, if set."
+                    },
+                    "local_value": {
+                      "type": [
+                        "null",
+                        "number"
+                      ],
+                      "description": "Value for local currency, if set."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "optional_extras": {
+          "type": "array",
+          "description": "Optional extra items.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "description": "Identifier of the optional extra in the TourRadar system."
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the optional extra."
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of the optional extra."
+              },
+              "payment_type": {
+                "type": "string",
+                "enum": [
+                  "upfront",
+                  "local"
+                ],
+                "description": "The payment type (upfront or local)."
+              },
+              "code": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "If available, the operator code associated with this item."
+              },
+              "allocation": {
+                "type": "string",
+                "enum": [
+                  "per_passenger",
+                  "per_booking"
+                ],
+                "description": "The allocation of this addon. If 'per_booking', the optional extra must be assigned to all the passengers"
+              },
+              "prices": {
+                "type": "array",
+                "description": "Price information for this item.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "number",
+                      "description": "Price for this item."
+                    },
+                    "price_category_id": {
+                      "type": "integer",
+                      "description": "Identifier of the price category."
+                    },
+                    "quantity": {
+                      "type": "integer",
+                      "description": "Number of passengers for which this item was requested."
+                    },
+                    "local_currency": {
+                      "type": [
+                        "null",
+                        "string"
+                      ],
+                      "description": "Local currency, if set."
+                    },
+                    "local_value": {
+                      "type": [
+                        "null",
+                        "number"
+                      ],
+                      "description": "Value for local currency, if set."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "partner_info": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "properties": {
+            "calculation_base": {
+              "type": [
+                "null",
+                "string"
+              ],
+              "description": "Calculation base."
+            },
+            "contract_type": {
+              "type": "string",
+              "description": "Contract type."
+            },
+            "commission_rate": {
+              "type": "number",
+              "description": "Commission rate of the partner."
+            },
+            "commission_value": {
+              "type": "number",
+              "description": "Commission value of the partner."
+            },
+            "booking_fee_rate": {
+              "type": "number",
+              "description": "Booking fee rate of the partner."
+            },
+            "booking_fee_value": {
+              "type": "number",
+              "description": "Booking fee value of the partner."
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "ToursPromotion": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "Details about the promotion applied, if available.",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "Unique identifier of the promotion in the TourRadar system."
+        },
+        "discount": {
+          "type": "number",
+          "description": "Amount of the promotion (to subtract from the base price)."
+        },
+        "name": {
+          "type": "string",
+          "description": "Promotion name."
+        },
+        "type": {
+          "type": "string",
+          "description": "Type of the promotion (percentage discount, or 2-for-1 offer)."
+        },
+        "percentage": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "Amount of the promotion, when promotion is based on percentage discount."
+        },
+        "pax_restriction": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "Maximum pax number to apply this promotion. If null - no limit."
+        },
+        "value_type": {
+          "type": "string",
+          "enum": [
+            "percent",
+            "absolute"
+          ],
+          "description": "Type of the value, can be absolute or percent."
+        },
+        "valid_to": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Validity definition."
+        }
+      }
+    }
+  }
+}

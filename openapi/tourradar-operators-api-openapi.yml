@@ -1,0 +1,408 @@
+openapi: 3.2.0
+info:
+  title: Tourradar Operators API
+  version: '2025-08-11T15:08:05Z'
+  x-logo:
+    url: https://assets.api.sandbox.b2b.tourradar.com/logo/tourradar.svg
+    altText: TourRadar Partner API
+  description: 'Operations tagged Operators across 2 of this provider''s published API definitions: tourradar-partner-api-openapi.json, tourradar-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.sandbox.b2b.tourradar.com
+tags:
+- name: Operators
+  description: ''
+paths:
+  /v1/operators:
+    get:
+      tags:
+      - Operators
+      summary: /v1/operators
+      description: Returns a list of all operators for which the TourRadar system has content, or can retrieve bookings.
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperatorList'
+        '401':
+          description: 'This status code indicates that the credentials used for the request are not valid.
+
+
+            The error code is `UNAUTHORIZED`. An additional message may provide more information about the error.
+
+
+            Causes for this error may be:
+
+
+            - invalid authorization token
+
+            - operation not allowed by authorization scope
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError401'
+        '500':
+          description: 'This status code indicates that there was an unmanaged error.
+
+
+            The error code is `UNKNOWN_ERROR`. An additional message may provide more information about the error.
+
+
+            Causes for this error may be:
+
+
+            - failure on the TourRadar system
+
+            - unexpected conditions
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError500'
+      security:
+      - application:
+        - com.tourradar.operators/read
+      operationId: getV1Operators
+      x-operation-id-source: derived
+    servers:
+    - url: https://api.sandbox.b2b.tourradar.com
+  /v1/operators/{operator}:
+    get:
+      tags:
+      - Operators
+      summary: /v1/operators/{operator}
+      description: 'This endpoint can be used to retrieve information about a single operator.
+
+
+        #### Terms and conditions of each operator
+
+
+        The endpoint contains information about terms and conditions for each operator (if they are available) in the following 2 fields:
+
+
+        * `terms_text`: full text for the terms and conditions of the operator (please be aware that it may contain HTML).
+
+        * `terms_url`: link to the terms and conditions page from the operator website, if available.
+
+
+        Please see below an example of a response from this endpoint:
+
+        ```json
+
+        {
+
+        "id": 9,
+
+        "name": "Contiki",
+
+        "code": "contiki",
+
+        "terms_text": "This is an example of terms and conditions for the operator Contiki.",
+
+        "has_integration": true,
+
+        "terms_url": "http://www.contiki.com/booking-conditions"
+
+        }
+
+        ```'
+      parameters:
+      - name: operator
+        in: path
+        description: Operator integer ID
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Operator'
+        '401':
+          description: 'This status code indicates that the credentials used for the request are not valid.
+
+
+            The error code is `UNAUTHORIZED`. An additional message may provide more information about the error.
+
+
+            Causes for this error may be:
+
+
+            - invalid authorization token
+
+            - operation not allowed by authorization scope
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError401'
+        '500':
+          description: 'This status code indicates that there was an unmanaged error.
+
+
+            The error code is `UNKNOWN_ERROR`. An additional message may provide more information about the error.
+
+
+            Causes for this error may be:
+
+
+            - failure on the TourRadar system
+
+            - unexpected conditions
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError500'
+      security:
+      - application:
+        - com.tourradar.operators/read
+      operationId: getV1OperatorsByOperator
+      x-operation-id-source: derived
+    servers:
+    - url: https://api.sandbox.b2b.tourradar.com
+  /v1/operators/{operator}/booking-fields:
+    get:
+      tags:
+      - Operators
+      summary: /v1/operators/{operator}/booking-fields
+      description: 'Retrieve booking fields for this operator.
+
+
+        This is the list of fields that will need to be passed to the create booking request (**/bookings**). For each field, the name, label, group, and value type are returned.
+
+
+        #### Mandatory fields
+
+
+        Some operators have their own requirements about which fields are considered mandatory, and which are optional.
+
+
+        Furthermore, fields can be mandatory for the lead passenger (the first passenger in the booking), but not for additional passengers. Two fields in the response define if a field is mandatory or not: `main_pax` and `additional_pax`.
+
+
+        The possible values for those fields are:
+
+
+        * `mandatory`: the field is always mandatory, booking will fail if the field is not provided.
+
+        * `optional`: the field is always optional.
+
+        * `mandatory_post_booking`: the field is optional to create a booking, but will have to be provided to the operator before the tour''s departure date (examples of such fields may include passport number, proof of insurance, etc.).'
+      parameters:
+      - name: operator
+        in: path
+        description: Operator integer ID
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookingFields'
+        '401':
+          description: 'This status code indicates that the credentials used for the request are not valid.
+
+
+            The error code is `UNAUTHORIZED`. An additional message may provide more information about the error.
+
+
+            Causes for this error may be:
+
+
+            - invalid authorization token
+
+            - operation not allowed by authorization scope
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError401'
+        '500':
+          description: 'This status code indicates that there was an unmanaged error.
+
+
+            The error code is `UNKNOWN_ERROR`. An additional message may provide more information about the error.
+
+
+            Causes for this error may be:
+
+
+            - failure on the TourRadar system
+
+            - unexpected conditions
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError500'
+      security:
+      - application:
+        - com.tourradar.operators/read
+      operationId: getV1OperatorsByOperatorBookingFields
+      x-operation-id-source: derived
+    servers:
+    - url: https://api.sandbox.b2b.tourradar.com
+components:
+  schemas:
+    Operator:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier of the operator in the TourRadar system.
+          example: '204'
+        name:
+          type: string
+          description: Name of the operator.
+          example: Intrepid Travel
+        code:
+          type: integer
+          description: Operator code.
+          example: intrepid
+        has_integration:
+          type: boolean
+          description: True if the operator has an integration system.
+          example: true
+        terms_url:
+          type: string
+          description: Address of the terms and conditions page from the operator website, if available.
+          example: https://www.tourradar.com/terms-conditions
+        terms_text:
+          type: string
+          description: 'Full text for the terms and conditions of the operator (note: may contain HTML).'
+          example: <p>Updated on January 20, 2020:</p>\n<p>Once the Operators, as detailed in Clause 13 below, (hereinafter referred to as “the Operator”), [...]
+    DefaultError401:
+      type: object
+      properties:
+        error:
+          type: string
+          description: The error code
+          enum:
+          - UNAUTHORIZED
+        message:
+          type: string
+          description: The error message, if available
+        context:
+          type: object
+          description: Additional data relative to the error condition
+        validation_errors:
+          type: array
+          description: In case of validation error, all the elements that didn't pass validation
+          items:
+            type: string
+    BookingFields:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+            description: Name of the field (must be used when creating bookings).
+            example: first_name
+          label:
+            type: string
+            description: Descriptive name of the field.
+            example: First Name
+          group:
+            type: string
+            description: Category of the fields (can be used to group together similar fields).
+            example: Contact
+          type:
+            type: string
+            description: Type of data expected for this field.
+            example: string
+            enum:
+            - string
+            - number
+            - email
+            - phone
+            - date
+          main_pax:
+            type: string
+            description: Defines if this field is mandatory for the lead passenger (first passenger in the booking).
+            example: mandatory
+            enum:
+            - mandatory
+            - optional
+            - mandatory_post_booking
+          additional_pax:
+            type: string
+            description: Defines if this field is mandatory for additional passengers.
+            example: mandatory
+            enum:
+            - mandatory
+            - optional
+            - mandatory_post_booking
+    DefaultError500:
+      type: object
+      properties:
+        error:
+          type: string
+          description: The error code
+          enum:
+          - UNKNOWN_ERROR
+        message:
+          type: string
+          description: The error message, if available
+        context:
+          type: object
+          description: Additional data relative to the error condition
+        validation_errors:
+          type: array
+          description: In case of validation error, all the elements that didn't pass validation
+          items:
+            type: string
+    OperatorList:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+            description: Unique identifier of the operator in the TourRadar system.
+            example: '204'
+          name:
+            type: string
+            description: Name of the operator.
+            example: Intrepid Travel
+          code:
+            type: integer
+            description: Operator code.
+            example: intrepid
+          has_integration:
+            type: boolean
+            description: True if the operator has an integration system.
+            example: true
+          terms_url:
+            type: string
+            description: Address of the terms and conditions page from the operator website, if available.
+            example: https://www.tourradar.com/terms-conditions
+  securitySchemes:
+    application:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://oauth.api.sandbox.b2b.tourradar.com/oauth2/token
+          scopes:
+            com.tourradar.bookings/read: Read booking information
+            com.tourradar.bookings/write: Create new bookings
+            com.tourradar.bookings.affiliate/read: Read booking information
+            com.tourradar.operators/read: Read operators information
+            com.tourradar.tours/read: Read tours informations
+x-refined-from:
+- tourradar-partner-api-openapi.json
+- tourradar-openapi.yml

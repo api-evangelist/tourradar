@@ -1,0 +1,434 @@
+generated: '2026-10-20'
+method: derived
+generator: derive-vocabulary.py
+source: openapi/tourradar-openapi.yml
+vocabulary:
+  name: TourRadar Domain Vocabulary
+  description: 'Terms declared by TourRadar''s own API contract: its resource groups, objects and enumerations, with the contract''s definitions.
+    Derived, not authored.'
+  version: '2026-10-20'
+  terms:
+  - term: oAuth 2.0
+    definition: '## POST /oauth2/token The /oauth2/token endpoint only supports HTTPS POST. The partners app client makes requests to this endpoint
+      directly and not through the system browser. For more information on the specification see [Token Endpoint](https://openid.net/specs/openid-connect-core-1_0.html#TokenEndpoint).
+      ### Request Parameters in Header #### Authorization If the client was issued a secret, the '
+    tags:
+    - Resource Group
+    source: openapi/tourradar-openapi.yml
+  - term: Versioning
+    definition: In order to ensure compatibility and consistence of the implemented software with the future development of this API, all endpoints
+      are prefixed with a **version identifier** path component. The current version identifier is `v1`. When breaking changes are introduced
+      in an endpoint, a new iteration of that specific endpoint will be created with increased identifier (`v2`, `v3`, etc.), while the ex
+    tags:
+    - Resource Group
+    source: openapi/tourradar-openapi.yml
+  - term: Error Codes
+    definition: '| Error code | Service | Meaning | | ------ | ----- | ----- | | `ACCESS_DENIED` | _All_ | Authentication is not valid | | `BAD_REQUEST_PARAMETERS`
+      | _All_ | The request parameters are invalid | | `BAD_REQUEST_BODY` | _All_ | The body of the request is invalid | | `BOOKING_NOT_CREATED`
+      | _All_ | The booking could not be created | | `BOOKING_NOT_CONFIRMED` | _All_ | The booking could not be confirme'
+    tags:
+    - Resource Group
+    source: openapi/tourradar-openapi.yml
+  - term: PartnerAdminMergePartnerOutput
+    definition: 'Object declared by the contract with fields: message.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/PartnerAdminMergePartnerOutput
+  - term: PartnersDomainInput
+    definition: 'Object declared by the contract with fields: type, subdomain, host.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/PartnersDomainInput
+  - term: OperatorCredentialsSchema
+    definition: Schema of credentials response.
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/OperatorCredentialsSchema
+  - term: ToursPromotion
+    definition: Details about the promotion applied, if available.
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/ToursPromotion
+  - term: OperatorCredentials
+    definition: Store list credentials
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/OperatorCredentials
+  - term: PartnerInfo
+    definition: 'Object declared by the contract with fields: partner, user, scopes.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/PartnerInfo
+  - term: PartnerPaymentsMethodsMethod
+    definition: 'Object declared by the contract with fields: address, city, country, currency, customer_id, default, email, expired, first_name,
+      last_name, id, phone_number. (3 more)'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/PartnerPaymentsMethodsMethod
+  - term: TourDeparturePriceInput
+    definition: 'Object declared by the contract with fields: user_country, currency, passengers, accommodations, optional_extras.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/TourDeparturePriceInput
+  - term: PartnerUser
+    definition: 'Object declared by the contract with fields: username, partner_id, email, first_name, last_name, scopes, notes, status, attributes.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/PartnerUser
+  - term: BookingSearchPagination
+    definition: 'Object declared by the contract with fields: current_page, items, next_page.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/BookingSearchPagination
+  - term: PartnerAdminMergePartnerInput
+    definition: 'Object declared by the contract with fields: source_id, destination_id.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/PartnerAdminMergePartnerInput
+  - term: TourDepartures
+    definition: 'Object declared by the contract with fields: id, date, availability, departure_type, is_instant_confirmable, guide_languages,
+      links, prices.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/TourDepartures
+  - term: BookingSummary
+    definition: 'Object declared by the contract with fields: commission.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/BookingSummary
+  - term: ToursDeparturePromotion
+    definition: Details about the promotion applied, if available.
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/ToursDeparturePromotion
+  - term: AdminPartnersDomainInput
+    definition: 'Object declared by the contract with fields: partner_id, type.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/AdminPartnersDomainInput
+  - term: PartnerRegisterInvitePartnerInfo
+    definition: 'Object declared by the contract with fields: token.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/PartnerRegisterInvitePartnerInfo
+  - term: OptionalExtraItem
+    definition: An item of the pricing data.
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/OptionalExtraItem
+  - term: PartnersAppsClient
+    definition: 'Object declared by the contract with fields: client_id, client_secret, name, description, scopes.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/PartnersAppsClient
+  - term: PartnerRegisterUsersInvite
+    definition: 'Object declared by the contract with fields: user, resend_token.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/PartnerRegisterUsersInvite
+  - term: PartnersAdminEnquiriesEnquiryId
+    definition: Updates enquiry's partner_id
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/PartnersAdminEnquiriesEnquiryId
+  - term: PartnersDomain
+    definition: 'Object declared by the contract with fields: domain, type, status.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/PartnersDomain
+  - term: AdminPartnersDomain
+    definition: 'Object declared by the contract with fields: domain, type, status.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/AdminPartnersDomain
+  - term: BookingTransfer
+    definition: 'Object declared by the contract with fields: partner_id, contract_type, agent_email.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/BookingTransfer
+  - term: Booking
+    definition: 'Object declared by the contract with fields: id, tour_id, tour, departure_date, return_date, email, created_at, type, hold_expire_at,
+      status, currency, total_value. (18 more)'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/Booking
+  - term: TourDeparturesPagination
+    definition: 'Object declared by the contract with fields: current_page, items, next_page.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/TourDeparturesPagination
+  - term: PartnerPaymentsMethodsInfo
+    definition: 'Object declared by the contract with fields: currency, methods, token.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/PartnerPaymentsMethodsInfo
+  - term: PartnersPartnerCustomizationsBranding
+    definition: Partner branding customizations
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/PartnersPartnerCustomizationsBranding
+  - term: TaxonomyDestination
+    definition: 'Object declared by the contract with fields: id, name, latitude, longitude, geoname_id, country_code, currency_code, currency_name,
+      electricity_outlets, country_id, parent_ids, links.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/TaxonomyDestination
+  - term: BookingExtra
+    definition: 'Object declared by the contract with fields: id, type, currency, payment_type, name, description, prices, passengers.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/BookingExtra
+  - term: TourDeparturePrice
+    definition: 'Object declared by the contract with fields: id, tour_id, date, departure_type, prices.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/TourDeparturePrice
+  - term: ToursListPagination
+    definition: 'Object declared by the contract with fields: current_page, items, next_page.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/ToursListPagination
+  - term: PartnersOperatorsCommission
+    definition: 'Object declared by the contract with fields: items.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/PartnersOperatorsCommission
+  - term: OperatorCredentialsList
+    definition: List of credentials entries.
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/OperatorCredentialsList
+  - term: BookingInput
+    definition: 'Object declared by the contract with fields: tour_id, departure_id, currency, email, user_country, passengers, accommodations,
+      optional_extras, partner_booking_code, custom_data, store_id.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/BookingInput
+  - term: PartnerRegisterInput
+    definition: 'Object declared by the contract with fields: name, email, captcha_token.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/PartnerRegisterInput
+  - term: TourDestinations
+    definition: List of all destinations included in the tour.
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/TourDestinations
+  - term: BookingSearch
+    definition: 'Object declared by the contract with fields: id, tour, departure_date, return_date, created_at, type, hold_expire_at, status,
+      total_value, pax, main_passenger, confirmed_at. (6 more)'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/BookingSearch
+  - term: Operator
+    definition: 'Object declared by the contract with fields: id, name, code, has_integration, terms_url, terms_text.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/Operator
+  - term: TourCity
+    definition: 'Object declared by the contract with fields: location_id, city_name, country_code, latitude, longitude.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/TourCity
+  - term: TourItinerary
+    definition: Details the itinerary of the tour, with day-by-day description of the activities and the destinations visited.
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/TourItinerary
+  - term: PartnersPresetStatus
+    definition: 'Object declared by the contract with fields: status.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/PartnersPresetStatus
+  - term: OperatorBulkFiles
+    definition: 'Object declared by the contract with fields: urls, expires_in.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/OperatorBulkFiles
+  - term: TourPrice
+    definition: 'Object declared by the contract with fields: partner_info, based_on, price_base, price_addons, price_promotion, price_total_upfront,
+      price_total, currency, promotion, mandatory_addons.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/TourPrice
+  - term: PartnersUsagePlans
+    definition: List of available usage plans
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/PartnersUsagePlans
+  - term: PartnerUpdateInput
+    definition: 'Object declared by the contract with fields: id, name, status, role, notes, payout_terms, attributes, is_whitelabel.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/PartnerUpdateInput
+  - term: PartnerUsersInviteToken
+    definition: 'Object declared by the contract with fields: token.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/PartnerUsersInviteToken
+  - term: TourDepartureMandatoryAddon
+    definition: Mandatory addon.
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/TourDepartureMandatoryAddon
+  - term: PartnersOperatorsInfo
+    definition: 'Object declared by the contract with fields: operator_code, operator_id, calculation, calculation_base, type, permissions.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/PartnersOperatorsInfo
+  - term: PartnersPayoutFields
+    definition: 'Object declared by the contract with fields: AUD, CAD, GBP, EUR, USD.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/PartnersPayoutFields
+  - term: PartnersPartnerBookings
+    definition: List of partner's bookings
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/PartnersPartnerBookings
+  - term: BookingStatus
+    definition: 'Object declared by the contract with fields: id, tour_id, tour, departure_date, created_at, confirmed_at, type, status, links,
+      status_reason, status_reason_text, status_reason_context.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/BookingStatus
+  - term: BookingResponse
+    definition: 'Object declared by the contract with fields: reservation_details.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/BookingResponse
+  - term: TourDeparture
+    definition: 'Object declared by the contract with fields: id, date, departure_type, is_instant_confirmable, availability, guide_languages,
+      links, prices.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/TourDeparture
+  - term: Partner
+    definition: 'Object declared by the contract with fields: id, name, status, role, scopes, notes, attributes, terms_approved, payout_terms,
+      usage_plan.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/Partner
+  - term: Tour
+    definition: 'Object declared by the contract with fields: tour_id, locale, codes, language, tour_name, is_active, description, tour_length_days,
+      is_instant_confirmable, guide_languages, start_point, end_point. (17 more)'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/Tour
+  - term: TaxonomyDestinationPagination
+    definition: 'Object declared by the contract with fields: current_page, items, next_page.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/TaxonomyDestinationPagination
+  - term: PartnerRegisterOutput
+    definition: 'Object declared by the contract with fields: partner, user, resend_token.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/PartnerRegisterOutput
+  - term: PartnerAdminFindDomain
+    definition: 'Object declared by the contract with fields: partner, customizations, related_partners, domain.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/PartnerAdminFindDomain
+  - term: PartnersCustomizations
+    definition: Partner branding customizations
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/PartnersCustomizations
+  - term: ToursList
+    definition: 'Object declared by the contract with fields: links, budget, images, locale, prices, ratings, tour_id, end_city, language, operator,
+      is_active, tour_name. (8 more)'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/ToursList
+  - term: Error
+    definition: 'Object declared by the contract with fields: error, message, context, validation_errors.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/Error
+  - term: PartnerDetails
+    definition: 'Object declared by the contract with fields: id, name, industry, address, city, state, zip_code, country, currency, phone_number,
+      travel_accreditation_id, number_of_agents. (11 more)'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/PartnerDetails
+  - term: BookingDeclineReason
+    definition: The reason of the declination, if set.
+    tags:
+    - Enumeration
+    source: openapi/tourradar-openapi.yml#/components/schemas/BookingDeclineReason
+  - term: HoldInput
+    definition: 'Object declared by the contract with fields: tour_id, departure_id, currency, email, user_country, passengers, accommodations,
+      optional_extras, partner_booking_code, custom_data, store_id.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/HoldInput
+  - term: TourPriceCategories
+    definition: 'Object declared by the contract with fields: price_categories.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/TourPriceCategories
+  - term: OperatorCreateInput
+    definition: 'Object declared by the contract with fields: id, name, commission_group, code, has_integration, terms_url.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/OperatorCreateInput
+  - term: ErrorResponse
+    definition: 'Object declared by the contract with fields: error, message, context, validation_errors.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/ErrorResponse
+  - term: PartnerCreateInput
+    definition: 'Object declared by the contract with fields: id, name, status, role, notes, payout_terms, is_whitelabel.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/PartnerCreateInput
+  - term: PartnerRegisterShopAgent
+    definition: 'Object declared by the contract with fields: operator_id, email, captcha_token.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/PartnerRegisterShopAgent
+  - term: PartnersRegisterBranding
+    definition: Partner register branding customizations
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/PartnersRegisterBranding
+  - term: DefaultError401
+    definition: 'Object declared by the contract with fields: error, message, context, validation_errors.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/DefaultError401
+  - term: DefaultError500
+    definition: 'Object declared by the contract with fields: error, message, context, validation_errors.'
+    tags:
+    - Object
+    source: openapi/tourradar-openapi.yml#/components/schemas/DefaultError500
+  - term: Bookings
+    definition: 'Resource group in the contract; its operation GET /v1/bookings: Returns a list of all the bookings created in the TourRadar system
+      by your partner account.'
+    tags:
+    - Resource Group
+    source: openapi/tourradar-openapi.yml
+  - term: Operators
+    definition: 'Resource group in the contract; its operation GET /v1/operators: Returns a list of all operators for which the TourRadar system
+      has content, or can retrieve bookings.'
+    tags:
+    - Resource Group
+    source: openapi/tourradar-openapi.yml
+  - term: Bulk
+    definition: 'Resource group in the contract; its operation GET /v1/operators/{operator}/bulk/departures: Downloads an operator''s available
+      departure dates in bulk.'
+    tags:
+    - Resource Group
+    source: openapi/tourradar-openapi.yml
+  - term: Taxonomy
+    definition: 'Resource group in the contract; its operation GET /v1/taxonomy/currencies: This endpoint returns the list of all currencies supported
+      by the TourRadar system.'
+    tags:
+    - Resource Group
+    source: openapi/tourradar-openapi.yml
+  - term: Tours
+    definition: 'Resource group in the contract; its operation GET /v1/tours/search: Returns a list of tours based on a number of search criteria.'
+    tags:
+    - Resource Group
+    source: openapi/tourradar-openapi.yml

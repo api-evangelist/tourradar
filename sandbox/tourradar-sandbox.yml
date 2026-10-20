@@ -1,0 +1,9 @@
+name: TourRadar sandbox
+generated: '2026-10-20'
+method: searched
+source: https://www.tourradar.com/distribution-api
+description: 'TourRadar issues sandbox credentials, reference docs and test departures on request. Verbatim: "Tell us which setup you want and we issue sandbox credentials, reference docs and test departures, with no commercial commitment to start building."'
+docs: https://docs.sandbox.b2b.tourradar.com
+base_url: https://api.sandbox.b2b.tourradar.com
+token_url: https://oauth.api.sandbox.b2b.tourradar.com/oauth2/token
+access: credentials issued by TourRadar on request (not self-serve)

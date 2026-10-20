@@ -1,0 +1,14 @@
+name: TourRadar rate limits
+generated: '2026-10-20'
+method: searched
+source: https://api.sandbox.b2b.tourradar.com/v1/openapi
+note: Stated in the info.description "Rate limits" section of the provider-hosted Partner API OpenAPI (rendered at https://docs.sandbox.b2b.tourradar.com). No rate-limit response headers are documented.
+limit_count: 1
+limits:
+- name: Partner API request rate
+  limit_text: Our API has a rate limit of **10 requests per second**, exceeding this limit will return an error `429 Too Many Requests`.
+  max: 10
+  limit: 10
+  window: 1 second
+  scope: api
+  exhaustion_status: 429

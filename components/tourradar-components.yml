@@ -11,7 +11,7 @@ loader:
   script: https://assets.api.b2b.tourradar.com/widgets/loader.js
   module: https://assets.api.b2b.tourradar.com/widgets/loader.mjs
   technology: web-components
-components:
+families:
   - family: tour-content
     elements:
       - x-tr-tour

@@ -1,0 +1,24 @@
+name: TourRadar conventions
+generated: '2026-10-20'
+method: derived
+source: https://api.sandbox.b2b.tourradar.com/v1/openapi
+auth:
+  style: oauth2 client_credentials (bearer token from https://oauth.api.sandbox.b2b.tourradar.com/oauth2/token)
+  see: authentication/tourradar-authentication.yml
+idempotency:
+  coverage: none
+  note: The contract declares no idempotency key header or parameter on its two writes (POST /v1/bookings, POST /v1/tours/{tourId}/departures/{departureId}/price).
+pagination:
+  style: page-number
+  params: [page, limit]
+  note: page and limit query parameters on GET /v1/bookings, GET /v1/bookings/affiliate, GET /v1/taxonomy/destinations/{type}, GET /v1/tours/{tourId}/departures; next_id on GET /v1/bookings/operator/{operator}/{bookingCode}.
+localization:
+  headers: [Accept-Language]
+  params: [currency, user_country]
+schema_basis: The info.description states the request/response schema "is largely based on the Open Travel Alliance standard (OTA)".
+rate_limit_signaling:
+  status: 429
+  see: rate-limits/tourradar-rate-limits.yml
+reversibility:
+  status: none-documented
+  note: The contract exposes booking creation and a booking status read but no cancel or refund operation; the description says some bookings "are canceled afterwards or declined", which is read via GET /v1/bookings/{bookingId}/status. No reversal window is stated.

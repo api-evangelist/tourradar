@@ -1,0 +1,251 @@
+generated: '2026-10-20'
+method: generated
+source: openapi/tourradar-openapi.yml
+description: Recommended x-agentic-access execution contracts, classified heuristically from
+  the OpenAPI. A governance starting point for exposing this API to AI agents — review and bind
+  audience per deployment. See research/curity/agentic-governance/.
+summary:
+  operations: 21
+  by_action_class:
+    connected: 19
+    acting: 2
+  by_consequence:
+    read: 19
+    write: 2
+  human_in_the_loop_required: 0
+operations:
+- path: /v1/bookings
+  method: get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - com.tourradar.bookings/read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1/bookings
+  method: post
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - com.tourradar.bookings/write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1/bookings/affiliate
+  method: get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - com.tourradar.bookings.affiliate/read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1/bookings/operator/{operator}/{bookingCode}
+  method: get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - com.tourradar.bookings/read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1/bookings/{bookingId}
+  method: get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - com.tourradar.bookings/read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1/bookings/{bookingId}/status
+  method: get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - com.tourradar.bookings/read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1/operators
+  method: get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - com.tourradar.operators/read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1/operators/{operator}
+  method: get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - com.tourradar.operators/read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1/operators/{operator}/booking-fields
+  method: get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - com.tourradar.operators/read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1/operators/{operator}/bulk/departures
+  method: get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - com.tourradar.operators/read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1/operators/{operator}/bulk/tours
+  method: get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - com.tourradar.operators/read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1/taxonomy/currencies
+  method: get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1/taxonomy/destinations/{type}
+  method: get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1/taxonomy/languages
+  method: get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1/taxonomy/tours/types
+  method: get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1/tours/search
+  method: get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - com.tourradar.tours/read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1/tours/{tourId}
+  method: get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - com.tourradar.tours/read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1/tours/{tourId}/departures
+  method: get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - com.tourradar.tours/read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1/tours/{tourId}/departures/{departureId}
+  method: get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - com.tourradar.tours/read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1/tours/{tourId}/departures/{departureId}/price
+  method: post
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - com.tourradar.tours/read
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1/tours/{tourId}/prices
+  method: get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - com.tourradar.tours/read
+    token:
+      max-ttl: 3600
+    audit: none

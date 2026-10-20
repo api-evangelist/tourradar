@@ -1,0 +1,2716 @@
+openapi: 3.2.0
+info:
+  title: Tourradar Bookings API
+  version: '2025-08-11T15:08:05Z'
+  x-logo:
+    url: https://assets.api.sandbox.b2b.tourradar.com/logo/tourradar.svg
+    altText: TourRadar Partner API
+  description: 'Operations tagged Bookings across 2 of this provider''s published API definitions: tourradar-partner-api-openapi.json, tourradar-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.sandbox.b2b.tourradar.com
+tags:
+- name: Bookings
+  description: ''
+paths:
+  /v1/bookings:
+    get:
+      tags:
+      - Bookings
+      summary: /v1/bookings
+      description: 'Returns a list of all the bookings created in the TourRadar system by your partner account.
+
+
+        #### Response formats
+
+
+        You can set the `Accept` header to define the response format you need.
+
+        The available values are:
+
+        - `application/json` (default). It will return an array of **BookingSearch** objects;
+
+
+        - `text/csv`, if this format is requested the `limit` query parameter is ignored. It will contain these fields:
+
+
+        | field | type | notes |
+
+        | --------------- | ------- | ----- |
+
+        | booking_id | integer | Unique identifier of the booking in the TourRadar system. |
+
+        | tour_id | integer | Unique identifier for the tour in the TourRadar system. |
+
+        | tour_name | string | Name of the tour. |
+
+        | operator_id | integer | Unique identifier for the tour operator in the TourRadar system. |
+
+        | operator_name | string | Name of the tour operator. |
+
+        | tour_length_days | integer | Length of the tour, expressed in number of days. |
+
+        | passengers | integer | Number of passengers. |
+
+        | departure_date | string | Departure date that was booked, in the format `YYYY-MM-DD`. |
+
+        | return_date | string | Return date that was booked, in the format `YYYY-MM-DD`. |
+
+        | created_at | string | Exact timestamp of when the booking was created, in the ISO 8601 format. |
+
+        | confirmed_at | string | Exact timestamp of when the booking was confirmed, in the ISO 8601 format. Empty if it is not confirmed. |
+
+        | hold_expire_at | string | Exact timestamp of when the the hold will expire, in the ISO 8601 format. |
+
+        | type | string | Type of this booking record. Expected values: `booking`, `question`, `hold`. |
+
+        | status | string | Status of the booking. Expected values: `open_question`, `open_hold`, `pending`, `confirmed`, `declined`, `cancelled`, `hold_expired`, `hold_declined` |
+
+        | currency | string | Currency of the booking. |
+
+        | total_value | number | Total amount of the booking. |'
+      parameters:
+      - name: sort_by
+        in: query
+        description: 'Field by which the results will be sorted. Possible values: `id`, `departure_date`,  `created_at`, `status`. Default is `id`.'
+        schema:
+          type: string
+      - name: Accept
+        in: header
+        description: Defines the response format. Current available values are `application/json` and `text/csv`.
+        schema:
+          type: string
+      - name: updated_range
+        in: query
+        description: 'Get the bookings that are updated in a certain date range. Valid formats are: `YYYYMMDD-YYYYMMDD` and `YYYYMMDD`. Using the single date format, it will retrieve the bookings updated in that day.'
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: Number of items per page of results (default is 20, max 100).
+        schema:
+          type: string
+      - name: Accept-Language
+        in: header
+        description: 'Defines in which language the resources are returned. Use ISO-639 language or locale codes (example: `en`, `en-US`).'
+        schema:
+          type: string
+      - name: agent_id
+        in: query
+        description: Filter bookings by agent id.
+        schema:
+          type: string
+      - name: page
+        in: query
+        description: Number of page to return (default is 1).
+        schema:
+          type: string
+      - name: sort_order
+        in: query
+        description: 'Direction of the sorting (ascending or descending). Possible values: `asc`, `desc`.'
+        schema:
+          type: string
+      - name: date_range
+        in: query
+        description: 'Date range in which to search for bookings. Valid formats are: `YYYYMMDD-YYYYMMDD` and `YYYYMMDD`. Using the single date format, it will retrieve the bookings created in that day.'
+        schema:
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookingSearchPagination'
+        '401':
+          description: 'This status code indicates that the credentials used for the request are not valid.
+
+
+            The error code is `UNAUTHORIZED`. An additional message may provide more information about the error.
+
+
+            Causes for this error may be:
+
+
+            - invalid authorization token
+
+            - operation not allowed by authorization scope
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError401'
+        '500':
+          description: 'This status code indicates that there was an unmanaged error.
+
+
+            The error code is `UNKNOWN_ERROR`. An additional message may provide more information about the error.
+
+
+            Causes for this error may be:
+
+
+            - failure on the TourRadar system
+
+            - unexpected conditions
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError500'
+      security:
+      - application:
+        - com.tourradar.bookings/read
+      operationId: getV1Bookings
+      x-operation-id-source: derived
+    post:
+      tags:
+      - Bookings
+      summary: /v1/bookings
+      description: 'Creates a booking in the TourRadar system. The payload must be sent as JSON in the request body. The required entries are:
+
+
+        * `departure_id`: this is the unique identifier of the wanted departure date for the desired tour. To retrieve departure dates, use the **/tours/{tourId}/departures** endpoint. * `currency`: the currency that will be used for payments. * `passengers`: the list of passengers in the booking. * `email`: email used for communications regarding the booking (partner support email). Please be aware that this email is different than the one from passengers definition. Furthermore, it''s possible to add the following sections, if needed:
+
+
+        * `accommodations`: defines the desired accommodation types (if the tour offers them), and which passengers will use them. * `optional_extras`: optional extra items that can be booked together with the tour. This is an example of how the payload for a booking looks like:
+
+
+        ```json
+
+        {
+
+        "departure_id": 123,
+
+        "currency": "EUR",
+
+        "email": "dummy@mail.org",
+
+        "passengers": [
+
+        {
+
+        "pax_number": 1,
+
+        "price_category_id": 1,
+
+        "fields" : {
+
+        "first_name": "John",
+
+        "last_name": "Doe",
+
+        "email": "dummy@mail.org",
+
+        "phone_number": "+431245678853",
+
+        "date_of_birth": "21/05/2019",
+
+        "nationality": "Germany",
+
+        "gender": "male"
+
+        }
+
+        },
+
+        {
+
+        "pax_number": 2,
+
+        "price_category_id": 2,
+
+        "fields" : {
+
+        "first_name": "John",
+
+        "last_name": "Doe",
+
+        "email": "dummy@mail.org",
+
+        "phone_number": "+431245678853",
+
+        "date_of_birth": "21/05/2019",
+
+        "nationality": "Germany",
+
+        "gender": "female"
+
+        }
+
+        }
+
+        ],
+
+        "accommodations": [
+
+        {
+
+        "id": 345,
+
+        "passengers": [1, 2]
+
+        }
+
+        ],
+
+        "optional_extras": [
+
+        {
+
+        "id": 456,
+
+        "passengers": [2]
+
+        }
+
+        ],
+
+        }
+
+        ```
+
+
+        #### Passengers definition
+
+
+        For each entry in the `passengers` array, these are the required fields:
+
+
+        * `pax_number`: this is the index of the passenger, starting with 1. The passenger number will be used in the accommodation and extras sections of the request, to assign specific passengers to elements of the booking. * `price_category_id`: this defines the category of the passenger. To retrieve price categories, use the **/tours/{tourId}/prices** endpoint. * `fields`: this is the passenger information, as requested by the operator. To retrieve a list of fields, and if they are required or optional, use the **/operator/{operatorId}/booking-fields** endpoint. Some examples of these fields:
+
+        * `title`: title of the passenger, possible values: `Mr.`, `Ms.`, `Mrs.`, `Miss`. * `gender`: gender of the passenger, possible values: `male`, `female`. * `date_of_birth`: date of birth of the passenger, format needed: `DD/MM/YYYY`. * `email`: the passenger''s email address. * `bed_preference`: the passenger''s bed preference, possible values: `Single Bed`, `Twin Bed`. * `nationality`: nationality of the passenger, please use country names from the taxonomy endpoint **/taxonomy/destinations/country**, some examples: `Argentina`, `Austria`, `Bahrain`, `Belgium`, `Australia`. #### Accommodation
+
+
+        In the `accommodations` section, it''s possible to specify the identifier of an accommodation option, and which passenger numbers should make use of it. To retrieve a list of accommodation options available for the desired departure, use the **/tours/{tourId}/departures/{departureId}** endpoint. #### Optional extras
+
+
+        The `optional_extras` section works exactly like the `accommodations` section. To retrieve a list of the optional extra items available for the desired departure, use the **/tours/{tourId}/departures/{departureId}** endpoint. #### Booking conversation page
+
+
+        After the creation of the booking, you will receive in the response a link that leads to the booking conversation page. The link will be available in the `links` object in the response and it will have the type `booking-page`. This page is where all the communication happens between travelers and TourRadar, or the adventure operator. It shows details about the tour booked and has a price breakdown.'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookingInput'
+        required: true
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Booking'
+        '401':
+          description: 'This status code indicates that the credentials used for the request are not valid.
+
+
+            The error code is `UNAUTHORIZED`. An additional message may provide more information about the error.
+
+
+            Causes for this error may be:
+
+
+            - invalid authorization token
+
+            - operation not allowed by authorization scope
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError401'
+        '500':
+          description: 'This status code indicates that there was an unmanaged error.
+
+
+            The error code is `UNKNOWN_ERROR`. An additional message may provide more information about the error.
+
+
+            Causes for this error may be:
+
+
+            - failure on the TourRadar system
+
+            - unexpected conditions
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError500'
+      security:
+      - application:
+        - com.tourradar.bookings/write
+      operationId: postV1Bookings
+      x-operation-id-source: derived
+    servers:
+    - url: https://api.sandbox.b2b.tourradar.com
+  /v1/bookings/affiliate:
+    get:
+      tags:
+      - Bookings
+      summary: /v1/bookings/affiliate
+      description: Booking listing endpoint - list only bookings created by affiliate partner. This endpoint have limited amount of exposed data.
+      parameters:
+      - name: sort_by
+        in: query
+        description: 'Field by which the results will be sorted. Possible values: `id`, `departure_date`,  `created_at`, `status`. Default is `id`.'
+        schema:
+          type: string
+      - name: Accept
+        in: header
+        description: Defines the response format. Current available values are `application/json` and `text/csv`.
+        schema:
+          type: string
+      - name: updated_range
+        in: query
+        description: 'Get the bookings that are updated in a certain date range. Valid formats are: `YYYYMMDD-YYYYMMDD` and `YYYYMMDD`. Using the single date format, it will retrieve the bookings updated in that day.'
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: Number of items per page of results (default is 20, max 100).
+        schema:
+          type: string
+      - name: Accept-Language
+        in: header
+        description: 'Defines in which language the resources are returned. Use ISO-639 language or locale codes (example: `en`, `en-US`).'
+        schema:
+          type: string
+      - name: page
+        in: query
+        description: Number of page to return (default is 1).
+        schema:
+          type: string
+      - name: sort_order
+        in: query
+        description: 'Direction of the sorting (ascending or descending). Possible values: `asc`, `desc`.'
+        schema:
+          type: string
+      - name: date_range
+        in: query
+        description: 'Date range in which to search for bookings. Valid formats are: `YYYYMMDD-YYYYMMDD` and `YYYYMMDD`. Using the single date format, it will retrieve the bookings created in that day.'
+        schema:
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookingSearchPagination'
+        '401':
+          description: 'This status code indicates that the credentials used for the request are not valid.
+
+
+            The error code is `UNAUTHORIZED`. An additional message may provide more information about the error.
+
+
+            Causes for this error may be:
+
+
+            - invalid authorization token
+
+            - operation not allowed by authorization scope
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError401'
+        '500':
+          description: 'This status code indicates that there was an unmanaged error.
+
+
+            The error code is `UNKNOWN_ERROR`. An additional message may provide more information about the error.
+
+
+            Causes for this error may be:
+
+
+            - failure on the TourRadar system
+
+            - unexpected conditions
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError500'
+      security:
+      - application:
+        - com.tourradar.bookings.affiliate/read
+      operationId: getV1BookingsAffiliate
+      x-operation-id-source: derived
+    servers:
+    - url: https://api.sandbox.b2b.tourradar.com
+  /v1/bookings/operator/{operator}/{bookingCode}:
+    get:
+      tags:
+      - Bookings
+      summary: /v1/bookings/operator/{operator}/{bookingCode}
+      description: 'This endpoint returns detailed information about a booking, retrieved directly from the operator system. The call expects two parameters as part of the request path:
+
+
+        - the operator ID
+
+        - the booking code (in the operator system)
+
+
+        Additionally, the following query string parameters are supported:
+
+
+        - `currency`: the currency in which the booking was made (use 3-letter ISO 4217 codes, for example `USD` for US Dollars)
+
+        - `surname`: the last name of one passenger in the booking
+
+        - `next_id`: if the booking has multiple tours, the index of the tour to retrieve
+
+
+        The parameters `currency` and `surname` are required by some operators in order to successfully retrieve a booking. A full example of a call to this endpoint could be:
+
+
+        ```
+
+        GET /bookings/operator/406/IVSYDS-A339296?surname=Davis¤cy=USD
+
+        ```
+
+
+        Additional parameters may be added in a future revision, for example the identifier of the agent (store ID) who made the booking. #### Retrieving operator ID
+
+
+        To retrieve the operator ID for a specific operator, it''s possible to use the call /operators, which will return a list of all available operators with ID, name, and code. #### Output definition
+
+
+        The output format is JSON, and the data structure follows closely the OTA standard. In particular, the response is based on the OTA_TourActivityBookRS.ReservationDetails schema. Unlike OTA, identifiers use the `snake_case` (lowercase, underscore between words) notation, instead of `PascalCase` (first letter of each word capitalized). Furthermore, some fields have been added to the existing schema to support the variety of data returned by operators. It should be noted that not all operators return all information for bookings. Where possible, data have been structured to minimize the difference between different operators'' implementations. The list of fields provided by **all operators** is defined as follows:
+
+
+        | object | field | notes |
+
+        | ------ | ----- | ----- |
+
+        | confirmation | id | |
+
+        | confirmation | status | |
+
+        | basic_info | name | Name of the tour/activity |
+
+        | basic_info | tour_activity_id | Operator code of the tour/activity |
+
+        | schedule | duration | |
+
+        | schedule | start | |
+
+        | schedule | end | |
+
+        | participant_info.individual | given_name | |
+
+        | participant_info.individual | surname | |
+
+        | participant_info.individual | birth_date | |
+
+        | pricing.summary | amount | |
+
+        | commission_info | commission_payable_amount | |
+
+
+        > ⚠ **WARNING**: the list is not final in this version
+
+
+        #### Error codes
+
+
+        Every failed request will result in a HTTP status code in the 400 or 500 range. The JSON element `error` in the response will identify the error condition. This is a list of the possible error codes returned by this API:
+
+
+        | Error code | HTTP Status code | Meaning |
+
+        | ------ | ----- | ----- |
+
+        | `UNAUTHORIZED` | 401 | Invalid operator credentials |
+
+        | `BOOKING_NOT_FOUND` | 404 | Booking not found |
+
+        | `OPERATOR_NOT_FOUND` | 412 | Invalid operator ID |
+
+        | `INVALID_REQUEST` | 405 | Operation not supported |
+
+        | `VALIDATION_ERROR` | 422 | Parameter missing or invalid |
+
+        | `UNKNOWN_ERROR` | 500 | Server failure or unexpected error condition |
+
+        | `REQUEST_FAILED` | 502 | Operator server failure |
+
+
+        #### Booking status
+
+
+        The booking status (response field `booking.status`) from different operators is mapped to one of the following values:
+
+
+        - `pending`: the booking has not been confirmed yet
+
+        - `confirmed`: the booking has been confirmed
+
+        - `declined`: the booking has been cancelled by the operator
+
+        - `cancelled`: the booking has been cancelled by the customer or agent
+
+
+        In the event of a status response not recognised by the system, this field will contain `unknown`. In this case, another response field `booking.operator_status` will contain the original status information provided by the operator. #### Bookings with multiple tours
+
+
+        Some operators include several tours/activities inside the same booking.'
+      parameters:
+      - name: bookingCode
+        in: path
+        description: 'Operator''s unique booking code (note: special characters must be URL-encoded)'
+        required: true
+        schema:
+          type: string
+      - name: currency
+        in: query
+        schema:
+          type: string
+      - name: operator
+        in: path
+        description: Operator ID
+        required: true
+        schema:
+          type: string
+      - name: surname
+        in: query
+        schema:
+          type: string
+      - name: next_id
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookingResponse'
+        '401':
+          description: 'This status code indicates that the credentials used for the fetch request are not valid.
+
+
+            The error code is `UNAUTHORIZED`. An additional message may provide more information about the error.
+
+
+            Causes for this error may be:
+
+
+            - invalid authorization token
+
+            - wrong configuration
+
+            - outdated operator credentials
+
+            '
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: The error code
+                    enum:
+                    - UNAUTHORIZED
+                    - UNKNOWN_ERROR
+                  message:
+                    type: string
+                    description: The error message, if available
+                  context:
+                    type: object
+                    description: Additional data relative to the error condition
+                  validation_errors:
+                    type: array
+                    description: In case of validation error, all the elements that didn't pass validation
+                    items:
+                      type: string
+        '404':
+          description: 'This status code indicates that the operator or booking was not found.
+
+
+            The error code is `BOOKING_NOT_FOUND` or `OPERATOR_NOT_FOUND`. An additional message may provide more information about the error.
+
+
+            Causes for this error may be:
+
+
+            - the booking code is invalid
+
+            - one of the required parameters (surname, currency, etc.) is wrong
+
+            - the operator parameter is wrong
+
+            '
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: The error code
+                    enum:
+                    - OPERATOR_NOT_FOUND
+                    - BOOKING_NOT_FOUND
+                    - UNKNOWN_ERROR
+                  message:
+                    type: string
+                    description: The error message, if available
+                  context:
+                    type: object
+                    description: Additional data relative to the error condition
+                  validation_errors:
+                    type: array
+                    description: In case of validation error, all the elements that didn't pass validation
+                    items:
+                      type: string
+        '405':
+          description: 'This status code indicates that the operation is not supported for the given operator.
+
+
+            The error code is `INVALID_REQUEST`. An additional message may provide more information about the error.
+
+
+            Causes for this error may be:
+
+
+            - the operator doesn''t support booking creation
+
+            - the operator id is not integer
+
+            '
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: The error code
+                    enum:
+                    - INVALID_REQUEST
+                    - UNKNOWN_ERROR
+                  message:
+                    type: string
+                    description: The error message, if available
+                  context:
+                    type: object
+                    description: Additional data relative to the error condition
+                  validation_errors:
+                    type: array
+                    description: In case of validation error, all the elements that didn't pass validation
+                    items:
+                      type: string
+        '422':
+          description: 'This status code indicates that there was a validation error in the request parameters.
+
+
+            The error code is `VALIDATION_ERROR`. An additional `validation_errors` element will list all the parameters which were invalid.
+
+
+            Causes for this error may be:
+
+
+            - required parameters are missing
+
+            - some parameters have the wrong type
+
+            '
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: The error code
+                    enum:
+                    - VALIDATION_ERROR
+                    - UNKNOWN_ERROR
+                  message:
+                    type: string
+                    description: The error message, if available
+                  context:
+                    type: object
+                    description: Additional data relative to the error condition
+                  validation_errors:
+                    type: array
+                    description: In case of validation error, all the elements that didn't pass validation
+                    items:
+                      type: string
+        '500':
+          description: 'This status code indicates that there was an unmanaged error.
+
+
+            The error code is `UNKNOWN_ERROR`. An additional message may provide more information about the error.
+
+
+            Causes for this error may be:
+
+
+            - failure on the TourRadar system
+
+            - unexpected conditions
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError500'
+        '502':
+          description: 'This status code indicates that there was a failure on the operator''s system.
+
+
+            The error code is `REQUEST_FAILED`. An additional message may provide more information about the error.
+
+
+            Causes for this error may be:
+
+
+            - network connectivity issue to the operator''s system
+
+            - operator''s system failing
+
+            - operator''s system responding with an invalid response'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: The error code
+                    enum:
+                    - REQUEST_FAILED
+                    - OPERATOR_TIMEOUT
+                    - UNKNOWN_ERROR
+                  message:
+                    type: string
+                    description: The error message, if available
+                  context:
+                    type: object
+                    description: Additional data relative to the error condition
+                  validation_errors:
+                    type: array
+                    description: In case of validation error, all the elements that didn't pass validation
+                    items:
+                      type: string
+      security:
+      - application:
+        - com.tourradar.bookings/read
+      operationId: getV1BookingsOperatorByOperatorByBookingCode
+      x-operation-id-source: derived
+    servers:
+    - url: https://api.sandbox.b2b.tourradar.com
+  /v1/bookings/{bookingId}:
+    get:
+      tags:
+      - Bookings
+      summary: /v1/bookings/{bookingId}
+      description: Retrieves details about a booking created in the TourRadar system.
+      parameters:
+      - name: bookingId
+        in: path
+        description: Booking ID
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Booking'
+        '401':
+          description: 'This status code indicates that the credentials used for the request are not valid.
+
+
+            The error code is `UNAUTHORIZED`. An additional message may provide more information about the error.
+
+
+            Causes for this error may be:
+
+
+            - invalid authorization token
+
+            - operation not allowed by authorization scope
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError401'
+        '500':
+          description: 'This status code indicates that there was an unmanaged error.
+
+
+            The error code is `UNKNOWN_ERROR`. An additional message may provide more information about the error.
+
+
+            Causes for this error may be:
+
+
+            - failure on the TourRadar system
+
+            - unexpected conditions
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError500'
+      security:
+      - application:
+        - com.tourradar.bookings/read
+      operationId: getV1BookingsByBookingId
+      x-operation-id-source: derived
+    servers:
+    - url: https://api.sandbox.b2b.tourradar.com
+  /v1/bookings/{bookingId}/status:
+    get:
+      tags:
+      - Bookings
+      summary: /v1/bookings/{bookingId}/status
+      description: 'Retrieves the status of a booking created in the TourRadar system.
+
+
+        To get the full details about a booking, use the **/bookings/{bookingId}** endpoint.
+
+
+        The primary scope of this endpoint is to check the status of a `pending` booking, to verify if it has been confirmed by the operator.'
+      parameters:
+      - name: bookingId
+        in: path
+        description: Booking ID
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookingStatus'
+        '401':
+          description: 'This status code indicates that the credentials used for the request are not valid.
+
+
+            The error code is `UNAUTHORIZED`. An additional message may provide more information about the error.
+
+
+            Causes for this error may be:
+
+
+            - invalid authorization token
+
+            - operation not allowed by authorization scope
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError401'
+        '500':
+          description: 'This status code indicates that there was an unmanaged error.
+
+
+            The error code is `UNKNOWN_ERROR`. An additional message may provide more information about the error.
+
+
+            Causes for this error may be:
+
+
+            - failure on the TourRadar system
+
+            - unexpected conditions
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError500'
+      security:
+      - application:
+        - com.tourradar.bookings/read
+      operationId: getV1BookingsByBookingIdStatus
+      x-operation-id-source: derived
+    servers:
+    - url: https://api.sandbox.b2b.tourradar.com
+components:
+  schemas:
+    Booking:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier of the booking in the TourRadar system.
+          example: 892000
+        tour_id:
+          type: integer
+          description: Deprecated. Moved to `$.tour.tour_id`.
+          example: 14263
+        tour:
+          type: object
+          description: Information about the tour that was booked.
+          properties:
+            tour_id:
+              type: integer
+              description: Unique identifier for the tour in the TourRadar system.
+              example: 14263
+            tour_name:
+              type: string
+              description: Name of the tour.
+              example: Europe Escape - 12 Days
+            tour_length_days:
+              type: integer
+              description: Length of the tour, expressed in number of days.
+              example: 12
+            operator:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  description: Unique identifier for the tour operator in the TourRadar system.
+                  example: 1170
+                name:
+                  type: string
+                  description: Name of the tour operator.
+                  example: Expat Explore Travel
+        departure_date:
+          type: string
+          description: Departure date that was booked, in the format `YYYY-MM-DD`.
+          example: '2024-01-02'
+        return_date:
+          type: string
+          description: Return date from the tour, in the format `YYYY-MM-DD`.
+          example: '2024-01-14'
+        email:
+          type: string
+          description: Email used for communications regarding the booking (agent or lead passenger).
+          example: test@gmail.com
+        created_at:
+          type: string
+          description: Exact timestamp of when the booking was created, in the ISO 8601 format.
+          example: '2023-05-01'
+        type:
+          type: string
+          description: Type of this booking record.
+          enum:
+          - booking
+          - question
+          - hold
+          example: booking
+        hold_expire_at:
+          type:
+          - string
+          - 'null'
+          description: If the booking record is a `hold`, this will be the exact timestamp of when the hold expires, in the ISO 8601 format.
+          example: 'null'
+        status:
+          type: string
+          description: Status of the booking.
+          enum:
+          - open_question
+          - open_hold
+          - pending
+          - confirmed
+          - declined
+          - cancelled
+          - hold_expired
+          - hold_declined
+          example: confirmed
+        currency:
+          type: string
+          description: Currency used for payments.
+          example: USD
+        total_value:
+          type: number
+          description: Total amount of the booking.
+          example: 2564
+        main_passenger:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Name of the main passenger.
+              example: Jane Doe
+        passengers:
+          type: array
+          description: List of passengers.
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: Unique identifier of the passenger.
+                example: 1568
+              price_category:
+                type: object
+                description: Defines the price category applied for this passenger.
+                properties:
+                  id:
+                    type: integer
+                    description: Identifier of the passenger category.
+                    example: 1633
+                  title:
+                    type: string
+                    description: 'Name of the passenger category (for example: adult, child).'
+                    example: adult
+                  age_min:
+                    type:
+                    - number
+                    - 'null'
+                    description: Minimum age requirement for this category, if applicable.
+                    example: 18
+                  age_max:
+                    type:
+                    - number
+                    - 'null'
+                    description: Maximum age requirement for this category, if applicable.
+                    example: 39
+              fields:
+                type: object
+                description: Passenger data. A list of all possible field names and properties can be obtained using the **[/operators/{operatorId}/booking-fields](#tag/Operators/paths/~1v1~1operators~1{operator}~1booking-fields/get)** endpoint.
+        confirmed_at:
+          type:
+          - string
+          - 'null'
+          description: Exact timestamp of when the booking was confirmed, in the ISO 8601 format. If the status of the booking is not `confirmed`, this field will be `null`.
+          example: '2023-05-01'
+        locale_code:
+          type: string
+          description: Identifier of the guide language for this booking.
+          example: en_US
+        last_message:
+          type:
+          - object
+          - 'null'
+          description: Information relative to the last message in this booking's conversation channel. Messages are not available for direct bookings.
+          properties:
+            author:
+              type: string
+              description: Author type of the message. `system` is for automatically generated notification messages, the other types reflect the role of the user who posted the message.
+              enum:
+              - operator
+              - agent
+              - traveller
+              - system
+              example: operator
+            created_at:
+              type: string
+              description: Exact timestamp of when the message was sent, in the ISO 8601 format.
+              example: '2022-01-08T12:05:20.000Z'
+        partner_info:
+          type: object
+          description: Information relative to the partner that made the booking.
+          properties:
+            id:
+              type: string
+              description: Unique identifier of the partner in the TourRadar system.
+              example: '87894'
+            agent_id:
+              type:
+              - string
+              - 'null'
+              description: 'Identifier of the agent (user) that made the booking. Note: this is only relevant for bookings made on the TourRadar website.'
+              example: '569'
+            store_id:
+              type:
+              - string
+              - 'null'
+              description: 'Identifier of the store, or agency, that made the booking. Note: this is only relevant for bookings made via the TourRadar Partner API.'
+              example: '878'
+            contract_type:
+              type: string
+              description: Contract type that was applied for this booking.
+              enum:
+              - wholesale
+              - organiser
+              - affiliate
+              - direct
+              - shop
+              example: wholesale
+            calculation_base:
+              type: string
+              enum:
+              - accommodation
+              - all_extras
+              description: Definition of the amount used as reference for the commission calculation.
+              example: accommodation
+            commission_rate:
+              type: number
+              description: The commission rate, expressed as multiplier. For example, a commission of 5% would be represented by `0.05`. If no commission will be paid for booking this tour, this will be `0`.
+              example: 0
+            commission_value:
+              type: number
+              description: The actual commission value, calculated on the price reported in this section.
+              example: 0
+            commission_status:
+              type:
+              - string
+              - 'null'
+              description: Commission withdrawal status.
+              enum:
+              - paid_out
+              - earned
+              - cancelled
+              - pending
+              example: paid_out
+            booking_fee_rate:
+              type: number
+              description: The booking fee rate, if any, expressed as multiplier. For example, a booking fee of 5% would be represented by `0.05`. If no booking fee will be due for booking this tour, this will be `0`.
+              example: 0
+            booking_fee_value:
+              type: number
+              description: The actual booking fee value, calculated on the price reported in this section.
+              example: 0
+            booking_fee_status:
+              type:
+              - string
+              - 'null'
+              description: Booking fee payment status.
+              enum:
+              - paid
+              - requested
+              - cancelled
+              - pending
+              example: paid
+        operator_booking_code:
+          type:
+          - string
+          - 'null'
+          description: Booking code or reference number in the operator system.
+          example: '19584564'
+        partner_booking_code:
+          type:
+          - string
+          - 'null'
+          description: Booking code or reference number set by the partner when creating the booking.
+          example: '654654'
+        custom_data:
+          type: object
+          description: Additional info set by the partner when creating the booking. Up to 5 string properties can be set in it.
+        links:
+          $ref: '#/components/schemas/BookingLinks'
+        status_reason:
+          $ref: '#/components/schemas/BookingDeclineReason'
+        status_reason_text:
+          type:
+          - string
+          - 'null'
+          description: The full description of the declination reason, if set.
+          example: 'Received error response from operator: Failed service status transition.'
+        status_reason_context:
+          type:
+          - object
+          - 'null'
+          description: Additional information related to the current status, if set.
+        accommodations:
+          description: The accommodations related to the booking.
+          type: array
+          items:
+            $ref: '#/components/schemas/BookingExtra'
+        optional_extras:
+          description: The optional extras related to the booking.
+          type: array
+          items:
+            $ref: '#/components/schemas/BookingExtra'
+        mandatory_addons:
+          description: The mandatory addons related to the booking.
+          type: array
+          items:
+            $ref: '#/components/schemas/BookingExtra'
+        other_items:
+          description: Related items with miscellaneous categories.
+          type: array
+          items:
+            $ref: '#/components/schemas/BookingExtra'
+        promotions:
+          description: Promotions applied to the booking.
+          type: array
+          items:
+            $ref: '#/components/schemas/BookingExtra'
+    BookingSearch:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier of the booking in the TourRadar system.
+          example: 892000
+        tour:
+          type: object
+          description: Metadata about tour that was booked.
+          properties:
+            tour_id:
+              type: integer
+              description: Unique identifier for the tour in the TourRadar system.
+              example: 14263
+            tour_name:
+              type: string
+              description: Name of the tour.
+              example: Europe Escape - 12 Days
+            tour_length_days:
+              type: integer
+              description: Length of the tour, expressed in number of days.
+              example: 12
+            operator:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  description: Unique identifier for the tour operator in the TourRadar system.
+                  example: 1170
+                name:
+                  type: string
+                  description: Name of the tour operator.
+                  example: Expat Explore Travel
+        departure_date:
+          type: string
+          description: Departure date that was booked, in the format `YYYY-MM-DD`.
+          example: '2024-01-02'
+        return_date:
+          type: string
+          description: Return date from the tour, in the format `YYYY-MM-DD`.
+          example: '2024-01-14'
+        created_at:
+          type: string
+          description: Exact timestamp of when the booking was created, in the ISO 8601 format.
+          example: '2023-05-01'
+        type:
+          type: string
+          description: Type of this booking record.
+          enum:
+          - booking
+          - question
+          - hold
+          example: booking
+        hold_expire_at:
+          type:
+          - string
+          - 'null'
+          description: Exact timestamp of when the hold will expire, in the ISO 8601 format.
+          example: 'null'
+        status:
+          type: string
+          description: Status of the booking.
+          enum:
+          - open_question
+          - open_hold
+          - pending
+          - confirmed
+          - declined
+          - cancelled
+          - hold_expired
+          - hold_declined
+          example: confirmed
+        total_value:
+          type: number
+          description: Total amount of the booking.
+          example: 2564
+        pax:
+          type: integer
+          description: Number of passengers.
+          example: 2
+        main_passenger:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Name of the main passenger.
+              example: Jane
+        confirmed_at:
+          type:
+          - string
+          - 'null'
+          description: Exact timestamp of when the booking was confirmed, in the ISO 8601 format. If the status of the booking is not `confirmed`, this field will be `null`.
+          example: '2023-05-01'
+        last_message:
+          type:
+          - object
+          - 'null'
+          description: Information relative to the last message in this booking's conversation channel. Messages are not available for direct bookings.
+          properties:
+            author:
+              type: string
+              description: Author type of the message. `system` is for automatically generated notification messages, the other types reflect the role of the user who posted the message.
+              enum:
+              - operator
+              - agent
+              - traveller
+              - system
+              example: operator
+            created_at:
+              type: string
+              description: Exact timestamp of when the message was sent, in the ISO 8601 format.
+              example: '2023-05-01T12:05:20.000Z'
+        partner_info:
+          type: object
+          description: Information relative to the partner that made the booking.
+          properties:
+            id:
+              type: string
+              description: Unique identifier of the partner in the TourRadar system.
+              example: '189764'
+            agent_id:
+              type:
+              - string
+              - 'null'
+              description: 'Identifier of the agent (user) that made the booking. Note: this is only relevant for bookings made on the TourRadar website.'
+              example: '98789'
+            store_id:
+              type:
+              - string
+              - 'null'
+              description: 'Identifer of the store, or agency, that made the booking. Note: this is only relevant for bookigs made via API.'
+              example: '678'
+            contract_type:
+              type: string
+              description: Contract type that was applied for this booking.
+              enum:
+              - wholesale
+              - organiser
+              - affiliate
+              - direct
+              example: wholesale
+            calculation_base:
+              type: string
+              enum:
+              - accommodation
+              - all_extras
+              description: Definition of the amount used as reference for the commission calculation.
+              example: accommodation
+            commission_rate:
+              type: number
+              description: The commission rate, expressed as multiplier. For example, a commission of 5% would be represented by `0.05`. If no commission will be paid for booking this tour, this will be `0`.
+              example: 0
+            commission_value:
+              type: number
+              description: The actual commission value, calculated on the price reported in this section.
+              example: 0
+            commission_status:
+              type: string
+              description: Commission withdrawal status.
+              enum:
+              - paid_out
+              - earned
+              - cancelled
+              - pending
+              example: paid_out
+            booking_fee_rate:
+              type: number
+              description: The booking fee rate, if any, espressed as multiplier. For example, a booking fee of 5% would be represented by `0.05`. If no booking fee will be due for booking this tour, this will be `0`.
+              example: 0
+            booking_fee_value:
+              type: number
+              description: The actual booking fee value, calculated on the price reported in this section.
+              example: 0
+            booking_fee_status:
+              type: string
+              description: Booking fee payment status.
+              enum:
+              - paid
+              - requested
+              - cancelled
+              - pending
+              example: paid
+        links:
+          $ref: '#/components/schemas/BookingLinks'
+        status_reason:
+          $ref: '#/components/schemas/BookingDeclineReason'
+        status_reason_text:
+          type:
+          - string
+          - 'null'
+          description: The full description of the declination reason, if set.
+          example: 'Received error response from operator: Failed service status transition.'
+        status_reason_context:
+          type:
+          - object
+          - 'null'
+          description: Additional information related to the current status, if set.
+    BookingLinks:
+      type: array
+      items:
+        type: object
+        properties:
+          type:
+            type: string
+            description: Type of link
+            example: booking-page
+            enum:
+            - booking-page
+          url:
+            type: string
+            description: Url
+            example: https://www.tourradar.com/booking/12345?enquiryCode=fvwffws8hgqqz4blyh13icbyldjqhp6d
+    BookingExtra:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Id of the extra.
+          example: '123'
+        type:
+          type: string
+          description: Type of the extra.
+          example: mandatoryAddon
+        currency:
+          type: string
+          description: Currency of the extra.
+          example: EUR
+        payment_type:
+          type: string
+          description: Requested payment type.
+          example: upfront
+        name:
+          type: string
+          description: Name of the extra.
+          example: Galapagos National Park Fee
+        description:
+          type:
+          - string
+          - 'null'
+          description: Optional description of the extra.
+          example: Free for kids
+        prices:
+          type: array
+          items:
+            type: object
+            properties:
+              price_category_id:
+                type: number
+                description: Id of the price category related to the price.
+                example: '321'
+              pax_count:
+                type: number
+                description: Number of passenger for which this price is applied.
+                example: '2'
+              price_per_pax:
+                type: number
+                description: Price of the extra for each passenger.
+                example: '10'
+        passengers:
+          type: array
+          items:
+            type: object
+            properties:
+              price_category_id:
+                type: number
+                description: Id of the price category related to the passenger.
+                example: '321'
+              passenger_id:
+                type: number
+                description: Id of the passenger related to the extra.
+                example: '3121'
+    BookingInput:
+      type: object
+      properties:
+        tour_id:
+          type: integer
+          description: Unique identifier for the tour in the TourRadar system.
+          example: 5113
+        departure_id:
+          type: integer
+          description: Unique identifier of the departure date. For a list of departure dates, use the **[/tours/{tourId}/departures](#tag/Pricing-and-Availability/paths/~1v1~1tours~1{tourId}~1departures/get)** endpoint.`
+          example: 736283495
+        currency:
+          description: Currency code for the booking. The default is `USD`.
+          enum:
+          - USD
+          - AUD
+          - GBP
+          - NZD
+          - EUR
+          - CAD
+          example: EUR
+        email:
+          description: Email address for the lead passenger.
+          type: string
+          example: jane.doe@tourradar.com
+        user_country:
+          description: Identifier for the country of residence of the main passenger. Country IDs can be obtained from the **[/taxonomy/destinations/country](#tag/Taxonomy/paths/~1v1~1taxonomy~1destinations~1{type}/get)** endpoint.
+          type: integer
+          example: 139
+        passengers:
+          type: array
+          description: List of passengers. Each entry represents one passenger.
+          items:
+            type: object
+            properties:
+              pax_number:
+                type: integer
+                description: Passenger identifier, starting from 1. If the booking contains 5 passengers, the values must be from 1 to 5.
+              price_category_id:
+                type: integer
+                description: Price category ID retrieved from the **[/tours/{tourId}/prices](#tag/Pricing-and-Availability/paths/~1v1~1tours~1{tourId}~1prices/get)** endpoint.
+              fields:
+                type: object
+                description: A set of key-value pairs containing passenger information. For a list of the available and mandatory keys, use the **[/operators/{operatorId}/booking-fields](#tag/Operators/paths/~1v1~1operators~1{operator}~1booking-fields/get)** endpoint.
+            example:
+            - pax_number: 1
+              price_category_id: 1634
+              fields:
+                title: Mr.
+                first_name: John
+                last_name: Doe
+                email: john.doe@tourradar.com
+                phone_number: +46 029 01920 028
+                date_of_birth: 11/06/1993
+                gender: male
+                address: Kartner Ring 5-7 Top 304-306
+                city: Vienna
+                postal_code: '1010'
+                state: Vienna
+                country: Austria
+                nationality: Austria
+                pre_existing_medical_conditions: none
+            - pax_number: 2
+              price_category_id: 1634
+              fields:
+                title: Ms.
+                first_name: Jane
+                last_name: Doe
+                email: jane.doe@tourradar.com
+                date_of_birth: 25/05/1994
+                nationality: Austria
+                gender: female
+                pre_existing_medical_conditions: none
+        accommodations:
+          type: array
+          description: Accommodation requested, and assignment to passengers.
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: Unique identifier of the selected accommodation, taken from the **[/tours/{tourId}/departures/{departureId}](#tag/Pricing-and-Availability/paths/~1v1~1tours~1{tourId}~1departures~1{departureId}/get)** endpoint.
+              passengers:
+                type: array
+                description: List of `pax_number` identifiers that should be placed in the selected accommodation.
+                items:
+                  type: integer
+          example:
+          - id: 396410
+            passengers:
+            - 1
+            - 2
+        optional_extras:
+          type: array
+          description: Optional extras requested, and assignment to passengers.
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: Unique identifier of an optional extra, taken from the **[/tours/{tourId}/departures/{departureId}](#tag/Pricing-and-Availability/paths/~1v1~1tours~1{tourId}~1departures~1{departureId}/get)** endpoint.
+              passengers:
+                type: array
+                description: List of `pax_number` identifiers for which this optional extra is being booked.
+                items:
+                  type: integer
+          example:
+          - id: 644520
+            passengers:
+            - 1
+            - 2
+        partner_booking_code:
+          description: the booking code, or reference number, in your system. This will be stored with the booking, and returned with the booking detail request.
+          type: string
+          example: the_code_value
+        custom_data:
+          description: Additional info set by the partner when creating the booking. Up to 5 string properties can be set in it.
+          type: object
+          example:
+            custom_attribute: custom value
+            custom_date: Tuesday
+        store_id:
+          type:
+          - string
+          - 'null'
+          description: 'Identifier of the store, or agency, that made the booking. Note: this is only relevant for bookings made via the TourRadar Partner API.'
+          example: '878'
+      required:
+      - departure_id
+      - email
+      - passengers
+      - user_country
+    BookingStatus:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier of the booking in the TourRadar system.
+          example: 892000
+        tour_id:
+          type: integer
+          description: Deprecated. Moved to `$.tour.tour_id`.
+          example: 14263
+        tour:
+          type: object
+          description: Metadata about tour that was booked.
+          properties:
+            tour_id:
+              type: integer
+              description: Unique identifier for the tour in the TourRadar system.
+              example: 14263
+            tour_name:
+              type: string
+              description: Name of the tour.
+              example: Europe Escape - 12 Days
+            tour_length_days:
+              type: integer
+              description: Length of the tour, expressed in number of days.
+              example: 12
+            operator:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  description: Unique identifier for the tour operator in the TourRadar system.
+                  example: 1170
+                name:
+                  type: string
+                  description: Name of the tour operator.
+                  example: Expat Explore Travel
+        departure_date:
+          type: string
+          description: Departure date that was booked, in the format `YYYY-MM-DD`.
+          example: '2023-06-25'
+        created_at:
+          type: string
+          description: Exact timestamp of when the booking was created, in the ISO 8601 format.
+          example: '2023-05-01'
+        confirmed_at:
+          type:
+          - string
+          - 'null'
+          description: Exact timestamp of when the booking was confirmed, in the ISO 8601 format. If the status of the booking is not `confirmed`, this field will be `null`.
+          example: '2023-05-01'
+        type:
+          type: string
+          description: Type of this booking record.
+          enum:
+          - booking
+          - question
+          - hold
+          example: booking
+        status:
+          type: string
+          description: Status of the booking.
+          enum:
+          - open_question
+          - open_hold
+          - pending
+          - confirmed
+          - declined
+          - cancelled
+          - hold_expired
+          - hold_declined
+          example: pending
+        links:
+          $ref: '#/components/schemas/BookingLinks'
+        status_reason:
+          $ref: '#/components/schemas/BookingDeclineReason'
+        status_reason_text:
+          type:
+          - string
+          - 'null'
+          description: The full description of the declination reason, if set.
+          example: 'Received error response from operator: Failed service status transition.'
+        status_reason_context:
+          type:
+          - object
+          - 'null'
+          description: Additional information related to the current status, if set.
+    BookingSearchPagination:
+      required:
+      - current_page
+      - items
+      type: object
+      properties:
+        current_page:
+          type: integer
+          description: Current page number
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/BookingSearch'
+        next_page:
+          type: integer
+          description: If this attribute exists, then another page is available. To get more results, repeat the request with the number specified in the `page` parameter. If this attribute is not part of the response, then the last page has been reached.
+    DefaultError401:
+      type: object
+      properties:
+        error:
+          type: string
+          description: The error code
+          enum:
+          - UNAUTHORIZED
+        message:
+          type: string
+          description: The error message, if available
+        context:
+          type: object
+          description: Additional data relative to the error condition
+        validation_errors:
+          type: array
+          description: In case of validation error, all the elements that didn't pass validation
+          items:
+            type: string
+    BookingDeclineReason:
+      type:
+      - string
+      - 'null'
+      description: The reason of the declination, if set.
+      enum:
+      - already_booked
+      - alt_tour_selected
+      - another_tour_found
+      - border_restrictions
+      - death_in_family
+      - departure_cancelled
+      - duplicate_booking
+      - employment_status
+      - employment_status_change
+      - family_issues
+      - health_issue
+      - invalid_request
+      - on_request_cancelled
+      - operator_error
+      - operator_timeout
+      - other
+      - pax_requested_decline
+      - pax_unfit
+      - plans_changed
+      - price_incorrect
+      - price_incorrect_deal_promotion
+      - price_incorrect_single_supplement
+      - requirements_unmet
+      - server_error
+      - suspected_fraud
+      - system_error
+      - tour_itinerary_details_incorrect
+      - tour_unavailable
+      - tour_unavailable_departure_soon
+      - tour_unavailable_fully_booked
+      - tour_unavailable_no_date
+      - unknown_error
+      - visa_declined
+      - withdrawn_tour
+      example: operator_error
+    DefaultError500:
+      type: object
+      properties:
+        error:
+          type: string
+          description: The error code
+          enum:
+          - UNKNOWN_ERROR
+        message:
+          type: string
+          description: The error message, if available
+        context:
+          type: object
+          description: Additional data relative to the error condition
+        validation_errors:
+          type: array
+          description: In case of validation error, all the elements that didn't pass validation
+          items:
+            type: string
+    BookingResponse:
+      type: object
+      properties:
+        reservation_details:
+          type: object
+          description: Detailed reservation information for one matching reservation.
+          properties:
+            confirmation:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: A unique identifying value assigned by the creating system. The ID attribute may be used to reference a primary-key value within a database or in a particular implementation.
+                  example: TTCXXX-X123456
+                status:
+                  type:
+                  - 'null'
+                  - string
+                  description: Status of the booking. Note this is mapped from the operator values to a TourRadar internal state. In case of status `unknown`, the original value provided by the operator is available in the field `operator_status`.
+                  enum:
+                  - pending
+                  - confirmed
+                  - cancelled
+                  - declined
+                  - unknown
+                  example: confirmed
+                operator_status:
+                  type:
+                  - string
+                  - 'null'
+                  description: Status of the booking, as provided by the operator.
+                  example: onHold
+            basic_info:
+              type: object
+              description: Core information about the booked tour and/or activity, including ID(s) and name.
+              properties:
+                name:
+                  type: string
+                  description: The name of the tour and/or activity.
+                  example: Canada Rockies
+                tour_activity_id:
+                  type: string
+                  description: A unique ID that identifies this tour and/or activity that may be referenced elsewhere in this message.
+                  example: '82014275'
+                booking_date:
+                  type:
+                  - string
+                  - 'null'
+                  format: date
+                  example: '2021-04-06'
+                edocs:
+                  type:
+                  - boolean
+                  - 'null'
+                  example: true
+                booking_version:
+                  type:
+                  - string
+                  - 'null'
+                  example: '4'
+                problem_note:
+                  type:
+                  - boolean
+                  - 'null'
+                  example: false
+                booking_type:
+                  type:
+                  - string
+                  - 'null'
+                  example: travelAgent
+                type:
+                  type:
+                  - string
+                  - 'null'
+                  example: Explorer
+                region:
+                  type:
+                  - string
+                  - 'null'
+                  example: Middle East & North Africa
+            schedule:
+              type: object
+              description: The departure or tour/activity start date/time.
+              properties:
+                duration:
+                  type: integer
+                  example: 10
+                start:
+                  type:
+                  - 'null'
+                  - string
+                  format: date
+                  description: The starting value of the time span, in ISO 8601 prescribed format.
+                  example: '2021-08-02'
+                end:
+                  type:
+                  - 'null'
+                  - string
+                  format: date
+                  description: The ending value of the time span, in ISO 8601 prescribed format.
+                  example: '2021-08-06'
+            pickup_dropoff:
+              type: array
+              description: The pickup and/or dropoff information if transportation is provided to/ from the tour/activity location.
+              items:
+                type: object
+                properties:
+                  datetime:
+                    type:
+                    - string
+                    - 'null'
+                    description: The date and time for the pickup or dropoff.
+                    example: TODO
+                  dropoff_ind:
+                    type: boolean
+                    description: If true, this is dropoff information.
+                    example: false
+                  pickup_ind:
+                    type: boolean
+                    description: If true, this is pickup information.
+                    example: true
+                  location_name:
+                    type:
+                    - string
+                    - 'null'
+                    description: The name of the pickup/ dropoff location.
+                    example: 'Pick Up: Hotel Mogador Opera @ 18:00'
+                  person_qty:
+                    type:
+                    - integer
+                    - 'null'
+                    description: The quantity of persons to be picked up or dropped off.
+                    example: 1
+                  id:
+                    type:
+                    - string
+                    - 'null'
+                    example: '91178'
+                  address:
+                    type: object
+                    description: Information about an address that identifies a location for a specific purposes.
+                    properties:
+                      address_line:
+                        type:
+                        - string
+                        - 'null'
+                        description: Free form address details.
+                        example: Avenue du Président Kennedy
+                      postal_code:
+                        type:
+                        - string
+                        - 'null'
+                        description: Post Office Code number.
+                        example: '40000'
+                      city_name:
+                        type:
+                        - string
+                        - 'null'
+                        description: City (e.g., Dublin), town, or postal station (i.e., a postal service territory, often used in a military address).
+                        example: Marrakesh
+                  telephone:
+                    type: object
+                    description: Information about a telephone number, including the actual number and its usage.
+                    properties:
+                      phone_number:
+                        type:
+                        - string
+                        - 'null'
+                        description: Telephone number assigned to a single location.
+                        example: +212 1234-56789
+            participant_info:
+              type: array
+              description: Individual participant, participant category and group details.
+              items:
+                type: object
+                properties:
+                  category:
+                    type: object
+                    description: Information for a participant category.
+                    properties:
+                      qualifier_info:
+                        type:
+                        - string
+                        - 'null'
+                        description: A specific type of age and/or group qualifier, such as adult.
+                        example: adult
+                      quantity:
+                        type: integer
+                        description: Used to define the quantity of participants for the specified information.
+                        example: 1
+                  individual:
+                    type: object
+                    description: Name and other information for known participants.
+                    properties:
+                      participant_id:
+                        type:
+                        - string
+                        - 'null'
+                        description: A unique identifier for a known participant that may be referenced elsewhere in this message.
+                        example: '1'
+                      lead_customer_ind:
+                        type: boolean
+                        description: When `true`, indicates that this is the 'lead' participant (i.e., the primary contact making the booking).
+                        example: true
+                      name_prefix:
+                        type:
+                        - string
+                        - 'null'
+                        description: Salutation of honorific (e.g. Mr., Mrs., Ms., Miss, Dr.)
+                        example: Mr
+                      given_name:
+                        type: string
+                        description: Given name, first name or names.
+                        example: Max
+                      surname:
+                        type: string
+                        description: Family name, last name. May also be used for full name if the sending system does not have the ability to separate a full name into its parts, e.g. the surname element may be used to pass the full name.
+                        example: Mustermann
+                      middle_name:
+                        type:
+                        - string
+                        - 'null'
+                        description: The middle name of the person name.
+                        example: William
+                      gender:
+                        type:
+                        - string
+                        - 'null'
+                        description: Identifies the gender.
+                        example: male
+                      birth_date:
+                        type:
+                        - string
+                        - 'null'
+                        format: date
+                        description: Indicates the date of birth as indicated in the document, in ISO 8601 prescribed format.
+                        example: '1982-02-02'
+                      contact:
+                        type: array
+                        description: Contact information. Name of an individual and appropriate contact information. May be contact information for the customer or someone affiliated with the customer.
+                        items:
+                          type: object
+                          properties:
+                            email:
+                              type:
+                              - string
+                              - 'null'
+                              description: Electronic email address, in IETF specified format.
+                              example: email@tourradar.io
+                            address:
+                              type:
+                              - object
+                              - 'null'
+                              description: Information about an address that identifies a location for a specific purposes.
+                              properties:
+                                address_line:
+                                  type: string
+                                  description: Free form address details.
+                                  example: 216 Wolverine Drive
+                                city_name:
+                                  type: string
+                                  description: City (e.g., Dublin), town, or postal station (i.e., a postal service territory, often used in a military address).
+                                  example: Fort mcmurray
+                                county:
+                                  type: string
+                                  description: County or Region Name (e.g., Fairfax).
+                                  example: Alberta
+                                postal_code:
+                                  type: string
+                                  description: Post Office Code number.
+                                  example: T9H4M2
+                                country_name:
+                                  type: string
+                                  description: Country name (e.g., Ireland).The name or code of a country (e.g. as used in an address or to specify citizenship of a traveller).
+                                  example: Canada
+                                country_code:
+                                  type:
+                                  - string
+                                  - 'null'
+                                  example: CA
+                            emergency_flag:
+                              type: boolean
+                              description: Indicates if this contact should be used in the case of an emergency.
+                              example: false
+                            person_name:
+                              type: object
+                              description: This provides name information for a person.
+                              properties:
+                                given_name:
+                                  type:
+                                  - string
+                                  - 'null'
+                                  description: Given name, first name or names.
+                                  example: Max
+                                surname:
+                                  type:
+                                  - string
+                                  - 'null'
+                                  description: Family name, last name. May also be used for full name if the sending system does not have the ability to separate a full name into its parts, e.g. the surname element may be used to pass the full name.
+                                  example: Mustermann
+                                relationship:
+                                  type:
+                                  - string
+                                  - 'null'
+                                  example: Daughter
+                            telephone:
+                              type: object
+                              description: Information about a telephone number, including the actual number and its usage.
+                              properties:
+                                phone_number:
+                                  type:
+                                  - string
+                                  - 'null'
+                                  description: Telephone number assigned to a single location.
+                                  example: '+0000000000'
+                                country_access_code:
+                                  type:
+                                  - string
+                                  - 'null'
+                                  description: Code assigned by telecommunications authorities for international country access identifier.
+                                  example: '+212'
+                      document:
+                        type:
+                        - object
+                        - 'null'
+                        description: Document information for verification purposes and also used for additional filtering for common names.
+                        properties:
+                          doc_type:
+                            type: string
+                            description: Indicates the type of document (e.g. Passport, Military ID, Drivers License, national ID, Vaccination Certificate).
+                            example: passport
+                          doc_id:
+                            type:
+                            - string
+                            - 'null'
+                            description: Unique number assigned by authorities to document.
+                            example: XX123456
+                          place_of_issue:
+                            type:
+                            - string
+                            - 'null'
+                            example: Australia
+                          date_of_issue:
+                            type:
+                            - string
+                            - 'null'
+                            format: date
+                            example: '2015-03-17'
+                          date_of_expiry:
+                            type:
+                            - string
+                            - 'null'
+                            format: date
+                            example: '2025-03-17'
+                      nationality:
+                        type:
+                        - string
+                        - 'null'
+                        description: The nationality of a participant, if known. Uses ISO 3166 Country Codes.
+                        example: AU
+                      status:
+                        type:
+                        - string
+                        - 'null'
+                        example: complete
+                      restricted:
+                        type:
+                        - boolean
+                        - 'null'
+                        example: false
+                  insurance:
+                    type:
+                    - object
+                    - 'null'
+                    description: Required and/or provided insurance for groups and/or individuals.
+                    properties:
+                      provided:
+                        type: object
+                        description: Third party insurance provided by a group and/or individual.
+                        properties:
+                          participant_id:
+                            type:
+                            - number
+                            - 'null'
+                            description: A unique ID (that is assigned elsewhere in the message) that associates a participant with other information.
+                            example: '1'
+                          plan_id:
+                            type:
+                            - string
+                            - 'null'
+                            description: The third-party insurance plan ID.
+                            example: XXX-XXXX-XXX
+                          provider_name:
+                            type:
+                            - 'null'
+                            - string
+                            description: The name of the insurer provider company. Identifies a company by name.
+                            example: Ins. Company
+                          telephone:
+                            type: object
+                            properties:
+                              phone_number:
+                                type:
+                                - string
+                                - 'null'
+                                description: Telephone number assigned to a single location.
+                                example: '+0000000000'
+                  special_need:
+                    type:
+                    - array
+                    - 'null'
+                    description: The name and/or code for a special need requirement, such as a wheelchair or vegetarian meal.
+                    items:
+                      type: object
+                      properties:
+                        participant_id:
+                          type:
+                          - string
+                          - 'null'
+                          description: A unique identifier for a known participant that may be referenced elsewhere in this message.
+                          example: '1'
+                        code:
+                          type:
+                          - string
+                          - 'null'
+                          description: A code known between trading partners for a special needs item.
+                          example: dietary
+                        description:
+                          type:
+                          - string
+                          - 'null'
+                          description: Allergic to seafood
+                  lodging_info:
+                    type: array
+                    items:
+                      type: object
+                      description: Lodging information for the participant and/or group.
+                      properties:
+                        room_number:
+                          type:
+                          - string
+                          - 'null'
+                          description: The room number in the hotel and/or other lodging facility.
+                          example: '40842462'
+                        room_type:
+                          type:
+                          - string
+                          - 'null'
+                          example: twin
+                        bed_preference:
+                          type:
+                          - string
+                          - 'null'
+                          example: TOGETHER
+            pricing:
+              type: object
+              description: Pricing information for the tour/ activity that may be broken down by participant category and/or a group.
+              properties:
+                summary:
+                  type: object
+                  description: Pricing information for the tour/ activity that is not assciated with participant category(s) and/or group(s).
+                  properties:
+                    currency_code:
+                      type: string
+                      description: An ISO 4217 (3) alpha character code that specifies a monetary unit.
+                      example: AUD
+                    amount:
+                      type:
+                      - 'null'
+                      - number
+                      description: A monetary amount.
+                      example: '4390.00'
+                    final_payment_due_date:
+                      type:
+                      - string
+                      - 'null'
+                      format: date
+                      example: '2021-04-06'
+                    deposit_amount:
+                      type:
+                      - number
+                      - 'null'
+                      example: '3160.80'
+                    deposit_due_date:
+                      type:
+                      - string
+                      - 'null'
+                      format: date
+                      example: '2020-09-21'
+                    outstanding_balance:
+                      type:
+                      - number
+                      - 'null'
+                      example: '0.00'
+                    gross_outstanding_balance:
+                      type:
+                      - number
+                      - 'null'
+                      example: '790.20'
+                    net_outstanding_balance:
+                      type:
+                      - number
+                      - 'null'
+                      example: '0.00'
+                    net_amount:
+                      type: number
+                      example: '4013.35'
+                participant_category:
+                  type: array
+                  description: Pricing for one or more participant category(s).
+                  items:
+                    type: object
+                    properties:
+                      qualifier_info:
+                        type:
+                        - string
+                        - 'null'
+                        description: A specific type of age and/or group qualifier, such as `adult`.
+                        example: adult
+                      price:
+                        type: object
+                        description: Pricing for the specified participant category information.Base price and taxes associated with the tour and/or activity.
+                        properties:
+                          currency_code:
+                            type: string
+                            description: An ISO 4217 (3) alpha character code that specifies a monetary unit.
+                            example: AUD
+                          amount:
+                            type:
+                            - 'null'
+                            - number
+                            description: A monetary amount.
+                            example: '1195.00'
+                          full:
+                            type:
+                            - number
+                            - 'null'
+                            example: '1195.00'
+                          tax_inclusive:
+                            type: boolean
+                            description: If TRUE, taxes are included in this charge.
+                            example: 'true'
+                          tax_amounts:
+                            type: array
+                            description: A collection of one or more taxes associated with a specific charge.
+                            items:
+                              type: object
+                              properties:
+                                tax_amount:
+                                  type: object
+                                  description: Detailed information on one specific tax associated with a specific charge
+                                  properties:
+                                    total:
+                                      type: number
+                                      description: The total amount of the tax.
+                                      example: '790.20'
+            commission_info:
+              type: object
+              description: Commission information.Contains details pertaining to commissions.
+              properties:
+                currency_code:
+                  type: string
+                  example: AUD
+                commission_payable_amount:
+                  type:
+                  - 'null'
+                  - number
+                  description: The amount of commission to be paid.
+                  example: '412.2'
+                tax_amount:
+                  type:
+                  - number
+                  - 'null'
+                  example: '0'
+            supplier_operator:
+              type: object
+              description: Information about the supplier/ operator of the tour/ activity.
+              properties:
+                name:
+                  type: string
+                  description: Company name information. Identifies a company by name.
+                  example: COSMOS
+                operator_ind:
+                  type: boolean
+                  description: ''
+                  example: 'true'
+            payment_info:
+              type: array
+              description: Payment details that may be associated with an individual participant, a participant category and/or a group.
+              items:
+                type: object
+                properties:
+                  amount:
+                    type:
+                    - 'null'
+                    - number
+                    description: A monetary amount.
+                    example: '75'
+                  currency_code:
+                    type:
+                    - 'null'
+                    - string
+                    description: An ISO 4217 (3) alpha character code that specifies a monetary unit.
+                    example: USD
+                  participant_id:
+                    type:
+                    - string
+                    - 'null'
+                    description: A unique identifier for a known participant that may be referenced elsewhere in this message.
+                    example: '1'
+                  credit_card_fee:
+                    type:
+                    - number
+                    - 'null'
+                    example: '0.0000'
+                  commission:
+                    type:
+                    - number
+                    - 'null'
+                    example: '0.0'
+                  payment_status:
+                    type:
+                    - string
+                    - 'null'
+                    example: Authorised
+                  payment_method:
+                    type:
+                    - string
+                    - 'null'
+                    example: creditAgreement, creditCard
+                  description:
+                    type:
+                    - string
+                    - 'null'
+                    description: A description of the charge.
+                    example: Deposit
+                  payment_due_date:
+                    type:
+                    - string
+                    - 'null'
+                    format: date
+                    example: '2020-12-24'
+                  payment_identifier:
+                    type:
+                    - string
+                    - 'null'
+                    example: 1B814FFF-6621-30FB-ABE2-E184FE7B13FE
+                  date_made:
+                    type:
+                    - string
+                    - 'null'
+                    format: date-time
+                    example: '2020-04-07T17:05:29+01:00'
+                  net_gross:
+                    type:
+                    - string
+                    - 'null'
+                    example: Nett Payment
+                  detail:
+                    type: object
+                    description: Detailed information for the payment form.
+                    properties:
+                      payment_transaction_type_code:
+                        type:
+                        - string
+                        - 'null'
+                        description: This is used to indicate either a charge, reserve (deposit) or refund.
+                        example: refund
+            extra:
+              type: array
+              description: Extra amenities that were requested and/or reserved.
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: The extra amenity name.
+                    example: Arrival Transfer Nice Airport to Hotel
+                  status:
+                    type: string
+                    example: confirmed
+                  type:
+                    type: string
+                    example: miscellaneous
+                  quantity:
+                    type: integer
+                    description: The quantity of this extra required.
+                    example: '2'
+                  other_code:
+                    type:
+                    - string
+                    - 'null'
+                    description: The trading partner code that uniquely identifies the extra and is associated with the supplier code.
+                    example: '91075'
+                  start_date:
+                    type:
+                    - string
+                    - 'null'
+                    format: date
+                    example: '2021-03-13'
+                  end_date:
+                    type:
+                    - string
+                    - 'null'
+                    format: date
+                    example: '2021-03-13'
+                  pricing:
+                    type: object
+                    description: Summary and detailed pricing.
+                    properties:
+                      summary:
+                        type: object
+                        description: Summary pricing that is not associated with a participant category and/or group.Base price and taxes associated with the tour and/or activity.
+                        properties:
+                          amount:
+                            type: number
+                            description: A monetary amount.
+                            example: '4390.00'
+                          net_amount:
+                            type: number
+                            description: The monetary net amount.
+                            example: '4390.00'
+                          commission:
+                            type:
+                            - number
+                            - 'null'
+                            example: '376.65'
+            discount:
+              type: array
+              description: Promotion code and discount program information that may be associated with an individual participant, a participant category and/or a group.
+              items:
+                type: object
+                properties:
+                  discount_program:
+                    type: object
+                    description: Discount program details.
+                    properties:
+                      detail:
+                        type: object
+                        description: Details about a discount program.
+                        properties:
+                          program_id:
+                            type:
+                            - string
+                            - 'null'
+                            description: A unique ID for this program that may be referenced elsewhere in this message.
+                            example: traveltalk
+                          name:
+                            type:
+                            - string
+                            - 'null'
+                            description: The name of a discount program, e.g. 'Day Pass' or 'Gold Card'.
+                            example: Travel Talk
+                      amount:
+                        type:
+                        - 'null'
+                        - number
+                        example: '100'
+                      quantity:
+                        type:
+                        - integer
+                        - 'null'
+                        example: '2'
+                      percentage:
+                        type:
+                        - number
+                        - 'null'
+                        example: '0.0'
+                  participant_id:
+                    type:
+                    - string
+                    - 'null'
+                    description: A unique identifier for a known participant that may be referenced elsewhere in this message.
+                    example: '1'
+                  promotion:
+                    type: object
+                    description: Code for promotional pricing.
+                    properties:
+                      code:
+                        type:
+                        - string
+                        - 'null'
+                        description: A promotion code.
+                        example: ''
+            itinerary:
+              type:
+              - array
+              - 'null'
+              items:
+                type: object
+                description: An item of package itinerary - typically a flight, accommodation or car rental arrangement.
+                properties:
+                  start:
+                    type: object
+                    properties:
+                      city_name:
+                        type:
+                        - string
+                        - 'null'
+                        example: Athens
+                      city_id:
+                        type:
+                        - integer
+                        - 'null'
+                        example: '2385'
+                      country_name:
+                        type:
+                        - string
+                        - 'null'
+                        example: Greece
+                      country_code:
+                        type:
+                        - string
+                        - 'null'
+                        example: GR
+                  end:
+                    type: object
+                    properties:
+                      city_name:
+                        type:
+                        - string
+                        - 'null'
+                        example: Athens
+                      city_id:
+                        type:
+                        - integer
+                        - 'null'
+                        example: '2385'
+                      country_name:
+                        type:
+                        - string
+                        - 'null'
+                        example: Greece
+                      country_code:
+                        type:
+                        - string
+                        - 'null'
+                        example: GR
+            agent:
+              type:
+              - object
+              - 'null'
+              properties:
+                email:
+                  type:
+                  - string
+                  - 'null'
+                  example: booking@tourradar.com
+                buying_agent_name:
+                  type:
+                  - string
+                  - 'null'
+                  example: Tour Radar - Vienna
+                travel_consultant_first_name:
+                  type:
+                  - string
+                  - 'null'
+                  example: Richard
+                travel_consultant_surname:
+                  type:
+                  - string
+                  - 'null'
+                  example: Welch
+                app_id:
+                  type:
+                  - string
+                  - 'null'
+                  example: 82b6dd76-8199-4bc9-8381-e05beebf23de
+  securitySchemes:
+    application:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://oauth.api.sandbox.b2b.tourradar.com/oauth2/token
+          scopes:
+            com.tourradar.bookings/read: Read booking information
+            com.tourradar.bookings/write: Create new bookings
+            com.tourradar.bookings.affiliate/read: Read booking information
+            com.tourradar.operators/read: Read operators information
+            com.tourradar.tours/read: Read tours informations
+x-refined-from:
+- tourradar-partner-api-openapi.json
+- tourradar-openapi.yml

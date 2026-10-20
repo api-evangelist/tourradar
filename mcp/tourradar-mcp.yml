@@ -1,0 +1,105 @@
+generated: '2026-10-20'
+method: derived
+generator: derive-mcp-candidate.py
+source:
+- openapi/tourradar-openapi.yml
+status: candidate
+deployment:
+  mode: none
+  auth: unknown
+  verified: probed
+note: 'No MCP server was found. The pre-flight posted tools/list to /mcp on api.b2b.tourradar.com, api.tourradar.com, api.daystocome.com, www.tourradar.com;
+  verdict opaque (https://api.b2b.tourradar.com/mcp answered 403: the edge authenticates before it routes, which proves nothing either way). Candidate
+  tools below are derived from the 18 operation(s) in the provider''s own OpenAPI (18 listed); they describe what a server WOULD expose, not one
+  that exists.'
+tools:
+- name: get_v1_bookings
+  operationId: GET /v1/bookings
+  method: GET
+  path: /v1/bookings
+  description: /v1/bookings
+- name: create_v1_bookings
+  operationId: POST /v1/bookings
+  method: POST
+  path: /v1/bookings
+  description: /v1/bookings
+- name: get_bookings_affiliate
+  operationId: GET /v1/bookings/affiliate
+  method: GET
+  path: /v1/bookings/affiliate
+  description: /v1/bookings/affiliate
+- name: get_bookings_operator
+  operationId: GET /v1/bookings/operator/{operator}/{bookingCode}
+  method: GET
+  path: /v1/bookings/operator/{operator}/{bookingCode}
+  description: /v1/bookings/operator/{operator}/{bookingCode}
+- name: get_bookings_status
+  operationId: GET /v1/bookings/{bookingId}/status
+  method: GET
+  path: /v1/bookings/{bookingId}/status
+  description: /v1/bookings/{bookingId}/status
+- name: get_v1_operators
+  operationId: GET /v1/operators
+  method: GET
+  path: /v1/operators
+  description: /v1/operators
+- name: get_operators_booking-fields
+  operationId: GET /v1/operators/{operator}/booking-fields
+  method: GET
+  path: /v1/operators/{operator}/booking-fields
+  description: /v1/operators/{operator}/booking-fields
+- name: get_bulk_departures
+  operationId: GET /v1/operators/{operator}/bulk/departures
+  method: GET
+  path: /v1/operators/{operator}/bulk/departures
+  description: /v1/operators/{operator}/bulk/departures
+- name: get_bulk_tours
+  operationId: GET /v1/operators/{operator}/bulk/tours
+  method: GET
+  path: /v1/operators/{operator}/bulk/tours
+  description: /v1/operators/{operator}/bulk/tours
+- name: get_taxonomy_currencies
+  operationId: GET /v1/taxonomy/currencies
+  method: GET
+  path: /v1/taxonomy/currencies
+  description: /v1/taxonomy/currencies
+- name: get_taxonomy_destinations
+  operationId: GET /v1/taxonomy/destinations/{type}
+  method: GET
+  path: /v1/taxonomy/destinations/{type}
+  description: /v1/taxonomy/destinations/{type}
+- name: get_taxonomy_languages
+  operationId: GET /v1/taxonomy/languages
+  method: GET
+  path: /v1/taxonomy/languages
+  description: /v1/taxonomy/languages
+- name: get_tours_types
+  operationId: GET /v1/taxonomy/tours/types
+  method: GET
+  path: /v1/taxonomy/tours/types
+  description: /v1/taxonomy/tours/types
+- name: get_tours_search
+  operationId: GET /v1/tours/search
+  method: GET
+  path: /v1/tours/search
+  description: /v1/tours/search
+- name: get_v1_tours
+  operationId: GET /v1/tours/{tourId}
+  method: GET
+  path: /v1/tours/{tourId}
+  description: /v1/tours/{tourId}
+- name: get_tours_departures
+  operationId: GET /v1/tours/{tourId}/departures
+  method: GET
+  path: /v1/tours/{tourId}/departures
+  description: /v1/tours/{tourId}/departures
+- name: create_departures_price
+  operationId: POST /v1/tours/{tourId}/departures/{departureId}/price
+  method: POST
+  path: /v1/tours/{tourId}/departures/{departureId}/price
+  description: /v1/tours/{tourId}/departures/{departureId}/price
+- name: get_tours_prices
+  operationId: GET /v1/tours/{tourId}/prices
+  method: GET
+  path: /v1/tours/{tourId}/prices
+  description: /v1/tours/{tourId}/prices

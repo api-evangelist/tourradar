@@ -1,0 +1,581 @@
+openapi: 3.2.0
+info:
+  title: Tourradar Taxonomy API
+  version: '2025-08-11T15:08:05Z'
+  x-logo:
+    url: https://assets.api.sandbox.b2b.tourradar.com/logo/tourradar.svg
+    altText: TourRadar Partner API
+  description: 'Operations tagged Taxonomy across 2 of this provider''s published API definitions: tourradar-partner-api-openapi.json, tourradar-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.sandbox.b2b.tourradar.com
+tags:
+- name: Taxonomy
+  description: ''
+paths:
+  /v1/taxonomy/currencies:
+    get:
+      tags:
+      - Taxonomy
+      summary: /v1/taxonomy/currencies
+      description: 'This endpoint returns the list of all currencies supported by the TourRadar system.
+
+
+        The following attributes will be returned for each item:
+
+
+        - `code`: three-letter currency code in the ISO 4217 format.
+
+        - `name`: name of the currency.
+
+        - `symbol`: short symbol used to describe the currency in reference to amounts of money (example: `€` for Euro).'
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaxonomyCurrenciesList'
+        '401':
+          description: 'This status code indicates that the credentials used for the request are not valid.
+
+
+            The error code is `UNAUTHORIZED`. An additional message may provide more information about the error.
+
+
+            Causes for this error may be:
+
+
+            - invalid authorization token
+
+            - operation not allowed by authorization scope
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError401'
+        '500':
+          description: 'This status code indicates that there was an unmanaged error.
+
+
+            The error code is `UNKNOWN_ERROR`. An additional message may provide more information about the error.
+
+
+            Causes for this error may be:
+
+
+            - failure on the TourRadar system
+
+            - unexpected conditions
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError500'
+      security:
+      - application: []
+      operationId: getV1TaxonomyCurrencies
+      x-operation-id-source: derived
+    servers:
+    - url: https://api.sandbox.b2b.tourradar.com
+  /v1/taxonomy/destinations/{type}:
+    get:
+      tags:
+      - Taxonomy
+      summary: /v1/taxonomy/destinations/{type}
+      description: 'This endpoint returns a list of all destinations in the TourRadar system.
+
+
+        Each destination type can be requested.
+
+
+        These are the available query parameters:
+
+        - `country_id`: filter destinations by country ID. It can be a single integer or a comma-separated list of integers. It is available for all types but country and continent. E.g. `?country_id=1,2,3`
+
+
+        In general, the following attributes will be returned:
+
+
+        - `id`: this is the unique identifier of this destination in the system. The value is immutable, and can be used to setup a mapping between TourRadar destination and the partner''s own destinations, or in search requests where a destination ID is needed.
+
+        - `name`: the name of the destination.
+
+        - `parent_ids`: unique identifiers of this destination''s parent destinations. Usually, this will be one value; for example, cities have a state ID as parent, states have a country ID as parent, and so on. There are destination types, for example rivers or national parks, that can belong to more than one country.
+
+        - `latitude` and `longitude`: coordinates of the destination. This mostly applies to countries, states, and cities. Other types may not have geographical information.
+
+        - `geoname_id`: available for countries and cities, this is the identifier of the destination in the GeoNames geographical database (http://www.geonames.org/). The identifier can be used to facilitate the mapping. *Note*: not 100% of the entries are mapped to a GeoNames entity. TourRadar is committed to constantly improve the data quality, but can''t guarantee a perfect match all of the times.
+
+        - `country_id`: available for all types but country and continent, this is the identifier of the country the destination belongs to.
+
+
+        In addition, countries have the following additional information:
+
+
+        - `country_code`: two-letter country code in the ISO 3316-1 alpha-2 format.
+
+        - `currency_code`: three-letter currency code used in the country in the ISO 4217 format.
+
+        - `currency_name`: name of the currency used in the country.
+
+        - `electricity_outlets`: an array of one-letter electrical plug types used in the country, as defined by IEC (https://www.iec.ch/world-plugs).
+
+
+        Results will be paginated (1000 elements at a time). If the response contains the `next_page` element, it''s possible to access the next 1000 elements by repeating the request with the `page` parameter.
+
+
+        Example: `/v1/taxonomy/destinations/city?page=2`'
+      parameters:
+      - name: type
+        in: path
+        description: "Possible values: \n`continent`, \n`country`,\n`state`,\n`region`,\n`city`,\n`national-park`,\n`island`,\n`mountain`,\n`ocean`,\n`river`,\n`lake`\n"
+        required: true
+        schema:
+          type: string
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+      - name: country_id
+        in: query
+        schema:
+          type: string
+      - name: limit
+        in: query
+        schema:
+          type: string
+      - name: page
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaxonomyDestinationPagination'
+        '401':
+          description: 'This status code indicates that the credentials used for the request are not valid.
+
+
+            The error code is `UNAUTHORIZED`. An additional message may provide more information about the error.
+
+
+            Causes for this error may be:
+
+
+            - invalid authorization token
+
+            - operation not allowed by authorization scope
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError401'
+        '422':
+          description: destination type not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: The error code
+                    enum:
+                    - VALIDATION_ERROR
+                    - UNKNOWN_ERROR
+                  message:
+                    type: string
+                    description: The error message, if available
+                  context:
+                    type: object
+                    description: Additional data relative to the error condition
+                  validation_errors:
+                    type: array
+                    description: In case of validation error, all the elements that didn't pass validation
+                    items:
+                      type: string
+        '500':
+          description: 'This status code indicates that there was an unmanaged error.
+
+
+            The error code is `UNKNOWN_ERROR`. An additional message may provide more information about the error.
+
+
+            Causes for this error may be:
+
+
+            - failure on the TourRadar system
+
+            - unexpected conditions
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError500'
+      security:
+      - application: []
+      operationId: getV1TaxonomyDestinationsByType
+      x-operation-id-source: derived
+    servers:
+    - url: https://api.sandbox.b2b.tourradar.com
+  /v1/taxonomy/languages:
+    get:
+      tags:
+      - Taxonomy
+      summary: /v1/taxonomy/languages
+      description: 'This endpoint returns the list of all guided languages of the tours from TourRadar system.
+
+
+        The following attributes will be returned for each item:
+
+
+        - `id`: this is the unique identifier of this language in the system.
+
+        - `code`: 2-letter language code in the ISO 639-1 standard.
+
+        - `name`: name of the language.'
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaxonomyLanguagesList'
+        '401':
+          description: 'This status code indicates that the credentials used for the request are not valid.
+
+
+            The error code is `UNAUTHORIZED`. An additional message may provide more information about the error.
+
+
+            Causes for this error may be:
+
+
+            - invalid authorization token
+
+            - operation not allowed by authorization scope
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError401'
+        '500':
+          description: 'This status code indicates that there was an unmanaged error.
+
+
+            The error code is `UNKNOWN_ERROR`. An additional message may provide more information about the error.
+
+
+            Causes for this error may be:
+
+
+            - failure on the TourRadar system
+
+            - unexpected conditions
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError500'
+      security:
+      - application: []
+      operationId: getV1TaxonomyLanguages
+      x-operation-id-source: derived
+    servers:
+    - url: https://api.sandbox.b2b.tourradar.com
+  /v1/taxonomy/tours/types:
+    get:
+      tags:
+      - Taxonomy
+      summary: /v1/taxonomy/tours/types
+      description: 'This endpoint returns a list of all tour types supported by the TourRadar system.
+
+
+        Tour types are categories associated to a tour. One tour can belong to different categories. Furthermore, tour types are organized in groups.
+
+
+        The following attributes will be returned for each item:
+
+
+        - `id`: this is the unique identifier of the type in the system. It can be used in a search request when a tour type ID is needed.
+
+        - `name`: name of the tour type.
+
+        - `group_id`: unique identifier of the group this tour type belongs to.
+
+        - `group_name`: name of the group this tour type belongs to.'
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaxonomyToursTypesList'
+        '401':
+          description: 'This status code indicates that the credentials used for the request are not valid.
+
+
+            The error code is `UNAUTHORIZED`. An additional message may provide more information about the error.
+
+
+            Causes for this error may be:
+
+
+            - invalid authorization token
+
+            - operation not allowed by authorization scope
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError401'
+        '500':
+          description: 'This status code indicates that there was an unmanaged error.
+
+
+            The error code is `UNKNOWN_ERROR`. An additional message may provide more information about the error.
+
+
+            Causes for this error may be:
+
+
+            - failure on the TourRadar system
+
+            - unexpected conditions
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError500'
+      security:
+      - application: []
+      operationId: getV1TaxonomyToursTypes
+      x-operation-id-source: derived
+    servers:
+    - url: https://api.sandbox.b2b.tourradar.com
+components:
+  schemas:
+    TaxonomyDestinationPagination:
+      required:
+      - current_page
+      - items
+      type: object
+      properties:
+        current_page:
+          type: integer
+          description: Current page number
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaxonomyDestination'
+        next_page:
+          type: integer
+          description: If this attribute exists, then another page is available. To get more results, repeat the request with the number specified in the `page` parameter. If this attribute is not part of the response, then the last page has been reached.
+    TaxonomyCurrenciesList:
+      type: array
+      items:
+        type: object
+        properties:
+          code:
+            type: string
+            description: Currency code.
+            example: AUD
+          name:
+            type: string
+            description: Currency name.
+            example: Australian Dollar
+          symbol:
+            type: string
+            description: Currency symbol.
+            example: $
+    TaxonomyDestination:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier of the destination
+          example: 11
+        name:
+          type: string
+          description: Destination name
+          example: Austria
+        latitude:
+          type: number
+          description: Latitude of the destination
+          example: 47.333332
+        longitude:
+          type: number
+          description: Longitude of the destination
+          example: 13.333333
+        geoname_id:
+          type: integer
+          description: Geoname ID (from http://www.geonames.org/)
+          example: 2782113
+        country_code:
+          type: string
+          description: Country code
+          example: AT
+        currency_code:
+          type: string
+          description: Local currency code
+          example: EUR
+        currency_name:
+          type: string
+          description: Local currency name
+          example: Euro
+        electricity_outlets:
+          type: array
+          description: Electrical plug types
+          example:
+          - C
+          - E
+          - F
+          items:
+            type: string
+        country_id:
+          type: integer
+          description: The id of the country related to this destination, when available
+          example: 123
+        parent_ids:
+          type: array
+          description: Parent destination IDs
+          items:
+            type: integer
+          example:
+          - 201
+        links:
+          $ref: '#/components/schemas/TaxonomyLinks'
+    TaxonomyLanguagesList:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+            description: Language ID.
+            example: '1'
+          code:
+            type: string
+            description: Language code.
+            example: en
+          name:
+            type: string
+            description: Language name.
+            example: English
+    DefaultError401:
+      type: object
+      properties:
+        error:
+          type: string
+          description: The error code
+          enum:
+          - UNAUTHORIZED
+        message:
+          type: string
+          description: The error message, if available
+        context:
+          type: object
+          description: Additional data relative to the error condition
+        validation_errors:
+          type: array
+          description: In case of validation error, all the elements that didn't pass validation
+          items:
+            type: string
+    TaxonomyToursTypesList:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+            description: Type ID.
+            example: 183
+          name:
+            type: string
+            description: Type name.
+            example: Self Drive
+          group_id:
+            type: integer
+            description: Group ID.
+            example: 2
+          group_name:
+            type: string
+            description: Group name.
+            example: Guide Type
+          links:
+            $ref: '#/components/schemas/TaxonomyLinks'
+    DefaultError500:
+      type: object
+      properties:
+        error:
+          type: string
+          description: The error code
+          enum:
+          - UNKNOWN_ERROR
+        message:
+          type: string
+          description: The error message, if available
+        context:
+          type: object
+          description: Additional data relative to the error condition
+        validation_errors:
+          type: array
+          description: In case of validation error, all the elements that didn't pass validation
+          items:
+            type: string
+    TaxonomyLinks:
+      type: array
+      items:
+        type: object
+        properties:
+          type:
+            type: string
+            description: Type of link
+            example: serp
+            enum:
+            - serp
+          url:
+            type: string
+            description: URL to www.tourradar.com website
+            example: https://www.tourradar.com/d/europe?utm_source=partner-12345&utm_medium=api&utm_campaign=destinations
+  securitySchemes:
+    application:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://oauth.api.sandbox.b2b.tourradar.com/oauth2/token
+          scopes:
+            com.tourradar.bookings/read: Read booking information
+            com.tourradar.bookings/write: Create new bookings
+            com.tourradar.bookings.affiliate/read: Read booking information
+            com.tourradar.operators/read: Read operators information
+            com.tourradar.tours/read: Read tours informations
+x-refined-from:
+- tourradar-partner-api-openapi.json
+- tourradar-openapi.yml

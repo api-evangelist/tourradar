@@ -1,0 +1,1758 @@
+openapi: 3.2.0
+info:
+  title: Tourradar Pricing & Availability API
+  version: '2025-08-11T15:08:05Z'
+  x-logo:
+    url: https://assets.api.sandbox.b2b.tourradar.com/logo/tourradar.svg
+    altText: TourRadar Partner API
+  description: 'Operations tagged Pricing & Availability across 2 of this provider''s published API definitions: tourradar-partner-api-openapi.json, tourradar-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.sandbox.b2b.tourradar.com
+tags:
+- name: Pricing & Availability
+  description: ''
+paths:
+  /v1/tours/{tourId}/departures:
+    get:
+      tags:
+      - Pricing & Availability
+      summary: /v1/tours/{tourId}/departures
+      description: 'Retrieves all available departure dates for the specified tour.
+
+
+        Every item will contain:
+
+
+        * Departure date, in the format `YYYY-MM-DD`.
+
+        * Departure type, as explained below.
+
+        * Guide languages offered.
+
+        * The price breakdown, using the *default* options for each departure date, comprised of:
+
+        * `price_base`: base price of the tour, also referenced as brochure price.
+
+        * `price_addons`: sum of the mandatory addons that the passenger will have to pay (both upfront and local payments).
+
+        * `price_promotion`: discounted price, it’s equal with price_base – promotion discount.
+
+        * `price_total_upfront`: total price without local payments, it’s equal with price_base – promotion discount + upfront payments.
+
+        * `price_total`: final sale price, it’s equal with price_base – promotion discount + local payments + upfront payments.
+
+        * `promotion`: details about the promotion applied, if available.
+
+        * `mandatory_addons`: list of the mandatory addons (upfront and local payments).
+
+
+        #### Departure types
+
+
+        A departure date can have one of the following types:
+
+
+        * `guaranteed`: the tour will depart regardless of how many people books.
+
+        * `scheduled`: the tour will depart provided that a suitable minimum number of participants is reached. Confirmation will be given usually 4-6 weeks before the travel date.
+
+        * `request`: if a tour is close to departure, or almost at capacity, the tour operator cannot immediately guarantee all the components of the tour are available to book (accommodation, activities, etc.).'
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+      - name: currency
+        in: query
+        description: The currency desired for the prices returned. Use 3 letter codes, like `AUD`, `EUR`, `USD`, etc.
+        schema:
+          type: string
+      - name: page
+        in: query
+        description: Number of page to return (default is 1).
+        schema:
+          type: string
+      - name: user_country
+        in: query
+        description: Country ID of the passenger's residence, if known. This will be used to apply location-specific promotions, e.g. particular discounts that are available only to some markets. To retrieve the country IDs, use the **[/taxonomy/destinations/country](#tag/Taxonomy/paths/~1v1~1taxonomy~1destinations~1{type}/get)** endpoint.
+        schema:
+          type: string
+      - name: tourId
+        in: path
+        description: The ID of the tour for which departure dates are to be returned.
+        required: true
+        schema:
+          type: string
+      - name: date_range
+        in: query
+        description: 'If provided, returns only departure dates in the desired range. Format is `YYYYMMDD-YYYYMMDD`, where `YYYY` is the year, `MM` the month, `DD` the day. Example: `20211001-20211030` searches for departure dates in November 2021 (2021-11-01 to 2021-11-30).'
+        schema:
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TourDeparturesPagination'
+        '401':
+          description: 'This status code indicates that the credentials used for the request are not valid.
+
+
+            The error code is `UNAUTHORIZED`. An additional message may provide more information about the error.
+
+
+            Causes for this error may be:
+
+
+            - invalid authorization token
+
+            - operation not allowed by authorization scope
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError401'
+        '404':
+          description: Tour not found. Please check tour ID.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: The error code
+                    enum:
+                    - TOUR_NOT_FOUND
+                    - UNKNOWN_ERROR
+                  message:
+                    type: string
+                    description: The error message, if available
+                  context:
+                    type: object
+                    description: Additional data relative to the error condition
+                  validation_errors:
+                    type: array
+                    description: In case of validation error, all the elements that didn't pass validation
+                    items:
+                      type: string
+        '500':
+          description: 'This status code indicates that there was an unmanaged error.
+
+
+            The error code is `UNKNOWN_ERROR`. An additional message may provide more information about the error.
+
+
+            Causes for this error may be:
+
+
+            - failure on the TourRadar system
+
+            - unexpected conditions
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError500'
+      security:
+      - application:
+        - com.tourradar.tours/read
+      operationId: getV1ToursByTourIdDepartures
+      x-operation-id-source: derived
+    servers:
+    - url: https://api.sandbox.b2b.tourradar.com
+  /v1/tours/{tourId}/departures/{departureId}:
+    get:
+      tags:
+      - Pricing & Availability
+      summary: /v1/tours/{tourId}/departures/{departureId}
+      description: 'Retrieve detailed information about a single departure date.
+
+
+        In addition to the information returned when listing departure dates, this endpoint will include:
+
+
+        * accommodation options
+
+        * mandatory addons
+
+        * optional extras
+
+
+        For each element, all available price categories (adult, child, etc.) will be returned.
+
+
+        To get a list of available price categories, and their properties, use the **/tours/{tourId}/prices** endpoint.'
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+      - name: currency
+        in: query
+        description: The currency desired for the prices returned. Use 3 letter codes, like `AUD`, `EUR`, `USD`, etc.
+        schema:
+          type: string
+      - name: user_country
+        in: query
+        description: Country ID of the passenger's residence, if known. This will be used to apply location-specific promotions, e.g. particular discounts that are available only to some markets. To retrieve the country IDs, use the **[/taxonomy/destinations/country](#tag/Taxonomy/paths/~1v1~1taxonomy~1destinations~1{type}/get)** endpoint.
+        schema:
+          type: string
+      - name: tourId
+        in: path
+        description: The ID of the tour.
+        required: true
+        schema:
+          type: string
+      - name: departureId
+        in: path
+        description: The ID of the departure date.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TourDeparture'
+        '401':
+          description: 'This status code indicates that the credentials used for the request are not valid.
+
+
+            The error code is `UNAUTHORIZED`. An additional message may provide more information about the error.
+
+
+            Causes for this error may be:
+
+
+            - invalid authorization token
+
+            - operation not allowed by authorization scope
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError401'
+        '404':
+          description: Departure not found. Please check tour ID and departure ID.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: The error code
+                    enum:
+                    - TOUR_NOT_FOUND
+                    - TOUR_DEPARTURE_NOT_FOUND
+                    - UNKNOWN_ERROR
+                  message:
+                    type: string
+                    description: The error message, if available
+                  context:
+                    type: object
+                    description: Additional data relative to the error condition
+                  validation_errors:
+                    type: array
+                    description: In case of validation error, all the elements that didn't pass validation
+                    items:
+                      type: string
+        '500':
+          description: 'This status code indicates that there was an unmanaged error.
+
+
+            The error code is `UNKNOWN_ERROR`. An additional message may provide more information about the error.
+
+
+            Causes for this error may be:
+
+
+            - failure on the TourRadar system
+
+            - unexpected conditions
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError500'
+      security:
+      - application:
+        - com.tourradar.tours/read
+      operationId: getV1ToursByTourIdDeparturesByDepartureId
+      x-operation-id-source: derived
+    servers:
+    - url: https://api.sandbox.b2b.tourradar.com
+  /v1/tours/{tourId}/departures/{departureId}/price:
+    post:
+      tags:
+      - Pricing & Availability
+      summary: /v1/tours/{tourId}/departures/{departureId}/price
+      description: 'Calculates the price for a booking, given departure date, number and type of passengers, and selected options.
+
+
+        The payload must be sent as a JSON in the request body.
+
+        The required entries are:
+
+
+        * `currency`: the currency that will be used for payments.
+
+        * `passengers`: the list of passengers in the booking.
+
+
+        Furthermore, it''s possible to add the following sections, if needed:
+
+
+        * `accommodations`: defines the desired accommodation types (if the tour offers them), and which passengers will use them.
+
+        * `optional_extras`: optional extra items that can be booked together with the tour.
+
+
+        This is an example of how the payload for a price calculation request looks like:
+
+
+        ```json
+
+        {
+
+        "currency": "EUR",
+
+        "passengers": [
+
+        {
+
+        "pax_number": 1,
+
+        "price_category_id": 1
+
+        },
+
+        {
+
+        "pax_number": 2,
+
+        "price_category_id": 2
+
+        }
+
+        ],
+
+        "accommodations": [
+
+        {
+
+        "id": 345,
+
+        "passengers": [1, 2]
+
+        }
+
+        ],
+
+        "optional_extras": [
+
+        {
+
+        "id": 456,
+
+        "passengers": [2]
+
+        }
+
+        ],
+
+        }
+
+        ```
+
+
+        #### Passengers definition
+
+
+        For each entry in the `passengers` array, these are the required fields:
+
+
+        * `pax_number`: this is the index of the passenger, starting with 1. The passenger number will be used in the accommodation and extras sections of the request, to assign specific passengers to elements of the booking.
+
+        * `price_category_id`: this defines the category of the passenger. To retrieve price categories, use the **/tours/{tourId}/prices** endpoint.
+
+
+        #### Accommodation
+
+
+        In the `accommodations` section, it''s possible to specify the identifier of an accommodation option, and which passenger numbers should make use of it.
+
+
+        To retrieve a list of accommodation options available for the desired departure, use the **/tours/{tourId}/departures/{departureId}** endpoint.
+
+
+        #### Optional extras
+
+
+        The `optional_extras` section works exactly like the `accommodations` section.
+
+
+        To retrieve a list of the optional extra items available for the desired departure, use the **/tours/{tourId}/departures/{departureId}** endpoint.
+
+
+        #### Response
+
+
+        The response will contain a price breakdown:
+
+
+        * `price_base`: base price of the tour, also referenced as brochure price.
+
+        * `price_addons`: sum of the mandatory addons that the passenger will have to pay (both upfront and local payments).
+
+        * `price_promotion`: discounted price, it’s equal with price_base – promotion discount.
+
+        * `price_total_upfront`: total price without local payments, it’s equal with price_base – promotion discount + upfront payments. This is the actual price that the customer needs to pay when making a booking.
+
+        * `price_total`: final sale price, it’s equal with price_base – promotion discount + local payments + upfront payments. This contains the price that customer needs to pay and the local payments that will be paid in cash on the tour.
+
+        * `promotion`: details about the promotion applied, if available.
+
+        * `mandatory_addons`: list of the mandatory addons (upfront and local payments).
+
+
+        Local payments are shared with the customer before making the booking but they are paid only when they reach the destination, in cash.
+
+        Upfront payments are mandatory payments made at the time of the booking.'
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+      - name: currency
+        in: query
+        description: The currency desired for the prices returned. Use 3 letter codes, like `AUD`, `EUR`, `USD`, etc.
+        schema:
+          type: string
+      - name: user_country
+        in: query
+        description: Country ID of the passenger's residence, if known. This will be used to apply location-specific promotions, e.g. particular discounts that are available only to some markets. To retrieve the country IDs, use the **[/taxonomy/destinations/country](#tag/Taxonomy/paths/~1v1~1taxonomy~1destinations~1{type}/get)** endpoint.
+        schema:
+          type: string
+      - name: tourId
+        in: path
+        description: The ID of the tour.
+        required: true
+        schema:
+          type: string
+      - name: departureId
+        in: path
+        description: The ID of the departure date.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TourDeparturePriceInput'
+        required: true
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TourDeparturePrice'
+        '401':
+          description: 'This status code indicates that the credentials used for the request are not valid.
+
+
+            The error code is `UNAUTHORIZED`. An additional message may provide more information about the error.
+
+
+            Causes for this error may be:
+
+
+            - invalid authorization token
+
+            - operation not allowed by authorization scope
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError401'
+        '404':
+          description: Departure not found. Please check tour ID and departure ID.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: The error code
+                    enum:
+                    - TOUR_NOT_FOUND
+                    - TOUR_DEPARTURE_NOT_FOUND
+                    - UNKNOWN_ERROR
+                  message:
+                    type: string
+                    description: The error message, if available
+                  context:
+                    type: object
+                    description: Additional data relative to the error condition
+                  validation_errors:
+                    type: array
+                    description: In case of validation error, all the elements that didn't pass validation
+                    items:
+                      type: string
+        '500':
+          description: 'This status code indicates that there was an unmanaged error.
+
+
+            The error code is `UNKNOWN_ERROR`. An additional message may provide more information about the error.
+
+
+            Causes for this error may be:
+
+
+            - failure on the TourRadar system
+
+            - unexpected conditions
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError500'
+      security:
+      - application:
+        - com.tourradar.tours/read
+      operationId: postV1ToursByTourIdDeparturesByDepartureIdPrice
+      x-operation-id-source: derived
+    servers:
+    - url: https://api.sandbox.b2b.tourradar.com
+  /v1/tours/{tourId}/prices:
+    get:
+      tags:
+      - Pricing & Availability
+      summary: /v1/tours/{tourId}/prices
+      description: 'Retrieves all price categories available for a tour.
+
+
+        Price categories correspond to passenger types.
+
+        Those are configured by the operator for each tour, and may vary for different tours.
+
+        The main categories recognised by the TourRadar system are:
+
+
+        * `adult`
+
+        * `child`
+
+        * `infant` (usually don''t count towards max occupancy)
+
+        * `senior`
+
+        * `student`
+
+        * `military`
+
+        * `other`
+
+
+        The age limits, if any, are returned by this endpoint for all configured price categories.'
+      parameters:
+      - name: tourId
+        in: path
+        description: The ID of the tour for which price categories are to be returned.
+        required: true
+        schema:
+          type: string
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TourPriceCategories'
+        '401':
+          description: 'This status code indicates that the credentials used for the request are not valid.
+
+
+            The error code is `UNAUTHORIZED`. An additional message may provide more information about the error.
+
+
+            Causes for this error may be:
+
+
+            - invalid authorization token
+
+            - operation not allowed by authorization scope
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError401'
+        '404':
+          description: Tour not found. Please check tour ID.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: The error code
+                    enum:
+                    - TOUR_NOT_FOUND
+                    - UNKNOWN_ERROR
+                  message:
+                    type: string
+                    description: The error message, if available
+                  context:
+                    type: object
+                    description: Additional data relative to the error condition
+                  validation_errors:
+                    type: array
+                    description: In case of validation error, all the elements that didn't pass validation
+                    items:
+                      type: string
+        '500':
+          description: 'This status code indicates that there was an unmanaged error.
+
+
+            The error code is `UNKNOWN_ERROR`. An additional message may provide more information about the error.
+
+
+            Causes for this error may be:
+
+
+            - failure on the TourRadar system
+
+            - unexpected conditions
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError500'
+      security:
+      - application:
+        - com.tourradar.tours/read
+      operationId: getV1ToursByTourIdPrices
+      x-operation-id-source: derived
+    servers:
+    - url: https://api.sandbox.b2b.tourradar.com
+components:
+  schemas:
+    TourDepartures:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Identifier of the departure date (must be used for price calculation and booking creation).
+          example: 740389663
+        date:
+          type: string
+          description: Date of the departure, in the format `YYYY-MM-DD`.
+          example: '2024-03-24'
+        availability:
+          type: integer
+          description: Number of available seats for the specific departure.
+          example: 5
+        departure_type:
+          type: string
+          description: Type of departure.
+          enum:
+          - guaranteed
+          - scheduled
+          - request
+          example: guaranteed
+        is_instant_confirmable:
+          type: boolean
+          description: If true, bookings related to this departure can be instantly confirmed by the operator.
+          example: true
+        guide_languages:
+          type: array
+          description: List of languages this tour is offered in (for their meaning, see **[/taxonomy/languages](#tag/Taxonomy/paths/~1v1~1taxonomy~1languages/get)**).
+          items:
+            type: integer
+            example: 1
+        links:
+          $ref: '#/components/schemas/ToursLinks'
+        prices:
+          type: object
+          description: Pricing information.
+          properties:
+            currency:
+              type: string
+              description: Currency code for the reported prices.
+              example: USD
+            price_base:
+              type: number
+              description: Base price of the tour, also referenced as brochure price.
+              example: 2990
+            price_addons:
+              type: number
+              description: Sum of the mandatory addons that the passenger will have to pay (both upfront and local payments).
+              example: 180
+            price_promotion:
+              type: number
+              description: Discounted price, or base price minus the promotion.
+              example: 2145
+            price_total:
+              type: number
+              description: Final sale price, composed by the base price, minus the applied promotion, plus the mandatory local and upfront addons.
+              example: 2325
+            price_total_upfront:
+              type: number
+              description: Final sale price, composed by the base price, minus the applied promotion, plus the upfront addons.
+              example: 2145
+            promotion:
+              $ref: '#/components/schemas/ToursPromotion'
+            based_on:
+              type:
+              - string
+              - 'null'
+              description: If available, the type of accommodation that the base price refers to.
+              example: Base price
+            mandatory_addons:
+              type: array
+              description: List of the mandatory addons (extra price elements).
+              items:
+                type: object
+                properties:
+                  value:
+                    type: number
+                    description: Price for this addon. Note that, in case of local payments, this is `local_value` converted in the currency of the booking.
+                    example: 180
+                  name:
+                    type: string
+                    description: Name of the addon.
+                    example: Domestic flights
+                  description:
+                    type: string
+                    description: Description of the addon.
+                    example: Amsterdam - Paris flight fare approx USD 180 per person in economy class.
+                  payment_type:
+                    type: string
+                    enum:
+                    - upfront
+                    - local
+                    description: The payment type (upfront or local).
+                    example: local
+                  local_currency:
+                    type:
+                    - string
+                    - 'null'
+                    description: For local payments, the currency this payment must be executed in.
+                    example: USD
+                  local_value:
+                    type:
+                    - number
+                    - 'null'
+                    description: The price of the addon in the local currency.
+                    example: 180
+    TourDeparture:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Identifier of the departure date (must be used for price calculation and booking creation).
+          example: 740389663
+        date:
+          type: string
+          description: Date of the departure, in the format `YYYY-MM-DD`.
+          example: '2024-03-24'
+        departure_type:
+          type: string
+          description: Type of departure.
+          enum:
+          - guaranteed
+          - scheduled
+          - request
+          example: guaranteed
+        is_instant_confirmable:
+          type: boolean
+          description: If true, bookings related to this departure can be instantly confirmed by the operator.
+          example: true
+        availability:
+          type: integer
+          description: Availability.
+          example: 5
+        guide_languages:
+          type: array
+          description: List of languages this tour is offered in (for their meaning, see **[/taxonomy/languages](#tag/Taxonomy/paths/~1v1~1taxonomy~1languages/get]**).
+          items:
+            type: integer
+            example:
+            - 1
+        links:
+          $ref: '#/components/schemas/ToursLinks'
+        prices:
+          type: object
+          description: Pricing information.
+          properties:
+            currency:
+              type: string
+              description: Currency code for the reported prices.
+              example: USD
+            price_base:
+              type: number
+              description: Base price of the tour, also referenced as brochure price.
+              example: 2990
+            price_addons:
+              type: number
+              description: Sum of the mandatory addons that the passenger will have to pay (both upfront and local payments).
+              example: 180
+            price_promotion:
+              type: number
+              description: Discounted price, or base price minus the promotion.
+              example: 2145
+            price_total:
+              type: number
+              description: Final sale price, composed by the base price, minus the applied promotion, plus the mandatory local and upfront addons.
+              example: 2325
+            price_total_upfront:
+              type: number
+              description: Final sale price, composed by the base price, minus the applied promotion, plus the upfront addons.
+              example: 2145
+            promotion:
+              $ref: '#/components/schemas/ToursDeparturePromotion'
+            based_on:
+              type:
+              - string
+              - 'null'
+              description: If available, the type of accommodation that the base price refers to.
+              example: Base price
+            mandatory_addons:
+              type: array
+              description: List of the mandatory addons (extra price elements).
+              items:
+                $ref: '#/components/schemas/TourDepartureMandatoryAddon'
+            payment_schedule:
+              type: object
+              description: Defines how the payment for the tour must be performed (deposit, pay by installments, final payment date).
+              properties:
+                deposit:
+                  type:
+                  - number
+                  - 'null'
+                  description: The amount that must be paid as deposit. If no deposit is required for this tour, the value will be `null`.
+                  example: 214.5
+                pay_by_installments:
+                  type: boolean
+                  description: Indicates if pay by installments is available for this tour.
+                  example: false
+                final_payment_date:
+                  type:
+                  - 'null'
+                  - string
+                  description: Date by which the price must be paid in full.
+                  example: '2024-03-24'
+            accommodations:
+              type: array
+              description: Accommodation options available for this tour.
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: Identifier of the accommodation option in the TourRadar system.
+                    example: 309880
+                  name:
+                    type: string
+                    description: Name of the accommodation option.
+                    example: Base price
+                  description:
+                    type: string
+                    description: Description of the accommodation option.
+                    example: Base price
+                  payment_type:
+                    type:
+                    - string
+                    - 'null'
+                    enum:
+                    - upfront
+                    - local
+                    description: The payment type (upfront or local).
+                    example: upfront
+                  beds_number:
+                    type:
+                    - integer
+                    - 'null'
+                    description: Number of beds.
+                    example: 2
+                  is_shared:
+                    type:
+                    - boolean
+                    - 'null'
+                    description: If true, this accommodation is shared with other participants of the tour.
+                    example: false
+                  value:
+                    type: integer
+                    description: Base price of the accommodation option.
+                    example: 2990
+                  price_tiers:
+                    type: array
+                    description: Detailed information of all the pricing options for this accommodation.
+                    items:
+                      type: object
+                      properties:
+                        is_default:
+                          type: boolean
+                          description: If true, this is the default price tier (used to calculate the base price).
+                          example: true
+                        price_category_id:
+                          type: integer
+                          description: 'Identifier of the passenger category this price refers to (for example: adult, child). To retrieve the possible identifiers, use the **[/tours/{tourId}/prices](#tag/Pricing-and-Availability/paths/~1v1~1tours~1{tourId}~1prices/get)** endpoint.'
+                          example: 4
+                        pax_min:
+                          type:
+                          - integer
+                          - 'null'
+                          description: Minimum number of passengers required for this price tier.
+                          example: 2
+                        pax_max:
+                          type:
+                          - integer
+                          - 'null'
+                          description: Maximum number of passengers allowed for this price tier.
+                          example: 4
+                        value:
+                          type: number
+                          description: Price for this item with this pricing option.
+                          example: 2990
+                        local_currency:
+                          type:
+                          - 'null'
+                          - string
+                          description: For local payments, the currency this payment must be executed in.
+                          example: USD
+                        local_value:
+                          type:
+                          - 'null'
+                          - number
+                          description: The price of the accommodation option in the local currency.
+                          example: 2990
+                  pax_restriction:
+                    type:
+                    - number
+                    - 'null'
+                    description: Maximum pax number to apply this promotion. If null - no limit.
+                    example: 10
+                  code:
+                    type:
+                    - string
+                    - 'null'
+                    description: Code of the addon.
+                    example: '1267'
+            optional_extras:
+              type: array
+              description: List of optional extra items that can be booked together with the tour.
+              items:
+                $ref: '#/components/schemas/OptionalExtraItem'
+            partner_info:
+              type:
+              - object
+              - 'null'
+              properties:
+                calculation_base:
+                  type:
+                  - 'null'
+                  - string
+                  description: Calculation base.
+                  example: accommodation
+                contract_type:
+                  type: string
+                  description: Contract type.
+                  example: marketplace
+                commission_rate:
+                  type: number
+                  description: Commission rate of the partner.
+                  example: 0
+                commission_value:
+                  type: number
+                  description: Commission value of the partner.
+                  example: 0
+                booking_fee_rate:
+                  type: number
+                  description: Booking fee rate of the partner.
+                  example: 0
+                booking_fee_value:
+                  type: number
+                  description: Booking fee value of the partner.
+                  example: 0
+    TourDeparturePrice:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Identifier of the departure date.
+          example: 736283495
+        tour_id:
+          type: integer
+          description: Identifier of the tour.
+          example: 5113
+        date:
+          type: string
+          example: '2024-12-28'
+        departure_type:
+          type: string
+          description: Type of departure.
+          enum:
+          - guaranteed
+          - scheduled
+          - request
+          example: guaranteed
+        prices:
+          type: object
+          description: Pricing information.
+          properties:
+            currency:
+              type: string
+              description: Currency code for the reported prices.
+              example: EUR
+            price_base:
+              type: number
+              description: Base price of the tour, also referenced as brochure price, for all passengers.
+              example: 9214
+            price_addons:
+              type: number
+              description: Sum of the addons that the passenger will have to pay.
+              example: 438
+            price_promotion:
+              type: number
+              description: Discounted price, or base price minus the promotion.
+              example: 9214
+            price_total:
+              type: number
+              description: Final sale price, composed by the base price, minus the applied promotion, plus the local and upfront addons.
+              example: 9652
+            price_total_upfront:
+              type: number
+              description: Final sale price, composed by the base price, minus the applied promotion, plus the upfront addons.
+              example: 9652
+            promotion:
+              $ref: '#/components/schemas/ToursPromotion'
+            payment_schedule:
+              type:
+              - object
+              - 'null'
+              description: Defines how the payment for the tour must be performed (deposit, pay by installments, final payment date).
+              properties:
+                deposit:
+                  type:
+                  - number
+                  - 'null'
+                  description: The amount that must be paid as deposit. If no deposit is required for this tour, the value will be `null`.
+                  example: 1930.4
+                pay_by_installments:
+                  type: boolean
+                  description: Indicates if pay by installments is available for this tour.
+                  example: false
+                final_payment_date:
+                  type:
+                  - string
+                  - 'null'
+                  description: Date by which the price must be paid in full.
+                  example: '2024-11-13'
+            based_on:
+              type:
+              - string
+              - 'null'
+              description: If available, the type of accommodation that the base price refers to.
+              example: Standard
+            mandatory_addons:
+              type: array
+              description: Mandatory addons (extra price elements).
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: Identifier of the addon in the TourRadar system.
+                    example: 589
+                  name:
+                    type: string
+                    description: Name of the addon.
+                    example: Domestic flights
+                  description:
+                    type: string
+                    description: Description of the addon.
+                    example: Ghanzi - Maun flight fare approx USD 180 per person in economy class.
+                  payment_type:
+                    type: string
+                    enum:
+                    - upfront
+                    - local
+                    description: The payment type (upfront or local).
+                    example: local
+                  code:
+                    type:
+                    - string
+                    - 'null'
+                    description: If available, the operator code associated with this item.
+                    example: '96565'
+                  prices:
+                    type: array
+                    description: Price information for this item.
+                    items:
+                      type: object
+                      properties:
+                        value:
+                          type: number
+                          description: Price for this item.
+                          example: 180
+                        price_category_id:
+                          type: integer
+                          description: Identifier of the price category.
+                          example: 1634
+                        quantity:
+                          type: integer
+                          description: Number of passengers for which this item was requested.
+                          example: 2
+                        local_currency:
+                          type:
+                          - 'null'
+                          - string
+                          description: Local currency, if set.
+                          example: EUR
+                        local_value:
+                          type:
+                          - 'null'
+                          - number
+                          description: Value for local currency, if set.
+                          example: 180
+            accommodations:
+              type: array
+              description: Accommodation items.
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: Identifier of the accommodation option in the TourRadar system.
+                    example: 396410
+                  name:
+                    type: string
+                    description: Name of the accommodation option.
+                    example: Standard
+                  description:
+                    type: string
+                    description: Description of the accommodation option.
+                    example: Standard accommodation
+                  payment_type:
+                    type: string
+                    enum:
+                    - upfront
+                    - local
+                    description: The payment type (upfront or local).
+                    example: upfront
+                  beds_number:
+                    type:
+                    - integer
+                    - 'null'
+                    description: Number of beds.
+                    example: 2
+                  is_shared:
+                    type:
+                    - boolean
+                    - 'null'
+                    description: If true, this accommodation is shared with other participants of the tour.
+                    example: 1
+                  code:
+                    type:
+                    - string
+                    - 'null'
+                    description: If available, the operator code associated with this item.
+                    example: STANDARD
+                  prices:
+                    type: array
+                    description: Price information for this item.
+                    items:
+                      type: object
+                      properties:
+                        value:
+                          type: number
+                          description: Price for this item.
+                          example: 2199
+                        price_category_id:
+                          type: integer
+                          description: Identifier of the price category.
+                          example: 1634
+                        quantity:
+                          type: integer
+                          description: Number of passengers for which this item was requested.
+                          example: 2
+                        local_currency:
+                          type:
+                          - 'null'
+                          - string
+                          description: Local currency, if set.
+                          example: EUR
+                        local_value:
+                          type:
+                          - 'null'
+                          - number
+                          description: Value for local currency, if set.
+                          example: 2199
+            optional_extras:
+              type: array
+              description: Optional extra items.
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: Identifier of the optional extra in the TourRadar system.
+                    example: 794595
+                  name:
+                    type: string
+                    description: Name of the optional extra.
+                    example: Okavango Delta Flight - Day 3
+                  description:
+                    type: string
+                    description: Description of the optional extra.
+                    example: Get a fresh perspective on the vast wilderness of Africa with a once-in-a-lifetime view only a select few will ever see. Enjoy the hippos in the waterways and elephants and buffalo in the tree line. Gaze at the winding water channels as they make their way through the Delta.
+                  payment_type:
+                    type: string
+                    enum:
+                    - upfront
+                    - local
+                    description: The payment type (upfront or local).
+                    example: upfront
+                  code:
+                    type:
+                    - string
+                    - 'null'
+                    description: If available, the operator code associated with this item.
+                    example: '446070'
+                  allocation:
+                    type: string
+                    enum:
+                    - per_passenger
+                    - per_booking
+                    description: The allocation of this addon. If 'per_booking', the optional extra must be assigned to all the passengers
+                    example: per_passenger
+                  prices:
+                    type: array
+                    description: Price information for this item.
+                    items:
+                      type: object
+                      properties:
+                        value:
+                          type: number
+                          description: Price for this item.
+                          example: 219
+                        price_category_id:
+                          type: integer
+                          description: Identifier of the price category.
+                          example: 1634
+                        quantity:
+                          type: integer
+                          description: Number of passengers for which this item was requested.
+                          example: 2
+                        local_currency:
+                          type:
+                          - 'null'
+                          - string
+                          description: Local currency, if set.
+                          example: EUR
+                        local_value:
+                          type:
+                          - 'null'
+                          - number
+                          description: Value for local currency, if set.
+                          example: 219
+            partner_info:
+              type:
+              - object
+              - 'null'
+              properties:
+                calculation_base:
+                  type:
+                  - 'null'
+                  - string
+                  description: Calculation base.
+                  example: accommodation
+                contract_type:
+                  type: string
+                  description: Contract type.
+                  example: direct
+                commission_rate:
+                  type: number
+                  description: Commission rate of the partner.
+                  example: 0.08
+                commission_value:
+                  type: number
+                  description: Commission value of the partner.
+                  example: 772.16
+                booking_fee_rate:
+                  type: number
+                  description: Booking fee rate of the partner.
+                  example: 0.03
+                booking_fee_value:
+                  type: number
+                  description: Booking fee value of the partner.
+                  example: 289.56
+    ToursPromotion:
+      type:
+      - object
+      - 'null'
+      description: Details about the promotion applied, if available.
+      properties:
+        id:
+          type: integer
+          description: Unique identifier of the promotion in the TourRadar system.
+          example: 9990067
+        discount:
+          type: number
+          description: Amount of the promotion (to subtract from the base price).
+          example: 845
+        name:
+          type: string
+          description: Promotion name.
+          example: Special deal
+        type:
+          type: string
+          description: Type of the promotion (percentage discount, or 2-for-1 offer).
+          example: discount
+        percentage:
+          type:
+          - number
+          - 'null'
+          description: Amount of the promotion, when promotion is based on percentage discount.
+          example: 30
+        pax_restriction:
+          type:
+          - number
+          - 'null'
+          description: Maximum pax number to apply this promotion. If null - no limit.
+          example: 30
+        value_type:
+          type: string
+          enum:
+          - percent
+          - absolute
+          description: Type of the value, can be absolute or percent.
+          example: percent
+        valid_to:
+          type:
+          - string
+          - 'null'
+          description: Validity definition.
+          example: '2024-10-16'
+    TourDeparturePriceTiers:
+      type: array
+      items:
+        type: object
+        properties:
+          price_category_id:
+            type: number
+            description: Price category id.
+            example: 1634
+          pax_min:
+            type:
+            - number
+            - 'null'
+            description: Minimum number of passengers needed to have access to this tier.
+            example: 1
+          pax_max:
+            type:
+            - number
+            - 'null'
+            description: Maximum number of passengers that allows access to this tier.
+            example: 1
+          value:
+            type: number
+            description: Value of the tier.
+            example: 189
+          value_promotion:
+            type:
+            - number
+            - 'null'
+            description: Value of the tier.
+            example: 189
+    TourDeparturePriceInput:
+      type: object
+      properties:
+        user_country:
+          type: integer
+          description: User country ID. List of available countries you can find in `/v1/taxonomy/destinations/country` endpoint.
+          example: 139
+        currency:
+          description: Currency code.
+          enum:
+          - USD
+          - AUD
+          - GBP
+          - NZD
+          - EUR
+          - CAD
+          example: EUR
+        passengers:
+          type: array
+          description: List of the passengers. Each row represents one passenger.
+          items:
+            type: object
+            properties:
+              pax_number:
+                type: integer
+                description: Pax number, starting from 1. If you are calculating price for 5 people, the values should be from 1 to 5.
+              price_category_id:
+                type: integer
+                description: Price category ID from `/v1/tours/{tourId}/prices` endpoint.
+          example:
+          - pax_number: 1
+            price_category_id: 1634
+          - pax_number: 2
+            price_category_id: 1634
+          - pax_number: 3
+            price_category_id: 1634
+          - pax_number: 4
+            price_category_id: 1634
+        accommodations:
+          type: array
+          description: Mapping of passengers to accommodations.
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: ID of selected accommodation taken from `/v1/tours/{tourId}/departures/{departureId}` endpoint.
+              passengers:
+                type: array
+                description: List of pax_number what should be suite to selected accommodation.
+                items:
+                  type: integer
+          example:
+          - id: 396410
+            passengers:
+            - 1
+            - 2
+          - id: 856733
+            passengers:
+            - 3
+            - 4
+        optional_extras:
+          type: array
+          description: Mapping of passengers to optional extras.
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: ID of selected extra option taken from `/v1/tours/{tourId}/departures/{departureId}` endpoint.
+              passengers:
+                type: array
+                description: List of pax_number what should be suite to selected accommodation.
+                items:
+                  type: integer
+          example:
+          - id: 794595
+            passengers:
+            - 1
+            - 2
+    TourPriceCategories:
+      type: object
+      properties:
+        price_categories:
+          type: array
+          description: List of all available price categories.
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: Identifier of the price category in the TourRadar system.
+                example: 1633
+              age_max:
+                type:
+                - integer
+                - 'null'
+                description: Maximum age for passengers to qualify for this category (or null if no limit).
+                example: 39
+              age_min:
+                type:
+                - integer
+                - 'null'
+                description: Minimum age for passengers to qualify for this category (or null if no limit).
+                example: 18
+              price_category_type_id:
+                type: integer
+                description: Price category type id.
+                example: 1
+              external_reference:
+                type: string
+                description: External reference of the category.
+                example: adult
+              title:
+                type: string
+                description: Title of the price category.
+                example: Adult
+              description:
+                type: string
+                description: Description of the price category.
+                example: Adult
+              occupancy:
+                type: integer
+                description: The number of seats the category requires.
+                example: 1
+              title_plural:
+                type: string
+                description: Plural of the title.
+                example: Adults
+    TourDeparturesPagination:
+      required:
+      - current_page
+      - items
+      type: object
+      properties:
+        current_page:
+          type: integer
+          description: Current page number
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/TourDepartures'
+        next_page:
+          type: integer
+          description: If this attribute exists, then another page is available. To get more results, repeat the request with the number specified in the `page` parameter. If this attribute is not part of the response, then the last page has been reached.
+    ToursDeparturePromotion:
+      type:
+      - object
+      - 'null'
+      description: Details about the promotion applied, if available.
+      properties:
+        id:
+          type: integer
+          description: Unique identifier of the promotion in the TourRadar system.
+          example: 9990067
+        discount:
+          type: number
+          description: Amount of the promotion (to subtract from the base price).
+          example: 845
+        name:
+          type: string
+          description: Promotion name.
+          example: Special deal
+        type:
+          type: string
+          description: Type of the promotion (percentage discount, or 2-for-1 offer).
+          example: discount
+        percentage:
+          type:
+          - number
+          - 'null'
+          description: Amount of the promotion, when promotion is based on percentage discount.
+          example: 30
+        pax_restriction:
+          type:
+          - number
+          - 'null'
+          description: Maximum pax number to apply this promotion. If null - no limit.
+          example: 30
+        value_type:
+          type: string
+          enum:
+          - percent
+          - absolute
+          description: Type of the value, can be absolute or percent.
+          example: percent
+        valid_to:
+          type:
+          - string
+          - 'null'
+          description: Validity definition.
+          example: '2024-10-16'
+    DefaultError401:
+      type: object
+      properties:
+        error:
+          type: string
+          description: The error code
+          enum:
+          - UNAUTHORIZED
+        message:
+          type: string
+          description: The error message, if available
+        context:
+          type: object
+          description: Additional data relative to the error condition
+        validation_errors:
+          type: array
+          description: In case of validation error, all the elements that didn't pass validation
+          items:
+            type: string
+    DefaultError500:
+      type: object
+      properties:
+        error:
+          type: string
+          description: The error code
+          enum:
+          - UNKNOWN_ERROR
+        message:
+          type: string
+          description: The error message, if available
+        context:
+          type: object
+          description: Additional data relative to the error condition
+        validation_errors:
+          type: array
+          description: In case of validation error, all the elements that didn't pass validation
+          items:
+            type: string
+    ToursLinks:
+      type: array
+      items:
+        type: object
+        properties:
+          type:
+            type: string
+            description: Type of link
+            example: tour-page
+            enum:
+            - tour-page
+            - book-now
+          url:
+            type: string
+            description: URL to www.tourradar.com website
+            example: https://www.tourradar.com/t/1234?utm_source=partner-12345&utm_medium=api&partner=12345&utm_campaign=tour
+    OptionalExtraItem:
+      type:
+      - object
+      - 'null'
+      description: An item of the pricing data.
+      properties:
+        id:
+          type: integer
+          description: Unique identifier of the price item in the TourRadar system.
+          example: 547121
+        value:
+          type: number
+          description: Value of the price item.
+          example: 180
+        code:
+          type:
+          - string
+          - 'null'
+          description: Code of the item.
+          example: '376058'
+        name:
+          type: string
+          description: Name of the item.
+          example: Day 2 Helicopter Ride
+        description:
+          type: string
+          description: Description of the item.
+          example: Day 2 Helicopter Ride
+        payment_type:
+          type:
+          - string
+          - 'null'
+          description: Payment type.
+          enum:
+          - upfront
+          - local
+          example: upfront
+        pax_restriction:
+          type:
+          - number
+          - 'null'
+          description: Maximum pax number to apply this promotion. If null - no limit.
+          example: 30
+        price_tiers:
+          $ref: '#/components/schemas/TourDeparturePriceTiers'
+        allocation:
+          type: string
+          enum:
+          - per_passenger
+          - per_booking
+          description: The allocation of this addon. If 'per_booking', the optional extra must be assigned to all the passengers
+          example: per_passenger
+    TourDepartureMandatoryAddon:
+      type:
+      - object
+      - 'null'
+      description: Mandatory addon.
+      properties:
+        id:
+          type: integer
+          description: Unique identifier of the price item in the TourRadar system.
+          example: 999
+        value:
+          type: number
+          description: Value of the price item.
+          example: 180
+        code:
+          type:
+          - string
+          - 'null'
+          description: Code of the item.
+          example: ''
+        name:
+          type: string
+          description: Name of the item.
+          example: Domestic flight
+        description:
+          type: string
+          description: Description of the item.
+          example: Domestic flight
+        payment_type:
+          type:
+          - string
+          - 'null'
+          description: Payment type.
+          enum:
+          - upfront
+          - local
+          example: local
+        pax_restriction:
+          type:
+          - number
+          - 'null'
+          description: Maximum pax number to apply this promotion. If null - no limit.
+          example: 30
+        price_tiers:
+          $ref: '#/components/schemas/TourDeparturePriceTiers'
+        local_currency:
+          type:
+          - string
+          - 'null'
+          description: The used currency.
+          example: USD
+        local_value:
+          type:
+          - number
+          - 'null'
+          description: The value in local currency.
+          example: 180
+  securitySchemes:
+    application:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://oauth.api.sandbox.b2b.tourradar.com/oauth2/token
+          scopes:
+            com.tourradar.bookings/read: Read booking information
+            com.tourradar.bookings/write: Create new bookings
+            com.tourradar.bookings.affiliate/read: Read booking information
+            com.tourradar.operators/read: Read operators information
+            com.tourradar.tours/read: Read tours informations
+x-refined-from:
+- tourradar-partner-api-openapi.json
+- tourradar-openapi.yml

@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/tourradar/main/json-schema/tourradar-booking-input-schema.json",
+  "title": "BookingInput",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/tourradar-openapi.yml#/components/schemas/BookingInput",
+  "type": "object",
+  "properties": {
+    "tour_id": {
+      "type": "integer",
+      "description": "Unique identifier for the tour in the TourRadar system."
+    },
+    "departure_id": {
+      "type": "integer",
+      "description": "Unique identifier of the departure date. For a list of departure dates, use the **[/tours/{tourId}/departures](#tag/Pricing-and-Availability/paths/~1v1~1tours~1{tourId}~1departures/get)** endpoint.`"
+    },
+    "currency": {
+      "description": "Currency code for the booking. The default is `USD`.",
+      "enum": [
+        "USD",
+        "AUD",
+        "GBP",
+        "NZD",
+        "EUR",
+        "CAD"
+      ]
+    },
+    "email": {
+      "description": "Email address for the lead passenger.",
+      "type": "string"
+    },
+    "user_country": {
+      "description": "Identifier for the country of residence of the main passenger. Country IDs can be obtained from the **[/taxonomy/destinations/country](#tag/Taxonomy/paths/~1v1~1taxonomy~1destinations~1{type}/get)** endpoint.",
+      "type": "integer"
+    },
+    "passengers": {
+      "type": "array",
+      "description": "List of passengers. Each entry represents one passenger.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "pax_number": {
+            "type": "integer",
+            "description": "Passenger identifier, starting from 1. If the booking contains 5 passengers, the values must be from 1 to 5."
+          },
+          "price_category_id": {
+            "type": "integer",
+            "description": "Price category ID retrieved from the **[/tours/{tourId}/prices](#tag/Pricing-and-Availability/paths/~1v1~1tours~1{tourId}~1prices/get)** endpoint."
+          },
+          "fields": {
+            "type": "object",
+            "description": "A set of key-value pairs containing passenger information. For a list of the available and mandatory keys, use the **[/operators/{operatorId}/booking-fields](#tag/Operators/paths/~1v1~1operators~1{operator}~1booking-fields/get)** endpoint."
+          }
+        }
+      }
+    },
+    "accommodations": {
+      "type": "array",
+      "description": "Accommodation requested, and assignment to passengers.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Unique identifier of the selected accommodation, taken from the **[/tours/{tourId}/departures/{departureId}](#tag/Pricing-and-Availability/paths/~1v1~1tours~1{tourId}~1departures~1{departureId}/get)** endpoint."
+          },
+          "passengers": {
+            "type": "array",
+            "description": "List of `pax_number` identifiers that should be placed in the selected accommodation.",
+            "items": {
+              "type": "integer"
+            }
+          }
+        }
+      }
+    },
+    "optional_extras": {
+      "type": "array",
+      "description": "Optional extras requested, and assignment to passengers.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Unique identifier of an optional extra, taken from the **[/tours/{tourId}/departures/{departureId}](#tag/Pricing-and-Availability/paths/~1v1~1tours~1{tourId}~1departures~1{departureId}/get)** endpoint."
+          },
+          "passengers": {
+            "type": "array",
+            "description": "List of `pax_number` identifiers for which this optional extra is being booked.",
+            "items": {
+              "type": "integer"
+            }
+          }
+        }
+      }
+    },
+    "partner_booking_code": {
+      "description": "the booking code, or reference number, in your system. This will be stored with the booking, and returned with the booking detail request.",
+      "type": "string"
+    },
+    "custom_data": {
+      "description": "Additional info set by the partner when creating the booking. Up to 5 string properties can be set in it.",
+      "type": "object"
+    },
+    "store_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Identifier of the store, or agency, that made the booking. Note: this is only relevant for bookings made via the TourRadar Partner API."
+    }
+  },
+  "required": [
+    "departure_id",
+    "email",
+    "passengers",
+    "user_country"
+  ]
+}

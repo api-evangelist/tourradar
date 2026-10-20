@@ -1,0 +1,13 @@
+name: TourRadar pricing
+generated: '2026-10-20'
+method: searched
+source: https://www.tourradar.com/distribution-api
+audience: business-product
+pricing_basis: negotiated
+published: false
+plan_count: 0
+note: The Distribution API page describes setups (Share, Sell in our Portal, Sell on your own platform) and their fee structure but publishes no numeric price; exact share is confirmed at onboarding.
+price_text: Every setup has a setup fee and a monthly minimum, payable only in months your bookings are below an agreed volume.
+delivery:
+  delivery: managed
+plans: []

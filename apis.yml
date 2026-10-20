@@ -1,13 +1,12 @@
 aid: tourradar
 name: TourRadar
-description: >-
-  TourRadar is the world's largest online marketplace for multi-day organized
-  adventures, connecting travelers with more than 50,000 tours, safaris, and
-  river cruises from over 2,500 vetted operators worldwide. Headquartered in
-  Vienna, Austria, the company also operates a B2B Distribution API that lets
-  OTAs, airlines, GDSs, and travel agencies search tour content and book
-  departures through a unified API, alongside embeddable booking widgets and an
-  affiliate program (RISE) for creators and publishers.
+description: TourRadar is the world's largest online marketplace for multi-day organized
+  adventures, connecting travelers with more than 50,000 tours, safaris, and river
+  cruises from over 2,500 vetted operators worldwide. Headquartered in Vienna, Austria,
+  the company also operates a B2B Distribution API that lets OTAs, airlines, GDSs,
+  and travel agencies search tour content and book departures through a unified API,
+  alongside embeddable booking widgets and an affiliate program (RISE) for creators
+  and publishers.
 url: https://raw.githubusercontent.com/api-evangelist/tourradar/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
@@ -38,7 +37,7 @@ accessModel:
   method: derived
 specificationVersion: '0.23'
 created: '2026-07-17'
-modified: '2026-07-21'
+modified: '2026-10-20'
 image: https://cdn.tourradar.com/s3/content-pages/391/1200x630/j705A8.png
 tags:
 - Travel
@@ -48,35 +47,36 @@ tags:
 - Adventure Travel
 - Distribution
 - Affiliates
-apis:
-- aid: tourradar:distribution-api
-  name: TourRadar Distribution API
-  description: >-
-    Unified B2B API giving platforms, travel agencies, airlines, and GDSs access
-    to TourRadar's network of 2,500+ organized adventure operators and 50,000+
-    experiences. Offered in three tiers - a Search & Content API for affiliates,
-    a wholesale Booking API that keeps bookings on the partner platform, and a
-    Booking API Direct that uses the partner's own commercial agreements with
-    TourRadar handling backend transactions. Prices, dates, and content are
-    validated daily. Partners authenticate with OAuth 2.0 (AWS Cognito) and
-    manage credentials through the partner dashboard, where the API
-    documentation and an OpenAPI definition are available after login.
-  humanURL: https://www.tourradar.com/distribution-api
-  baseURL: https://api.b2b.tourradar.com
-  tags:
-  - Travel
-  - Tours
-  - Booking
-  - Distribution
-  - Affiliates
-  properties:
-  - type: Documentation
-    url: https://dashboard.api.b2b.tourradar.com/docs
-  - type: Authentication
-    url: authentication/tourradar-authentication.yml
-  - type: OAuthScopes
-    url: scopes/tourradar-scopes.yml
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
+- FN: APIs.json
+  email: info@apis.io
 common:
+- type: AgenticAccess
+  url: agentic-access/tourradar-agentic-access.yml
+- type: RateLimits
+  url: rate-limits/tourradar-rate-limits.yml
+- type: Spectral
+  url: rules/tourradar-rules.yml
+- type: JSONLD
+  url: json-ld/tourradar-context.jsonld
+- type: Vocabulary
+  url: vocabulary/tourradar-vocabulary.yml
+- type: DataModel
+  url: data-model/tourradar-data-model.yml
+- type: Conventions
+  url: conventions/tourradar-conventions.yml
+- type: Sandbox
+  url: sandbox/tourradar-sandbox.yml
+- type: ErrorCatalog
+  url: errors/tourradar-problem-types.yml
+- type: Hosts
+  url: hosts/tourradar-hosts.yml
+- type: Vendors
+  url: vendors/tourradar-vendors.yml
+- type: TrustCenter
+  url: https://www.tourradar.com/trust
 - type: DomainSecurity
   url: security/tourradar-domain-security.yml
 - type: Website
@@ -99,6 +99,12 @@ common:
   url: https://www.tourradar.com/privacy
 - type: About
   url: https://www.tourradar.com/about
+- type: APIReference
+  url: https://docs.sandbox.b2b.tourradar.com
+- type: Newsroom
+  url: https://www.tourradar.com/press
+- type: Support
+  url: https://support.tourradar.com/
 - type: Authentication
   url: authentication/tourradar-authentication.yml
 - type: OAuthScopes
@@ -119,13 +125,190 @@ common:
   url: security/tourradar-vulnerability-disclosure.yml
 - type: Security
   url: https://www.tourradar.com/.well-known/security.txt
-maintainers:
-- FN: Kin Lane
-  email: kin@apievangelist.com
-- FN: APIs.json
-  email: info@apis.io
+apis:
+- aid: tourradar:tourradar-bookings-api
+  name: TourRadar Bookings API
+  description: The Bookings API from TourRadar — 5 operation(s) for bookings.
+  humanURL: https://www.tourradar.com/distribution-api
+  baseURL: https://api.b2b.tourradar.com
+  tags:
+  - Bookings
+  properties:
+  - type: OpenAPI
+    url: openapi/tourradar-bookings-api-openapi.yml
+  - type: APIReference
+    url: https://docs.sandbox.b2b.tourradar.com
+  - type: Documentation
+    url: https://dashboard.api.b2b.tourradar.com/docs
+  - type: Authentication
+    url: authentication/tourradar-authentication.yml
+  - type: OAuthScopes
+    url: scopes/tourradar-scopes.yml
+  - type: JSONSchema
+    url: json-schema/tourradar-booking-response-schema.json
+  - type: JSONSchema
+    url: json-schema/tourradar-tour-schema.json
+  - type: JSONSchema
+    url: json-schema/tourradar-booking-schema.json
+  - type: JSONSchema
+    url: json-schema/tourradar-tour-departure-price-schema.json
+  - type: JSONSchema
+    url: json-schema/tourradar-tour-departure-schema.json
+  - type: JSONSchema
+    url: json-schema/tourradar-booking-input-schema.json
+- aid: tourradar:tourradar-bulk-api
+  name: TourRadar Bulk API
+  description: The Bulk API from TourRadar — 2 operation(s) for bulk.
+  humanURL: https://www.tourradar.com/distribution-api
+  baseURL: https://api.b2b.tourradar.com
+  tags:
+  - Bulk
+  properties:
+  - type: OpenAPI
+    url: openapi/tourradar-bulk-api-openapi.yml
+  - type: APIReference
+    url: https://docs.sandbox.b2b.tourradar.com
+  - type: Documentation
+    url: https://dashboard.api.b2b.tourradar.com/docs
+  - type: Authentication
+    url: authentication/tourradar-authentication.yml
+  - type: OAuthScopes
+    url: scopes/tourradar-scopes.yml
+  - type: JSONSchema
+    url: json-schema/tourradar-booking-response-schema.json
+  - type: JSONSchema
+    url: json-schema/tourradar-tour-schema.json
+  - type: JSONSchema
+    url: json-schema/tourradar-booking-schema.json
+  - type: JSONSchema
+    url: json-schema/tourradar-tour-departure-price-schema.json
+  - type: JSONSchema
+    url: json-schema/tourradar-tour-departure-schema.json
+  - type: JSONSchema
+    url: json-schema/tourradar-booking-input-schema.json
+- aid: tourradar:tourradar-operators-api
+  name: TourRadar Operators API
+  description: The Operators API from TourRadar — 3 operation(s) for operators.
+  humanURL: https://www.tourradar.com/distribution-api
+  baseURL: https://api.b2b.tourradar.com
+  tags:
+  - Operators
+  properties:
+  - type: OpenAPI
+    url: openapi/tourradar-operators-api-openapi.yml
+  - type: APIReference
+    url: https://docs.sandbox.b2b.tourradar.com
+  - type: Documentation
+    url: https://dashboard.api.b2b.tourradar.com/docs
+  - type: Authentication
+    url: authentication/tourradar-authentication.yml
+  - type: OAuthScopes
+    url: scopes/tourradar-scopes.yml
+  - type: JSONSchema
+    url: json-schema/tourradar-booking-response-schema.json
+  - type: JSONSchema
+    url: json-schema/tourradar-tour-schema.json
+  - type: JSONSchema
+    url: json-schema/tourradar-booking-schema.json
+  - type: JSONSchema
+    url: json-schema/tourradar-tour-departure-price-schema.json
+  - type: JSONSchema
+    url: json-schema/tourradar-tour-departure-schema.json
+  - type: JSONSchema
+    url: json-schema/tourradar-booking-input-schema.json
+- aid: tourradar:tourradar-pricing-availability-api
+  name: TourRadar Pricing & Availability API
+  description: >-
+    The Pricing & Availability API from TourRadar — 4 operation(s) for pricing & availability.
+  humanURL: https://www.tourradar.com/distribution-api
+  baseURL: https://api.b2b.tourradar.com
+  tags:
+  - Pricing & Availability
+  properties:
+  - type: OpenAPI
+    url: openapi/tourradar-pricing-availability-api-openapi.yml
+  - type: APIReference
+    url: https://docs.sandbox.b2b.tourradar.com
+  - type: Documentation
+    url: https://dashboard.api.b2b.tourradar.com/docs
+  - type: Authentication
+    url: authentication/tourradar-authentication.yml
+  - type: OAuthScopes
+    url: scopes/tourradar-scopes.yml
+  - type: JSONSchema
+    url: json-schema/tourradar-booking-response-schema.json
+  - type: JSONSchema
+    url: json-schema/tourradar-tour-schema.json
+  - type: JSONSchema
+    url: json-schema/tourradar-booking-schema.json
+  - type: JSONSchema
+    url: json-schema/tourradar-tour-departure-price-schema.json
+  - type: JSONSchema
+    url: json-schema/tourradar-tour-departure-schema.json
+  - type: JSONSchema
+    url: json-schema/tourradar-booking-input-schema.json
+- aid: tourradar:tourradar-taxonomy-api
+  name: TourRadar Taxonomy API
+  description: The Taxonomy API from TourRadar — 4 operation(s) for taxonomy.
+  humanURL: https://www.tourradar.com/distribution-api
+  baseURL: https://api.b2b.tourradar.com
+  tags:
+  - Taxonomy
+  properties:
+  - type: OpenAPI
+    url: openapi/tourradar-taxonomy-api-openapi.yml
+  - type: APIReference
+    url: https://docs.sandbox.b2b.tourradar.com
+  - type: Documentation
+    url: https://dashboard.api.b2b.tourradar.com/docs
+  - type: Authentication
+    url: authentication/tourradar-authentication.yml
+  - type: OAuthScopes
+    url: scopes/tourradar-scopes.yml
+  - type: JSONSchema
+    url: json-schema/tourradar-booking-response-schema.json
+  - type: JSONSchema
+    url: json-schema/tourradar-tour-schema.json
+  - type: JSONSchema
+    url: json-schema/tourradar-booking-schema.json
+  - type: JSONSchema
+    url: json-schema/tourradar-tour-departure-price-schema.json
+  - type: JSONSchema
+    url: json-schema/tourradar-tour-departure-schema.json
+  - type: JSONSchema
+    url: json-schema/tourradar-booking-input-schema.json
+- aid: tourradar:tourradar-tours-api
+  name: TourRadar Tours API
+  description: The Tours API from TourRadar — 2 operation(s) for tours.
+  humanURL: https://www.tourradar.com/distribution-api
+  baseURL: https://api.b2b.tourradar.com
+  tags:
+  - Tours
+  properties:
+  - type: OpenAPI
+    url: openapi/tourradar-tours-api-openapi.yml
+  - type: APIReference
+    url: https://docs.sandbox.b2b.tourradar.com
+  - type: Documentation
+    url: https://dashboard.api.b2b.tourradar.com/docs
+  - type: Authentication
+    url: authentication/tourradar-authentication.yml
+  - type: OAuthScopes
+    url: scopes/tourradar-scopes.yml
+  - type: JSONSchema
+    url: json-schema/tourradar-booking-response-schema.json
+  - type: JSONSchema
+    url: json-schema/tourradar-tour-schema.json
+  - type: JSONSchema
+    url: json-schema/tourradar-booking-schema.json
+  - type: JSONSchema
+    url: json-schema/tourradar-tour-departure-price-schema.json
+  - type: JSONSchema
+    url: json-schema/tourradar-tour-departure-schema.json
+  - type: JSONSchema
+    url: json-schema/tourradar-booking-input-schema.json
 x-enrichment:
-  date: '2026-07-21'
+  date: '2026-10-20'
   status: enriched
-  artifacts_added: 10
-  pass: local-v1
+  artifacts_added: 18
+  pass: local-v5

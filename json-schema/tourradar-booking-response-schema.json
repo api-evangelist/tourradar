@@ -1,0 +1,1076 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/tourradar/main/json-schema/tourradar-booking-response-schema.json",
+  "title": "BookingResponse",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/tourradar-openapi.yml#/components/schemas/BookingResponse",
+  "type": "object",
+  "properties": {
+    "reservation_details": {
+      "type": "object",
+      "description": "Detailed reservation information for one matching reservation.",
+      "properties": {
+        "confirmation": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "A unique identifying value assigned by the creating system. The ID attribute may be used to reference a primary-key value within a database or in a particular implementation."
+            },
+            "status": {
+              "type": [
+                "null",
+                "string"
+              ],
+              "description": "Status of the booking. Note this is mapped from the operator values to a TourRadar internal state. In case of status `unknown`, the original value provided by the operator is available in the field `operator_status`.",
+              "enum": [
+                "pending",
+                "confirmed",
+                "cancelled",
+                "declined",
+                "unknown"
+              ]
+            },
+            "operator_status": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "Status of the booking, as provided by the operator."
+            }
+          }
+        },
+        "basic_info": {
+          "type": "object",
+          "description": "Core information about the booked tour and/or activity, including ID(s) and name.",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "The name of the tour and/or activity."
+            },
+            "tour_activity_id": {
+              "type": "string",
+              "description": "A unique ID that identifies this tour and/or activity that may be referenced elsewhere in this message."
+            },
+            "booking_date": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            },
+            "edocs": {
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "booking_version": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "problem_note": {
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "booking_type": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "type": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "region": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "schedule": {
+          "type": "object",
+          "description": "The departure or tour/activity start date/time.",
+          "properties": {
+            "duration": {
+              "type": "integer"
+            },
+            "start": {
+              "type": [
+                "null",
+                "string"
+              ],
+              "format": "date",
+              "description": "The starting value of the time span, in ISO 8601 prescribed format."
+            },
+            "end": {
+              "type": [
+                "null",
+                "string"
+              ],
+              "format": "date",
+              "description": "The ending value of the time span, in ISO 8601 prescribed format."
+            }
+          }
+        },
+        "pickup_dropoff": {
+          "type": "array",
+          "description": "The pickup and/or dropoff information if transportation is provided to/ from the tour/activity location.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "datetime": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "The date and time for the pickup or dropoff."
+              },
+              "dropoff_ind": {
+                "type": "boolean",
+                "description": "If true, this is dropoff information."
+              },
+              "pickup_ind": {
+                "type": "boolean",
+                "description": "If true, this is pickup information."
+              },
+              "location_name": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "The name of the pickup/ dropoff location."
+              },
+              "person_qty": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "description": "The quantity of persons to be picked up or dropped off."
+              },
+              "id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "address": {
+                "type": "object",
+                "description": "Information about an address that identifies a location for a specific purposes.",
+                "properties": {
+                  "address_line": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "Free form address details."
+                  },
+                  "postal_code": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "Post Office Code number."
+                  },
+                  "city_name": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "City (e.g., Dublin), town, or postal station (i.e., a postal service territory, often used in a military address)."
+                  }
+                }
+              },
+              "telephone": {
+                "type": "object",
+                "description": "Information about a telephone number, including the actual number and its usage.",
+                "properties": {
+                  "phone_number": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "Telephone number assigned to a single location."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "participant_info": {
+          "type": "array",
+          "description": "Individual participant, participant category and group details.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "category": {
+                "type": "object",
+                "description": "Information for a participant category.",
+                "properties": {
+                  "qualifier_info": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "A specific type of age and/or group qualifier, such as adult."
+                  },
+                  "quantity": {
+                    "type": "integer",
+                    "description": "Used to define the quantity of participants for the specified information."
+                  }
+                }
+              },
+              "individual": {
+                "type": "object",
+                "description": "Name and other information for known participants.",
+                "properties": {
+                  "participant_id": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "A unique identifier for a known participant that may be referenced elsewhere in this message."
+                  },
+                  "lead_customer_ind": {
+                    "type": "boolean",
+                    "description": "When `true`, indicates that this is the 'lead' participant (i.e., the primary contact making the booking)."
+                  },
+                  "name_prefix": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "Salutation of honorific (e.g. Mr., Mrs., Ms., Miss, Dr.)"
+                  },
+                  "given_name": {
+                    "type": "string",
+                    "description": "Given name, first name or names."
+                  },
+                  "surname": {
+                    "type": "string",
+                    "description": "Family name, last name. May also be used for full name if the sending system does not have the ability to separate a full name into its parts, e.g. the surname element may be used to pass the full name."
+                  },
+                  "middle_name": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "The middle name of the person name."
+                  },
+                  "gender": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "Identifies the gender."
+                  },
+                  "birth_date": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "format": "date",
+                    "description": "Indicates the date of birth as indicated in the document, in ISO 8601 prescribed format."
+                  },
+                  "contact": {
+                    "type": "array",
+                    "description": "Contact information. Name of an individual and appropriate contact information. May be contact information for the customer or someone affiliated with the customer.",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "email": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "description": "Electronic email address, in IETF specified format."
+                        },
+                        "address": {
+                          "type": [
+                            "object",
+                            "null"
+                          ],
+                          "description": "Information about an address that identifies a location for a specific purposes.",
+                          "properties": {
+                            "address_line": {
+                              "type": "string",
+                              "description": "Free form address details."
+                            },
+                            "city_name": {
+                              "type": "string",
+                              "description": "City (e.g., Dublin), town, or postal station (i.e., a postal service territory, often used in a military address)."
+                            },
+                            "county": {
+                              "type": "string",
+                              "description": "County or Region Name (e.g., Fairfax)."
+                            },
+                            "postal_code": {
+                              "type": "string",
+                              "description": "Post Office Code number."
+                            },
+                            "country_name": {
+                              "type": "string",
+                              "description": "Country name (e.g., Ireland).The name or code of a country (e.g. as used in an address or to specify citizenship of a traveller)."
+                            },
+                            "country_code": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            }
+                          }
+                        },
+                        "emergency_flag": {
+                          "type": "boolean",
+                          "description": "Indicates if this contact should be used in the case of an emergency."
+                        },
+                        "person_name": {
+                          "type": "object",
+                          "description": "This provides name information for a person.",
+                          "properties": {
+                            "given_name": {
+                              "type": [
+                                "string",
+                                "null"
+                              ],
+                              "description": "Given name, first name or names."
+                            },
+                            "surname": {
+                              "type": [
+                                "string",
+                                "null"
+                              ],
+                              "description": "Family name, last name. May also be used for full name if the sending system does not have the ability to separate a full name into its parts, e.g. the surname element may be used to pass the full name."
+                            },
+                            "relationship": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            }
+                          }
+                        },
+                        "telephone": {
+                          "type": "object",
+                          "description": "Information about a telephone number, including the actual number and its usage.",
+                          "properties": {
+                            "phone_number": {
+                              "type": [
+                                "string",
+                                "null"
+                              ],
+                              "description": "Telephone number assigned to a single location."
+                            },
+                            "country_access_code": {
+                              "type": [
+                                "string",
+                                "null"
+                              ],
+                              "description": "Code assigned by telecommunications authorities for international country access identifier."
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "document": {
+                    "type": [
+                      "object",
+                      "null"
+                    ],
+                    "description": "Document information for verification purposes and also used for additional filtering for common names.",
+                    "properties": {
+                      "doc_type": {
+                        "type": "string",
+                        "description": "Indicates the type of document (e.g. Passport, Military ID, Drivers License, national ID, Vaccination Certificate)."
+                      },
+                      "doc_id": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "description": "Unique number assigned by authorities to document."
+                      },
+                      "place_of_issue": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "date_of_issue": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "format": "date"
+                      },
+                      "date_of_expiry": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "format": "date"
+                      }
+                    }
+                  },
+                  "nationality": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "The nationality of a participant, if known. Uses ISO 3166 Country Codes."
+                  },
+                  "status": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "restricted": {
+                    "type": [
+                      "boolean",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "insurance": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "description": "Required and/or provided insurance for groups and/or individuals.",
+                "properties": {
+                  "provided": {
+                    "type": "object",
+                    "description": "Third party insurance provided by a group and/or individual.",
+                    "properties": {
+                      "participant_id": {
+                        "type": [
+                          "number",
+                          "null"
+                        ],
+                        "description": "A unique ID (that is assigned elsewhere in the message) that associates a participant with other information."
+                      },
+                      "plan_id": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "description": "The third-party insurance plan ID."
+                      },
+                      "provider_name": {
+                        "type": [
+                          "null",
+                          "string"
+                        ],
+                        "description": "The name of the insurer provider company. Identifies a company by name."
+                      },
+                      "telephone": {
+                        "type": "object",
+                        "properties": {
+                          "phone_number": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "description": "Telephone number assigned to a single location."
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "special_need": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "description": "The name and/or code for a special need requirement, such as a wheelchair or vegetarian meal.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "participant_id": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "description": "A unique identifier for a known participant that may be referenced elsewhere in this message."
+                    },
+                    "code": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "description": "A code known between trading partners for a special needs item."
+                    },
+                    "description": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "description": "Allergic to seafood"
+                    }
+                  }
+                }
+              },
+              "lodging_info": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "description": "Lodging information for the participant and/or group.",
+                  "properties": {
+                    "room_number": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "description": "The room number in the hotel and/or other lodging facility."
+                    },
+                    "room_type": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "bed_preference": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "pricing": {
+          "type": "object",
+          "description": "Pricing information for the tour/ activity that may be broken down by participant category and/or a group.",
+          "properties": {
+            "summary": {
+              "type": "object",
+              "description": "Pricing information for the tour/ activity that is not assciated with participant category(s) and/or group(s).",
+              "properties": {
+                "currency_code": {
+                  "type": "string",
+                  "description": "An ISO 4217 (3) alpha character code that specifies a monetary unit."
+                },
+                "amount": {
+                  "type": [
+                    "null",
+                    "number"
+                  ],
+                  "description": "A monetary amount."
+                },
+                "final_payment_due_date": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "date"
+                },
+                "deposit_amount": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "deposit_due_date": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "date"
+                },
+                "outstanding_balance": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "gross_outstanding_balance": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "net_outstanding_balance": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "net_amount": {
+                  "type": "number"
+                }
+              }
+            },
+            "participant_category": {
+              "type": "array",
+              "description": "Pricing for one or more participant category(s).",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "qualifier_info": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "A specific type of age and/or group qualifier, such as `adult`."
+                  },
+                  "price": {
+                    "type": "object",
+                    "description": "Pricing for the specified participant category information.Base price and taxes associated with the tour and/or activity.",
+                    "properties": {
+                      "currency_code": {
+                        "type": "string",
+                        "description": "An ISO 4217 (3) alpha character code that specifies a monetary unit."
+                      },
+                      "amount": {
+                        "type": [
+                          "null",
+                          "number"
+                        ],
+                        "description": "A monetary amount."
+                      },
+                      "full": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "tax_inclusive": {
+                        "type": "boolean",
+                        "description": "If TRUE, taxes are included in this charge."
+                      },
+                      "tax_amounts": {
+                        "type": "array",
+                        "description": "A collection of one or more taxes associated with a specific charge.",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "tax_amount": {
+                              "type": "object",
+                              "description": "Detailed information on one specific tax associated with a specific charge",
+                              "properties": {
+                                "total": {
+                                  "type": "number",
+                                  "description": "The total amount of the tax."
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "commission_info": {
+          "type": "object",
+          "description": "Commission information.Contains details pertaining to commissions.",
+          "properties": {
+            "currency_code": {
+              "type": "string"
+            },
+            "commission_payable_amount": {
+              "type": [
+                "null",
+                "number"
+              ],
+              "description": "The amount of commission to be paid."
+            },
+            "tax_amount": {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          }
+        },
+        "supplier_operator": {
+          "type": "object",
+          "description": "Information about the supplier/ operator of the tour/ activity.",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Company name information. Identifies a company by name."
+            },
+            "operator_ind": {
+              "type": "boolean",
+              "description": ""
+            }
+          }
+        },
+        "payment_info": {
+          "type": "array",
+          "description": "Payment details that may be associated with an individual participant, a participant category and/or a group.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "amount": {
+                "type": [
+                  "null",
+                  "number"
+                ],
+                "description": "A monetary amount."
+              },
+              "currency_code": {
+                "type": [
+                  "null",
+                  "string"
+                ],
+                "description": "An ISO 4217 (3) alpha character code that specifies a monetary unit."
+              },
+              "participant_id": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "A unique identifier for a known participant that may be referenced elsewhere in this message."
+              },
+              "credit_card_fee": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "commission": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "payment_status": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "payment_method": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "description": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "A description of the charge."
+              },
+              "payment_due_date": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date"
+              },
+              "payment_identifier": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "date_made": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date-time"
+              },
+              "net_gross": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "detail": {
+                "type": "object",
+                "description": "Detailed information for the payment form.",
+                "properties": {
+                  "payment_transaction_type_code": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "This is used to indicate either a charge, reserve (deposit) or refund."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "extra": {
+          "type": "array",
+          "description": "Extra amenities that were requested and/or reserved.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The extra amenity name."
+              },
+              "status": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              },
+              "quantity": {
+                "type": "integer",
+                "description": "The quantity of this extra required."
+              },
+              "other_code": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "The trading partner code that uniquely identifies the extra and is associated with the supplier code."
+              },
+              "start_date": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date"
+              },
+              "end_date": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date"
+              },
+              "pricing": {
+                "type": "object",
+                "description": "Summary and detailed pricing.",
+                "properties": {
+                  "summary": {
+                    "type": "object",
+                    "description": "Summary pricing that is not associated with a participant category and/or group.Base price and taxes associated with the tour and/or activity.",
+                    "properties": {
+                      "amount": {
+                        "type": "number",
+                        "description": "A monetary amount."
+                      },
+                      "net_amount": {
+                        "type": "number",
+                        "description": "The monetary net amount."
+                      },
+                      "commission": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "discount": {
+          "type": "array",
+          "description": "Promotion code and discount program information that may be associated with an individual participant, a participant category and/or a group.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "discount_program": {
+                "type": "object",
+                "description": "Discount program details.",
+                "properties": {
+                  "detail": {
+                    "type": "object",
+                    "description": "Details about a discount program.",
+                    "properties": {
+                      "program_id": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "description": "A unique ID for this program that may be referenced elsewhere in this message."
+                      },
+                      "name": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "description": "The name of a discount program, e.g. 'Day Pass' or 'Gold Card'."
+                      }
+                    }
+                  },
+                  "amount": {
+                    "type": [
+                      "null",
+                      "number"
+                    ]
+                  },
+                  "quantity": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "percentage": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "participant_id": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "A unique identifier for a known participant that may be referenced elsewhere in this message."
+              },
+              "promotion": {
+                "type": "object",
+                "description": "Code for promotional pricing.",
+                "properties": {
+                  "code": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "A promotion code."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "itinerary": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "object",
+            "description": "An item of package itinerary - typically a flight, accommodation or car rental arrangement.",
+            "properties": {
+              "start": {
+                "type": "object",
+                "properties": {
+                  "city_name": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "city_id": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "country_name": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "country_code": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "end": {
+                "type": "object",
+                "properties": {
+                  "city_name": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "city_id": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "country_name": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "country_code": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "agent": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "properties": {
+            "email": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "buying_agent_name": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "travel_consultant_first_name": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "travel_consultant_surname": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "app_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

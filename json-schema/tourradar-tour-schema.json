@@ -1,0 +1,991 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/tourradar/main/json-schema/tourradar-tour-schema.json",
+  "title": "Tour",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/tourradar-openapi.yml#/components/schemas/Tour",
+  "type": "object",
+  "properties": {
+    "tour_id": {
+      "type": "integer",
+      "description": "Unique identifier for the tour in the TourRadar system (please note that this is different from the operator code)."
+    },
+    "locale": {
+      "type": "string",
+      "description": "Language locale the content is provided, default is `en_US` (English)."
+    },
+    "codes": {
+      "type": "array",
+      "description": "Operator codes for the tour. Note that some operators offer the same tours in a number of variants (usually for different accommodation options), but TourRadar handles them as a single tour. For this reason, it's possible that more than one code refers to this tour.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "language": {
+      "type": "string",
+      "description": "Language code the content is provided, default is `en` (English)."
+    },
+    "tour_name": {
+      "type": "string",
+      "description": "Name of the tour. Note that tour names are sometimes adjusted by TourRadar, and might not exactly match the name provided by the operator."
+    },
+    "is_active": {
+      "type": "boolean",
+      "description": "Determines if the tour is currently active, e.g. if it has departure dates that can be booked. Note: inactive tours are never returned by searching, but they could have existing bookings, so it's possible to retrieve them directly by ID."
+    },
+    "description": {
+      "type": [
+        "null",
+        "string"
+      ],
+      "description": "Description of the tour, providing a summary of the itinerary and the key important selling points for the tour."
+    },
+    "tour_length_days": {
+      "type": "integer",
+      "description": "Length of the tour, expressed in number of days."
+    },
+    "is_instant_confirmable": {
+      "type": "boolean",
+      "description": "If true, bookings related to this tour can be instantly confirmed by the operator."
+    },
+    "guide_languages": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "description": "List of languages this tour is offered in (for their meaning, see **[/taxonomy/languages](#tag/Taxonomy/paths/~1v1~1taxonomy~1languages/get)**).",
+      "items": {
+        "type": "integer"
+      }
+    },
+    "start_point": {
+      "type": "object",
+      "description": "Information about the starting point of the tour (e.g. pickup point), if available.",
+      "properties": {
+        "latitude": {
+          "type": [
+            "null",
+            "number"
+          ],
+          "description": "Latitude of the location where the tour will start."
+        },
+        "longitude": {
+          "type": [
+            "null",
+            "number"
+          ],
+          "description": "Longitude of the location where the tour will start."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the location where the tour will start."
+        },
+        "address": {
+          "type": "string",
+          "description": "Address of the location where the tour will start."
+        },
+        "time": {
+          "type": "string",
+          "description": "Time of the day when the tour will start."
+        }
+      }
+    },
+    "end_point": {
+      "type": "object",
+      "description": "Information about the ending point of the tour (e.g. drop off point), if available.",
+      "properties": {
+        "latitude": {
+          "type": [
+            "null",
+            "number"
+          ],
+          "description": "Latitude of the location where the tour will end."
+        },
+        "longitude": {
+          "type": [
+            "null",
+            "number"
+          ],
+          "description": "Longitude of the location where the tour will end."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the location where the tour will end."
+        },
+        "address": {
+          "type": "string",
+          "description": "Address of the location where the tour will end."
+        },
+        "time": {
+          "type": "string",
+          "description": "Time of the day when the tour will end."
+        }
+      }
+    },
+    "budget": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "A market term that defines the price category of the tour.",
+      "enum": [
+        "budget",
+        "flexible",
+        "comfort",
+        "luxury"
+      ]
+    },
+    "max_group_size": {
+      "type": "integer",
+      "description": "Maximum number of passengers allowed on the tour."
+    },
+    "operator": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "Unique identifier for the tour operator in the TourRadar system."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the tour operator."
+        }
+      }
+    },
+    "links": {
+      "$ref": "#/$defs/ToursLinks"
+    },
+    "prices": {
+      "$ref": "#/$defs/TourPrice"
+    },
+    "itinerary": {
+      "$ref": "#/$defs/TourItinerary"
+    },
+    "start_city": {
+      "description": "The city where the tour starts.",
+      "type": "object",
+      "properties": {
+        "location_id": {
+          "type": "integer",
+          "description": "Unique identifier for the city in the TourRadar system."
+        },
+        "city_name": {
+          "type": "string",
+          "description": "Name of the city."
+        },
+        "country_code": {
+          "type": "string",
+          "description": "ISO code for the country where the city is located."
+        },
+        "latitude": {
+          "type": "number",
+          "description": "Geographic latitude."
+        },
+        "longitude": {
+          "type": "number",
+          "description": "Geographic longitude."
+        }
+      }
+    },
+    "end_city": {
+      "description": "The city where the tour ends.",
+      "type": "object",
+      "properties": {
+        "location_id": {
+          "type": "integer",
+          "description": "Unique identifier for the city in the TourRadar system."
+        },
+        "city_name": {
+          "type": "string",
+          "description": "Name of the city."
+        },
+        "country_code": {
+          "type": "string",
+          "description": "ISO code for the country where the city is located."
+        },
+        "latitude": {
+          "type": "number",
+          "description": "Geographic latitude."
+        },
+        "longitude": {
+          "type": "number",
+          "description": "Geographic longitude."
+        }
+      }
+    },
+    "destinations": {
+      "$ref": "#/$defs/TourDestinations"
+    },
+    "images": {
+      "description": "An array of images for the tour. This is limited to 3 entries, plus the image of the tour map.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL for the image on the TourRadar CDN."
+          },
+          "thumbnail_url": {
+            "type": "string",
+            "description": "URL for the image thumbnail on the TourRadar CDN."
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "image",
+              "map"
+            ],
+            "description": "Type of image, can be `image` for regular tour images, or `map` for an auto-generated image that shows the tour itinerary on a geographical map."
+          }
+        }
+      }
+    },
+    "tour_types": {
+      "type": "array",
+      "description": "List of the types this tour is categorised under.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type_id": {
+            "type": "integer",
+            "description": "Unique identifier for the tour type in the TourRadar system. For a list of all values, use the **[/taxonomy/tours/types](#tag/Taxonomy/paths/~1v1~1taxonomy~1tours~1types/get)** endpoint."
+          },
+          "type_name": {
+            "type": "string",
+            "description": "Name of the tour type."
+          },
+          "group_id": {
+            "type": "integer",
+            "description": "Unique identifier for the tour type group in the TourRadar system. For a list of all values, use the **[/taxonomy/tours/types](#tag/Taxonomy/paths/~1v1~1taxonomy~1tours~1types/get)** endpoint."
+          },
+          "group_name": {
+            "type": "string",
+            "description": "Name of the tour type group."
+          }
+        }
+      }
+    },
+    "services": {
+      "type": "object",
+      "description": "This section describes the various services provided with the tour (accommodation, food, and so on).",
+      "properties": {
+        "accommodation": {
+          "type": "array",
+          "description": "Information about the nature of the accommodation provided with the tour.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "is_included": {
+                "type": "boolean",
+                "description": "Flag to determine if the accommodation is included."
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of the accommodation components included in the tour."
+              },
+              "accommodations": {
+                "type": "array",
+                "description": "A detailed list of the accommodation options included in the tour.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "description": "Type of accommodation, for example: hotel, hostel, cabin, camping, etc."
+                    },
+                    "nights": {
+                      "type": [
+                        "number",
+                        "null"
+                      ],
+                      "description": "If available, the number of nights spent in this accommodation option."
+                    }
+                  }
+                }
+              },
+              "ship_rooms": {
+                "type": "array",
+                "description": "For cruise tours, the list of available cabin types offered.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "ship_name": {
+                      "type": "string",
+                      "description": "Name of the ship."
+                    },
+                    "category": {
+                      "type": [
+                        "null",
+                        "string"
+                      ],
+                      "description": "Category of the cabins."
+                    },
+                    "type": {
+                      "type": [
+                        "null",
+                        "string"
+                      ],
+                      "description": "Description of the cabin type."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "flights": {
+          "type": "array",
+          "description": "Information about the inclusion of flights with the tour.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "is_included": {
+                "type": "boolean",
+                "description": "Flag to determine if flights are included."
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of the flights included."
+              }
+            }
+          }
+        },
+        "guide": {
+          "type": "array",
+          "description": "Information about the tour guide.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "is_included": {
+                "type": "boolean",
+                "description": "Flag to determine if the guide is included."
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of the included tour guide services."
+              }
+            }
+          }
+        },
+        "insurance": {
+          "type": "array",
+          "description": "Information about the travel insurance.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "is_included": {
+                "type": "boolean",
+                "description": "Flag to determine if travel insurance is included."
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of the included insurance services."
+              }
+            }
+          }
+        },
+        "meals": {
+          "type": "array",
+          "description": "Information about the food services provided with the tour.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "is_included": {
+                "type": "boolean",
+                "description": "Flag to determine if meals are included."
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of the included meals."
+              },
+              "food_options": {
+                "type": "array",
+                "description": "Special food options available, for example: vegetarian, halal, kosher, etc.",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "optional": {
+          "type": "array",
+          "description": "Information about additional optional services that the tour offers.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "is_included": {
+                "type": "boolean",
+                "description": "Flag to determine optional inclusions."
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of available options for the tour."
+              }
+            }
+          }
+        },
+        "others": {
+          "type": "array",
+          "description": "Information about other services.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "is_included": {
+                "type": "boolean",
+                "description": "Flag to determine other inclusions."
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of other included services."
+              }
+            }
+          }
+        },
+        "transport": {
+          "type": "array",
+          "description": "Information about means of transportation included in the tour.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "is_included": {
+                "type": "boolean",
+                "description": "Flag to determine if transport services are included."
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of the transport services."
+              },
+              "ships": {
+                "type": "array",
+                "description": "For cruise tours, this will identify the ship (or ships) used as means of transportation.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Name of the ship."
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "A short description of the ship."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "hygieneprotocol": {
+          "type": "array",
+          "description": "Information about the hygiene protocol that the tour operator will observe. This will include vaccination requirements, if any.",
+          "items": {
+            "properties": {
+              "is_included": {
+                "type": "boolean",
+                "description": "Flag to determine if hygiene protocol is included."
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of the hygiene protocol."
+              }
+            }
+          }
+        }
+      }
+    },
+    "ratings": {
+      "type": "object",
+      "description": "Ratings are collected by TourRadar from customers, after the tour is completed, and in some occasions provided by the operator.",
+      "properties": {
+        "overall": {
+          "type": [
+            "null",
+            "number"
+          ],
+          "description": "Rating out of 5 for the overall tour."
+        },
+        "itinerary": {
+          "type": [
+            "null",
+            "number"
+          ],
+          "description": "Rating out of 5 for the itinerary of the tour."
+        },
+        "transport": {
+          "type": [
+            "null",
+            "number"
+          ],
+          "description": "Rating out of 5 for included transport services."
+        },
+        "food": {
+          "type": [
+            "null",
+            "number"
+          ],
+          "description": "Rating out of 5 for meals included in the tour."
+        },
+        "guide": {
+          "type": [
+            "null",
+            "number"
+          ],
+          "description": "Rating out of 5 for the guiding services of the tour."
+        },
+        "accommodation": {
+          "type": [
+            "null",
+            "number"
+          ],
+          "description": "Rating out of 5 for the included accommodation."
+        },
+        "operator": {
+          "type": [
+            "null",
+            "number"
+          ],
+          "description": "Rating out of 5 for the tour operator."
+        }
+      }
+    },
+    "reviews_count": {
+      "type": "integer",
+      "description": "Number of reviews related to this tour."
+    },
+    "age_range": {
+      "type": "object",
+      "description": "Age limits for this tour.",
+      "properties": {
+        "strict": {
+          "type": [
+            "null",
+            "object"
+          ],
+          "description": "This is the operator restriction for passengers on the tour (passengers outside of this age range will not be accepted).",
+          "properties": {
+            "min_age": {
+              "type": "integer",
+              "description": "Minimum age limit for passengers on the tour."
+            },
+            "max_age": {
+              "type": "integer",
+              "description": "Maximum age limit for passengers on the tour."
+            }
+          }
+        },
+        "recommended": {
+          "type": [
+            "null",
+            "object"
+          ],
+          "description": "This is the operator recommended age range, based on the activities part of the tour.",
+          "properties": {
+            "min_age": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "description": "Minimum age limit for passengers on the tour."
+            },
+            "max_age": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "description": "Maximum age limit for passengers on the tour."
+            }
+          }
+        }
+      }
+    },
+    "has_machine_translated_content": {
+      "type": [
+        "null",
+        "boolean"
+      ],
+      "description": "This flag indicates if the content in the current language was translated automatically (using a Machine Translation service), or is provided by the operator. It is recommended to display a warning in case content is automatically translated, and if the content is included on a public website, the page should be marked as `noindex` for search engines."
+    },
+    "departure_months": {
+      "type": "array",
+      "description": "List of available departure by month.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "year": {
+            "type": "integer",
+            "description": "Year of departure date."
+          },
+          "month": {
+            "type": "integer",
+            "description": "Month of departure date. 1 is January ... 12 is December."
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "TourCity": {
+      "type": "object",
+      "properties": {
+        "location_id": {
+          "type": "integer",
+          "description": "Unique identifier for the city in the TourRadar system."
+        },
+        "city_name": {
+          "type": "string",
+          "description": "Name of the city."
+        },
+        "country_code": {
+          "type": "string",
+          "description": "ISO code for the country where the city is located."
+        },
+        "latitude": {
+          "type": "number",
+          "description": "Geographic latitude."
+        },
+        "longitude": {
+          "type": "number",
+          "description": "Geographic longitude."
+        }
+      }
+    },
+    "TourDestinations": {
+      "description": "List of all destinations included in the tour.",
+      "type": "object",
+      "properties": {
+        "cities": {
+          "type": "array",
+          "description": "List of all cities.",
+          "items": {
+            "$ref": "#/$defs/TourCity"
+          }
+        },
+        "countries": {
+          "type": "array",
+          "description": "List of all countries.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "location_id": {
+                "type": "integer",
+                "description": "Unique identifier for the country in the TourRadar system."
+              },
+              "country_name": {
+                "type": "string",
+                "description": "Name of the country."
+              },
+              "country_code": {
+                "type": "string",
+                "description": "ISO country code."
+              },
+              "currency_code": {
+                "type": "string",
+                "description": "Code for the country (primary) currency."
+              },
+              "currency_name": {
+                "type": "string",
+                "description": "Name of the (primary) currency used in the country."
+              },
+              "electricity_outlets": {
+                "type": "array",
+                "description": "The electrical outlet types used in the country.",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "natural_destinations": {
+          "type": "array",
+          "description": "List of the natural destinations related to the tour.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "location_id": {
+                "type": "integer",
+                "description": "Unique identifier for the natural destination in the TourRadar system."
+              },
+              "natural_destination_name": {
+                "type": "string",
+                "description": "Name of the natural destination."
+              },
+              "country_code": {
+                "type": [
+                  "null",
+                  "string"
+                ],
+                "description": "ISO country code."
+              },
+              "type": {
+                "type": "string",
+                "description": "Type of the natural destination.",
+                "enum": [
+                  "continent",
+                  "country",
+                  "state",
+                  "region",
+                  "city",
+                  "national-park",
+                  "island",
+                  "mountain",
+                  "ocean",
+                  "river",
+                  "lake"
+                ]
+              },
+              "latitude": {
+                "type": [
+                  "null",
+                  "number"
+                ],
+                "description": "Latitude of the natural destination, if available."
+              },
+              "longitude": {
+                "type": [
+                  "null",
+                  "number"
+                ],
+                "description": "Longitude of the natural destination, if available."
+              }
+            }
+          }
+        }
+      }
+    },
+    "TourItinerary": {
+      "description": "Details the itinerary of the tour, with day-by-day description of the activities and the destinations visited.",
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "object",
+        "properties": {
+          "order": {
+            "type": "integer",
+            "description": "The order of the itinerary item."
+          },
+          "duration": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "The duration of this item in number of days."
+          },
+          "title": {
+            "type": "string",
+            "description": "Title of the itinerary item."
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the itinerary item."
+          },
+          "locations": {
+            "type": "array",
+            "description": "Locations visited in this itinerary item.",
+            "items": {
+              "$ref": "#/$defs/TourCity"
+            }
+          }
+        }
+      }
+    },
+    "TourPrice": {
+      "type": "object",
+      "properties": {
+        "partner_info": {
+          "type": "object",
+          "description": "Information about the partner-specific component of the price, including commission.",
+          "properties": {
+            "booking_fee_value": {
+              "type": "number",
+              "description": "The actual booking fee value, calculated on the price reported in this section."
+            },
+            "booking_fee_rate": {
+              "type": "number",
+              "description": "The booking fee rate, if any, espressed as multiplier. For example, a booking fee of 5% would be represented by `0.05`. If no booking fee will be due for booking this tour, this will be `0`."
+            },
+            "commission_rate": {
+              "type": "number",
+              "description": "The commission rate, expressed as multiplier. For example, a commission of 5% would be represented by `0.05`. If no commission will be paid for booking this tour, this will be `0`."
+            },
+            "commission_value": {
+              "type": "number",
+              "description": "The actual commission value, calculated on the price reported in this section."
+            },
+            "contract_type": {
+              "type": "string",
+              "enum": [
+                "direct",
+                "wholesale",
+                "affiliate",
+                "organiser"
+              ],
+              "description": "The contract type your partner account is operating with for this operator."
+            },
+            "calculation_base": {
+              "type": "string",
+              "enum": [
+                "accommodation",
+                "all_extras"
+              ],
+              "description": "Definition of the amount used as reference for the commission calculation."
+            }
+          }
+        },
+        "based_on": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "If available, the type of accommodation that the base price refers to."
+        },
+        "price_base": {
+          "type": "number",
+          "description": "Base price of the tour, also referenced as brochure price. Note this is the lowest price among the possible departure dates (some departure dates may be more expensive than this)."
+        },
+        "price_addons": {
+          "type": "number",
+          "description": "Sum of the mandatory addons that the passenger will have to pay (both upfront and local payments)."
+        },
+        "price_promotion": {
+          "type": "number",
+          "description": "Discounted price, or base price minus the promotion."
+        },
+        "price_total_upfront": {
+          "type": "number",
+          "description": "Final sale price, composed by the base price, minus the applied promotion, plus the upfront addons."
+        },
+        "price_total": {
+          "type": "number",
+          "description": "Final sale price, composed by the base price, minus the applied promotion, plus the mandatory local and upfront addons."
+        },
+        "currency": {
+          "type": "string",
+          "description": "Currency code for the reported prices."
+        },
+        "promotion": {
+          "$ref": "#/$defs/ToursPromotion"
+        },
+        "mandatory_addons": {
+          "type": "array",
+          "description": "List of the mandatory addons (extra price elements).",
+          "items": {
+            "type": "object",
+            "properties": {
+              "price": {
+                "type": "number",
+                "description": "Price for this addon."
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the addon."
+              },
+              "payment_type": {
+                "type": "string",
+                "enum": [
+                  "upfront",
+                  "local"
+                ],
+                "description": "The payment type (upfront or local)."
+              },
+              "local_currency": {
+                "type": [
+                  "null",
+                  "string"
+                ],
+                "description": "For local payments, the currency this payment must be executed in."
+              },
+              "local_value": {
+                "type": [
+                  "null",
+                  "number"
+                ],
+                "description": "The price of the addon in the local currency."
+              }
+            }
+          }
+        }
+      }
+    },
+    "ToursLinks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Type of link",
+            "enum": [
+              "tour-page",
+              "book-now"
+            ]
+          },
+          "url": {
+            "type": "string",
+            "description": "URL to www.tourradar.com website"
+          }
+        }
+      }
+    },
+    "ToursPromotion": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "Details about the promotion applied, if available.",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "Unique identifier of the promotion in the TourRadar system."
+        },
+        "discount": {
+          "type": "number",
+          "description": "Amount of the promotion (to subtract from the base price)."
+        },
+        "name": {
+          "type": "string",
+          "description": "Promotion name."
+        },
+        "type": {
+          "type": "string",
+          "description": "Type of the promotion (percentage discount, or 2-for-1 offer)."
+        },
+        "percentage": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "Amount of the promotion, when promotion is based on percentage discount."
+        },
+        "pax_restriction": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "Maximum pax number to apply this promotion. If null - no limit."
+        },
+        "value_type": {
+          "type": "string",
+          "enum": [
+            "percent",
+            "absolute"
+          ],
+          "description": "Type of the value, can be absolute or percent."
+        },
+        "valid_to": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Validity definition."
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,1399 @@
+openapi: 3.2.0
+info:
+  title: Tourradar Tours API
+  version: '2025-08-11T15:08:05Z'
+  x-logo:
+    url: https://assets.api.sandbox.b2b.tourradar.com/logo/tourradar.svg
+    altText: TourRadar Partner API
+  description: 'Operations tagged Tours across 2 of this provider''s published API definitions: tourradar-partner-api-openapi.json, tourradar-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.sandbox.b2b.tourradar.com
+tags:
+- name: Tours
+  description: ''
+paths:
+  /v1/tours/search:
+    get:
+      tags:
+      - Tours
+      summary: /v1/tours/search
+      description: 'Returns a list of tours based on a number of search criteria. #### Search parameters
+
+
+        The call has a number of optional parameters, that will help you find the perfect tour for your customer. - `operator`: the ID of the tour operator that operates the tour. Operator IDs can be obtained from the **/operators** endpoint. - `currency`: the prices will be returned in the specified currency. Use 3 letter codes, example: `AUD`, `EUR`, `USD`. - `start_city`: the ID for the start city of the tour. City IDs can be obtained from the **/taxonomy/destinations/city** endpoint. - `end_city`: the ID for the end city of the tour. City IDs can be obtained from the same endpoint mentioned before. - `city`: the ID for any city included on the tour itinerary. City IDs can be obtained from the same endpoint mentioned before. Multiple values are allowed, if you are looking for tours that have in itinerary both London and Paris you can make the call `GET /tours/search?city=11149&city=5781`. If you need tours that have in itinerary either London or Paris you can make the call `GET /tours/search?city=11149%2C5781`. - `country`: the ID for any country included on the tour itinerary. Country IDs can be obtained from the **/taxonomy/destinations/country** endpoint. - `user_country`: the ID for the country of the passenger''s residence. Country IDs can be obtained from the same endpoint mentioned before. - `primary_country`: the ID for the country in which at least 2/3rd of the tour destinations are located. Country IDs can be obtained from the **/taxonomy/destinations/country** endpoint. - `continent`: the ID for any continent included on the tour itinerary. Continent IDs can be obtained from the **/taxonomy/destinations/continent** endpoint. - `natural_destination`: the ID for any natural destination included on the tour itinerary. Natural destination IDs can be obtained from **/taxonomy/destinations/{type}** endpoint (type can be `mountain`, `national_park`, `river`, etc). - `age`: age range the tour is suitable for, expressed as _min-max_. Using this parameter, all tours that include the desired range will be returned. For example, if `age=18-35`, tours that accepts from 18 to 60 years old will be included in the search result. To only search for an exact age range, use the parameter `exact_age` instead. - `exact_age`: exact age range the tour is suitable for, expressed as _min-max_ or just _max_. Example: `12-40` meaning the tour is suitable for and accepts 12 to 40 years old passengers. - `duration`: tour duration in numbers of days, expressed as _min-max_. Example: `5-7` meaning tours between 5 and 7 days of duration. - `date_range`: range of the desired departure date, expressed as _min-max_. For dates, use the format `YYYYMMDD`, where `YYYY` is the year, `MM` the month, `DD` the day. Example: `20211001-20211030` meaning tours departing in November 2021 (2021-11-01 to 2021-11-30). - `price`: desired price range for the tour, expressed as _min-max_. Example: `1000-1500` meaning tours between 1000 and 1500 units (in the currency specified by the `currency` parameter). - `price_per_day`: same as `price`, but using the price per day as value. - `group_size`: maximum desired group size. Example: `10` will only return tours with a maximum group size of 10 persons. - `guide_language`: the ID of the language the tour is operated in. Language IDs can be obtained from the **/taxonomy/languages** endpoint. - `tour_type`: the ID of the tour type you would like to use as a filter. Tour type IDs can be obtained from the **/taxonomy/tours/types** endpoint. For example, looking at the taxonomy endpoint, the tour type **Sightseeing** has ID 76. If you want to search for tours with this type, the request will look like this: `GET /tours/search?tour_type=76`. - `is_instant_confirmable`: if true, only tours that can be automatically confirmed will be returned, if false only non instant confirmable.'
+      parameters:
+      - name: exact_age
+        in: query
+        description: Exact age range the tour is suitable for, expressed as _min-max_ or just _max_. The tour is returned only if its age range exactly matches the input values.
+        schema:
+          type: string
+      - name: start_city
+        in: query
+        description: The ID for the start city of the tour.
+        schema:
+          type: string
+      - name: primary_country
+        in: query
+        description: The ID for the country in which at least 2/3rd of the tour destinations are located.
+        schema:
+          type: string
+      - name: price_per_day
+        in: query
+        description: Desired tour price per day range, expressed as _min-max_.
+        schema:
+          type: string
+      - name: city
+        in: query
+        description: The ID for any city included on the tour itinerary.
+        schema:
+          type: string
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+      - name: sort_order
+        in: query
+        description: 'Direction of the sorting (ascending or descending). Possible values: `asc`, `desc`.'
+        schema:
+          type: string
+      - name: tour_type
+        in: query
+        description: The ID of the tour type you would like to use as a filter.
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: Number of items per page of results (default is 20).
+        schema:
+          type: string
+      - name: natural_destination
+        in: query
+        description: The ID for any natural destination included on the tour itinerary.
+        schema:
+          type: string
+      - name: continent
+        in: query
+        description: The ID for any continent included on the tour itinerary.
+        schema:
+          type: string
+      - name: sort_by
+        in: query
+        description: 'Field by which the results will be sorted. Possible values: `score`, `price`, `price_per_day`. Default is `score`, a measure of the tour popularity.'
+        schema:
+          type: string
+      - name: age
+        in: query
+        description: Age range the tour is suitable for, expressed as _min-max_. Using this parameter, all tours that include the desired range will be returned. For example, if `age=18-35`, tours that accepts from 18 to 60 years old will be included in the search result. To only search for an exact age range, use the parameter `exact_age` instead.
+        schema:
+          type: string
+      - name: duration
+        in: query
+        description: Tour duration in numbers of days, expressed as _min-max_.
+        schema:
+          type: string
+      - name: group_size
+        in: query
+        description: Maximum desided group size.
+        schema:
+          type: string
+      - name: currency
+        in: query
+        description: 'The currency desired for the prices returned. Use 3 letter codes, like `AUD`, `EUR`, `USD`, etc. '
+        schema:
+          type: string
+      - name: user_country
+        in: query
+        description: The ID for the country of the passenger's residence.
+        schema:
+          type: string
+      - name: date_range
+        in: query
+        description: Range of the desired departure date, expressed as _min-max_.
+        schema:
+          type: string
+      - name: guide_language
+        in: query
+        description: The ID of the language the tour is operated in.
+        schema:
+          type: string
+      - name: end_city
+        in: query
+        description: The ID for the end city of the tour.
+        schema:
+          type: string
+      - name: price
+        in: query
+        description: Desired tour price range, expressed as _min-max_.
+        schema:
+          type: string
+      - name: country
+        in: query
+        description: The ID for any country included on the tour itinerary.
+        schema:
+          type: string
+      - name: operator
+        in: query
+        description: The ID of the tour operator that operates the tour.
+        schema:
+          type: string
+      - name: is_instant_confirmable
+        in: query
+        description: If true will only return tours that can be automatically confirmed, if false only tours that cannot be instantly booked.
+        schema:
+          type: string
+      - name: page
+        in: query
+        description: Number of page to return (default is 1).
+        schema:
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ToursListPagination'
+        '401':
+          description: 'This status code indicates that the credentials used for the request are not valid.
+
+
+            The error code is `UNAUTHORIZED`. An additional message may provide more information about the error.
+
+
+            Causes for this error may be:
+
+
+            - invalid authorization token
+
+            - operation not allowed by authorization scope
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError401'
+        '500':
+          description: 'This status code indicates that there was an unmanaged error.
+
+
+            The error code is `UNKNOWN_ERROR`. An additional message may provide more information about the error.
+
+
+            Causes for this error may be:
+
+
+            - failure on the TourRadar system
+
+            - unexpected conditions
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError500'
+      security:
+      - application:
+        - com.tourradar.tours/read
+      operationId: getV1ToursSearch
+      x-operation-id-source: derived
+    servers:
+    - url: https://api.sandbox.b2b.tourradar.com
+  /v1/tours/{tourId}:
+    get:
+      tags:
+      - Tours
+      summary: /v1/tours/{tourId}
+      description: 'Returns detailed information about a single tour.
+
+
+        The call expects one parameter as part of the request path, the unique identifier of the tour in the TourRadar system.
+
+
+        To retrieve a list of tour identifiers, use the **/tours/search** endpoint.
+
+
+        #### Output definition
+
+
+        It should be noted that the following identifiers are present:
+
+
+        | field | notes |
+
+        | ----- | ----- |
+
+        | `tour_id` | TourRadar identifier for the tour, always present and unique across all tours from all tour operators. |
+
+        | `codes` | Identifiers provided by the tour operator for the tour. It can be null, and codes might not be unique. |'
+      parameters:
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+      - name: currency
+        in: query
+        schema:
+          type: string
+      - name: user_country
+        in: query
+        schema:
+          type: string
+      - name: tourId
+        in: path
+        description: Tour's unique ID.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tour'
+        '401':
+          description: 'This status code indicates that the credentials used for the request are not valid.
+
+
+            The error code is `UNAUTHORIZED`. An additional message may provide more information about the error.
+
+
+            Causes for this error may be:
+
+
+            - invalid authorization token
+
+            - operation not allowed by authorization scope
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError401'
+        '404':
+          description: Tour not found. Please check tour ID.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: The error code
+                    enum:
+                    - TOUR_NOT_FOUND
+                    - UNKNOWN_ERROR
+                  message:
+                    type: string
+                    description: The error message, if available
+                  context:
+                    type: object
+                    description: Additional data relative to the error condition
+                  validation_errors:
+                    type: array
+                    description: In case of validation error, all the elements that didn't pass validation
+                    items:
+                      type: string
+        '500':
+          description: 'This status code indicates that there was an unmanaged error.
+
+
+            The error code is `UNKNOWN_ERROR`. An additional message may provide more information about the error.
+
+
+            Causes for this error may be:
+
+
+            - failure on the TourRadar system
+
+            - unexpected conditions
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError500'
+      security:
+      - application:
+        - com.tourradar.tours/read
+      operationId: getV1ToursByTourId
+      x-operation-id-source: derived
+    servers:
+    - url: https://api.sandbox.b2b.tourradar.com
+components:
+  schemas:
+    TourPrice:
+      type: object
+      properties:
+        partner_info:
+          type: object
+          description: Information about the partner-specific component of the price, including commission.
+          properties:
+            booking_fee_value:
+              type: number
+              description: The actual booking fee value, calculated on the price reported in this section.
+              example: 0
+            booking_fee_rate:
+              type: number
+              description: The booking fee rate, if any, espressed as multiplier. For example, a booking fee of 5% would be represented by `0.05`. If no booking fee will be due for booking this tour, this will be `0`.
+              example: 0
+            commission_rate:
+              type: number
+              description: The commission rate, expressed as multiplier. For example, a commission of 5% would be represented by `0.05`. If no commission will be paid for booking this tour, this will be `0`.
+              example: 0
+            commission_value:
+              type: number
+              description: The actual commission value, calculated on the price reported in this section.
+              example: 0
+            contract_type:
+              type: string
+              enum:
+              - direct
+              - wholesale
+              - affiliate
+              - organiser
+              description: The contract type your partner account is operating with for this operator.
+              example: marketplace
+            calculation_base:
+              type: string
+              enum:
+              - accommodation
+              - all_extras
+              description: Definition of the amount used as reference for the commission calculation.
+              example: accommodation
+        based_on:
+          type:
+          - string
+          - 'null'
+          description: If available, the type of accommodation that the base price refers to.
+          example: Base price
+        price_base:
+          type: number
+          description: Base price of the tour, also referenced as brochure price. Note this is the lowest price among the possible departure dates (some departure dates may be more expensive than this).
+          example: 2990
+        price_addons:
+          type: number
+          description: Sum of the mandatory addons that the passenger will have to pay (both upfront and local payments).
+          example: 180
+        price_promotion:
+          type: number
+          description: Discounted price, or base price minus the promotion.
+          example: 2145
+        price_total_upfront:
+          type: number
+          description: Final sale price, composed by the base price, minus the applied promotion, plus the upfront addons.
+          example: 2145
+        price_total:
+          type: number
+          description: Final sale price, composed by the base price, minus the applied promotion, plus the mandatory local and upfront addons.
+          example: 2325
+        currency:
+          type: string
+          description: Currency code for the reported prices.
+          example: USD
+        promotion:
+          $ref: '#/components/schemas/ToursPromotion'
+        mandatory_addons:
+          type: array
+          description: List of the mandatory addons (extra price elements).
+          items:
+            type: object
+            properties:
+              price:
+                type: number
+                description: Price for this addon.
+                example: 180
+              name:
+                type: string
+                description: Name of the addon.
+                example: Domestic flight
+              payment_type:
+                type: string
+                enum:
+                - upfront
+                - local
+                description: The payment type (upfront or local).
+                example: local
+              local_currency:
+                type:
+                - 'null'
+                - string
+                description: For local payments, the currency this payment must be executed in.
+                example: USD
+              local_value:
+                type:
+                - 'null'
+                - number
+                description: The price of the addon in the local currency.
+                example: 180
+    Tour:
+      type: object
+      properties:
+        tour_id:
+          type: integer
+          description: Unique identifier for the tour in the TourRadar system (please note that this is different from the operator code).
+          example: 14263
+        locale:
+          type: string
+          description: Language locale the content is provided, default is `en_US` (English).
+          example: en_US
+        codes:
+          type: array
+          description: Operator codes for the tour. Note that some operators offer the same tours in a number of variants (usually for different accommodation options), but TourRadar handles them as a single tour. For this reason, it's possible that more than one code refers to this tour.
+          items:
+            type: string
+            example: '26'
+        language:
+          type: string
+          description: Language code the content is provided, default is `en` (English).
+          example: en
+        tour_name:
+          type: string
+          description: Name of the tour. Note that tour names are sometimes adjusted by TourRadar, and might not exactly match the name provided by the operator.
+          example: Europe Escape - 12 Days
+        is_active:
+          type: boolean
+          description: 'Determines if the tour is currently active, e.g. if it has departure dates that can be booked. Note: inactive tours are never returned by searching, but they could have existing bookings, so it''s possible to retrieve them directly by ID.'
+          example: 'true'
+        description:
+          type:
+          - 'null'
+          - string
+          description: Description of the tour, providing a summary of the itinerary and the key important selling points for the tour.
+          example: 'This is the flagship tour that started it all for Expat Explore! Journey to 8 of Europe''s most popular countries. Start off by getting to know the Italian way of life in Rome and the romantic Venice. Explore the gem that is Paris, and meander through the countryside of France. Cross borders to the heart of the Swiss Alps and see castle-lined riverbanks in Germany’s Rhine Valley. Explore the vibrant streets and beautiful canals of Amsterdam. There’s so much in store for you! Please note: there are changes to the itinerary for 2021 departures - see the itinerary and contact us for info'
+        tour_length_days:
+          type: integer
+          description: Length of the tour, expressed in number of days.
+          example: 12
+        is_instant_confirmable:
+          type: boolean
+          description: If true, bookings related to this tour can be instantly confirmed by the operator.
+          example: true
+        guide_languages:
+          type:
+          - array
+          - 'null'
+          description: List of languages this tour is offered in (for their meaning, see **[/taxonomy/languages](#tag/Taxonomy/paths/~1v1~1taxonomy~1languages/get)**).
+          items:
+            type: integer
+          example:
+          - 1
+        start_point:
+          type: object
+          description: Information about the starting point of the tour (e.g. pickup point), if available.
+          properties:
+            latitude:
+              type:
+              - 'null'
+              - number
+              description: Latitude of the location where the tour will start.
+              example: '41.893060'
+            longitude:
+              type:
+              - 'null'
+              - number
+              description: Longitude of the location where the tour will start.
+              example: '12.482780'
+            name:
+              type: string
+              description: Name of the location where the tour will start.
+              example: Hotel in Rome
+            address:
+              type: string
+              description: Address of the location where the tour will start.
+              example: Roma, Rome, Italy
+            time:
+              type: string
+              description: Time of the day when the tour will start.
+              example: '10:00'
+        end_point:
+          type: object
+          description: Information about the ending point of the tour (e.g. drop off point), if available.
+          properties:
+            latitude:
+              type:
+              - 'null'
+              - number
+              description: Latitude of the location where the tour will end.
+              example: '41.893060'
+            longitude:
+              type:
+              - 'null'
+              - number
+              description: Longitude of the location where the tour will end.
+              example: '12.482780'
+            name:
+              type: string
+              description: Name of the location where the tour will end.
+              example: Hotel in Rome
+            address:
+              type: string
+              description: Address of the location where the tour will end.
+              example: Roma, Rome, Italy
+            time:
+              type: string
+              description: Time of the day when the tour will end.
+              example: '10:00'
+        budget:
+          type:
+          - string
+          - 'null'
+          description: A market term that defines the price category of the tour.
+          enum:
+          - budget
+          - flexible
+          - comfort
+          - luxury
+          example: comfort
+        max_group_size:
+          type: integer
+          description: Maximum number of passengers allowed on the tour.
+          example: 51
+        operator:
+          type: object
+          properties:
+            id:
+              type: integer
+              description: Unique identifier for the tour operator in the TourRadar system.
+              example: '1170'
+            name:
+              type: string
+              description: Name of the tour operator.
+              example: Expat Explore Travel
+        links:
+          $ref: '#/components/schemas/ToursLinks'
+        prices:
+          $ref: '#/components/schemas/TourPrice'
+        itinerary:
+          $ref: '#/components/schemas/TourItinerary'
+        start_city:
+          description: The city where the tour starts.
+          type: object
+          properties:
+            location_id:
+              type: integer
+              description: Unique identifier for the city in the TourRadar system.
+              example: 1938
+            city_name:
+              type: string
+              description: Name of the city.
+              example: Rome
+            country_code:
+              type: string
+              description: ISO code for the country where the city is located.
+              example: IT
+            latitude:
+              type: number
+              description: Geographic latitude.
+              example: 41.901766
+            longitude:
+              type: number
+              description: Geographic longitude.
+              example: 12.496777
+        end_city:
+          description: The city where the tour ends.
+          type: object
+          properties:
+            location_id:
+              type: integer
+              description: Unique identifier for the city in the TourRadar system.
+              example: 1938
+            city_name:
+              type: string
+              description: Name of the city.
+              example: Rome
+            country_code:
+              type: string
+              description: ISO code for the country where the city is located.
+              example: IT
+            latitude:
+              type: number
+              description: Geographic latitude.
+              example: 41.901766
+            longitude:
+              type: number
+              description: Geographic longitude.
+              example: 12.496777
+        destinations:
+          $ref: '#/components/schemas/TourDestinations'
+        images:
+          description: An array of images for the tour. This is limited to 3 entries, plus the image of the tour map.
+          type: array
+          items:
+            type: object
+            properties:
+              url:
+                type: string
+                description: URL for the image on the TourRadar CDN.
+                example: https://cdn.tourradar.com/s3/tour/1500x800/14263_5df8b6cf672a0.jpg
+              thumbnail_url:
+                type: string
+                description: URL for the image thumbnail on the TourRadar CDN.
+                example: https://cdn.tourradar.com/s3/tour/200x200/14263_5df8b6cf672a0.jpg
+              type:
+                type: string
+                enum:
+                - image
+                - map
+                description: Type of image, can be `image` for regular tour images, or `map` for an auto-generated image that shows the tour itinerary on a geographical map.
+        tour_types:
+          type: array
+          description: List of the types this tour is categorised under.
+          items:
+            type: object
+            properties:
+              type_id:
+                type: integer
+                description: Unique identifier for the tour type in the TourRadar system. For a list of all values, use the **[/taxonomy/tours/types](#tag/Taxonomy/paths/~1v1~1taxonomy~1tours~1types/get)** endpoint.
+                example: 368
+              type_name:
+                type: string
+                description: Name of the tour type.
+                example: Private
+              group_id:
+                type: integer
+                description: Unique identifier for the tour type group in the TourRadar system. For a list of all values, use the **[/taxonomy/tours/types](#tag/Taxonomy/paths/~1v1~1taxonomy~1tours~1types/get)** endpoint.
+                example: 1
+              group_name:
+                type: string
+                description: Name of the tour type group.
+                example: Group
+        services:
+          type: object
+          description: This section describes the various services provided with the tour (accommodation, food, and so on).
+          properties:
+            accommodation:
+              type: array
+              description: Information about the nature of the accommodation provided with the tour.
+              items:
+                type: object
+                properties:
+                  is_included:
+                    type: boolean
+                    description: Flag to determine if the accommodation is included.
+                    example: true
+                  description:
+                    type: string
+                    description: Description of the accommodation components included in the tour.
+                    example: 11 nights' accommodation in twin rooms with private en-suite facilities. Single travellers have the option to pay a single supplement to ensure a private room
+                  accommodations:
+                    type: array
+                    description: A detailed list of the accommodation options included in the tour.
+                    items:
+                      type: object
+                      properties:
+                        type:
+                          type: string
+                          description: 'Type of accommodation, for example: hotel, hostel, cabin, camping, etc.'
+                        nights:
+                          type:
+                          - number
+                          - 'null'
+                          description: If available, the number of nights spent in this accommodation option.
+                  ship_rooms:
+                    type: array
+                    description: For cruise tours, the list of available cabin types offered.
+                    items:
+                      type: object
+                      properties:
+                        ship_name:
+                          type: string
+                          description: Name of the ship.
+                          example: Avalon Visionary
+                        category:
+                          type:
+                          - 'null'
+                          - string
+                          description: Category of the cabins.
+                          example: D, E
+                        type:
+                          type:
+                          - 'null'
+                          - string
+                          description: Description of the cabin type.
+                          example: Avalon Deluxe Stateroom
+            flights:
+              type: array
+              description: Information about the inclusion of flights with the tour.
+              items:
+                type: object
+                properties:
+                  is_included:
+                    type: boolean
+                    description: Flag to determine if flights are included.
+                    example: false
+                  description:
+                    type: string
+                    description: Description of the flights included.
+                    example: ''
+            guide:
+              type: array
+              description: Information about the tour guide.
+              items:
+                type: object
+                properties:
+                  is_included:
+                    type: boolean
+                    description: Flag to determine if the guide is included.
+                    example: true
+                  description:
+                    type: string
+                    description: Description of the included tour guide services.
+                    example: Services of your Expat tour leader, who will be on hand with advice and tips to ensure that you get the most from your trip
+            insurance:
+              type: array
+              description: Information about the travel insurance.
+              items:
+                type: object
+                properties:
+                  is_included:
+                    type: boolean
+                    description: Flag to determine if travel insurance is included.
+                    example: false
+                  description:
+                    type: string
+                    description: Description of the included insurance services.
+                    example: ''
+            meals:
+              type: array
+              description: Information about the food services provided with the tour.
+              items:
+                type: object
+                properties:
+                  is_included:
+                    type: boolean
+                    description: Flag to determine if meals are included.
+                    example: true
+                  description:
+                    type: string
+                    description: Description of the included meals.
+                    example: 11 breakfasts and 6 dinners
+                  food_options:
+                    type: array
+                    description: 'Special food options available, for example: vegetarian, halal, kosher, etc.'
+                    items:
+                      type: string
+                      example: vegetarian
+            optional:
+              type: array
+              description: Information about additional optional services that the tour offers.
+              items:
+                type: object
+                properties:
+                  is_included:
+                    type: boolean
+                    description: Flag to determine optional inclusions.
+                    example: false
+                  description:
+                    type: string
+                    description: Description of available options for the tour.
+                    example: 'On Tour Excursions: All optional excursions are booked on tour and paid in cash to your tour leader, unless stated otherwise. Please note, certain optional excursions are subject to availability and could change as a result.'
+            others:
+              type: array
+              description: Information about other services.
+              items:
+                type: object
+                properties:
+                  is_included:
+                    type: boolean
+                    description: Flag to determine other inclusions.
+                    example: true
+                  description:
+                    type: string
+                    description: Description of other included services.
+                    example: All taxes and fees.19 Experiences (including guided walking tours, orientation walks, driving tours of cities plus other exciting experiences).Free Expat Explore tour souvenir – a memorable gift of your once in a lifetime trip
+            transport:
+              type: array
+              description: Information about means of transportation included in the tour.
+              items:
+                type: object
+                properties:
+                  is_included:
+                    type: boolean
+                    description: Flag to determine if transport services are included.
+                    example: true
+                  description:
+                    type: string
+                    description: Description of the transport services.
+                    example: Modern air conditioned coach with reclining seats, TV for showing DVDs, and toilet. Any public transport used as part of the tour (excludes free days)
+                  ships:
+                    type: array
+                    description: For cruise tours, this will identify the ship (or ships) used as means of transportation.
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          description: Name of the ship.
+                          example: Avalon Visionary
+                        description:
+                          type: string
+                          description: A short description of the ship.
+                          example: Take in the view like never before on the Avalon Visionary. You'll enjoy the intimate setting achieved with two full decks of suites featuring Wall-to-Wall Panoramic Windows.
+            hygieneprotocol:
+              type: array
+              description: Information about the hygiene protocol that the tour operator will observe. This will include vaccination requirements, if any.
+              items:
+                properties:
+                  is_included:
+                    type: boolean
+                    description: Flag to determine if hygiene protocol is included.
+                    example: true
+                  description:
+                    type: string
+                    description: Description of the hygiene protocol.
+                    example: You must be fully vaccinated to travel with us. Your final vaccine dose must have been administered a minimum of 15 days prior to the start of the trip. This is your second dose of Pfizer, Moderna, or Astra Zeneca, or single dose of Johnson & Johnson.
+        ratings:
+          type: object
+          description: Ratings are collected by TourRadar from customers, after the tour is completed, and in some occasions provided by the operator.
+          properties:
+            overall:
+              type:
+              - 'null'
+              - number
+              description: Rating out of 5 for the overall tour.
+              example: 4.4
+            itinerary:
+              type:
+              - 'null'
+              - number
+              description: Rating out of 5 for the itinerary of the tour.
+              example: 4.5
+            transport:
+              type:
+              - 'null'
+              - number
+              description: Rating out of 5 for included transport services.
+              example: 4.7
+            food:
+              type:
+              - 'null'
+              - number
+              description: Rating out of 5 for meals included in the tour.
+              example: 4
+            guide:
+              type:
+              - 'null'
+              - number
+              description: Rating out of 5 for the guiding services of the tour.
+              example: 4.8
+            accommodation:
+              type:
+              - 'null'
+              - number
+              description: Rating out of 5 for the included accommodation.
+              example: 4
+            operator:
+              type:
+              - 'null'
+              - number
+              description: Rating out of 5 for the tour operator.
+              example: 4.4
+        reviews_count:
+          type: integer
+          description: Number of reviews related to this tour.
+          example: 23
+        age_range:
+          type: object
+          description: Age limits for this tour.
+          properties:
+            strict:
+              type:
+              - 'null'
+              - object
+              description: This is the operator restriction for passengers on the tour (passengers outside of this age range will not be accepted).
+              properties:
+                min_age:
+                  type: integer
+                  description: Minimum age limit for passengers on the tour.
+                  example: 15
+                max_age:
+                  type: integer
+                  description: Maximum age limit for passengers on the tour.
+                  example: 99
+            recommended:
+              type:
+              - 'null'
+              - object
+              description: This is the operator recommended age range, based on the activities part of the tour.
+              properties:
+                min_age:
+                  type:
+                  - integer
+                  - 'null'
+                  description: Minimum age limit for passengers on the tour.
+                  example: 18
+                max_age:
+                  type:
+                  - integer
+                  - 'null'
+                  description: Maximum age limit for passengers on the tour.
+                  example: 65
+        has_machine_translated_content:
+          type:
+          - 'null'
+          - boolean
+          description: This flag indicates if the content in the current language was translated automatically (using a Machine Translation service), or is provided by the operator. It is recommended to display a warning in case content is automatically translated, and if the content is included on a public website, the page should be marked as `noindex` for search engines.
+          example: 'false'
+        departure_months:
+          type: array
+          description: List of available departure by month.
+          items:
+            type: object
+            properties:
+              year:
+                type: integer
+                description: Year of departure date.
+                example: 2025
+              month:
+                type: integer
+                description: Month of departure date. 1 is January ... 12 is December.
+                example: 1
+    ToursPromotion:
+      type:
+      - object
+      - 'null'
+      description: Details about the promotion applied, if available.
+      properties:
+        id:
+          type: integer
+          description: Unique identifier of the promotion in the TourRadar system.
+          example: 9990067
+        discount:
+          type: number
+          description: Amount of the promotion (to subtract from the base price).
+          example: 845
+        name:
+          type: string
+          description: Promotion name.
+          example: Special deal
+        type:
+          type: string
+          description: Type of the promotion (percentage discount, or 2-for-1 offer).
+          example: discount
+        percentage:
+          type:
+          - number
+          - 'null'
+          description: Amount of the promotion, when promotion is based on percentage discount.
+          example: 30
+        pax_restriction:
+          type:
+          - number
+          - 'null'
+          description: Maximum pax number to apply this promotion. If null - no limit.
+          example: 30
+        value_type:
+          type: string
+          enum:
+          - percent
+          - absolute
+          description: Type of the value, can be absolute or percent.
+          example: percent
+        valid_to:
+          type:
+          - string
+          - 'null'
+          description: Validity definition.
+          example: '2024-10-16'
+    TourDestinations:
+      description: List of all destinations included in the tour.
+      type: object
+      properties:
+        cities:
+          type: array
+          description: List of all cities.
+          items:
+            $ref: '#/components/schemas/TourCity'
+        countries:
+          type: array
+          description: List of all countries.
+          items:
+            type: object
+            properties:
+              location_id:
+                type: integer
+                description: Unique identifier for the country in the TourRadar system.
+                example: IT
+              country_name:
+                type: string
+                description: Name of the country.
+                example: Italy
+              country_code:
+                type: string
+                description: ISO country code.
+                example: IT
+              currency_code:
+                type: string
+                description: Code for the country (primary) currency.
+                example: EUR
+              currency_name:
+                type: string
+                description: Name of the (primary) currency used in the country.
+                example: Euro
+              electricity_outlets:
+                type: array
+                description: The electrical outlet types used in the country.
+                items:
+                  type: string
+                  example: C
+        natural_destinations:
+          type: array
+          description: List of the natural destinations related to the tour.
+          items:
+            type: object
+            properties:
+              location_id:
+                type: integer
+                description: Unique identifier for the natural destination in the TourRadar system.
+                example: 234
+              natural_destination_name:
+                type: string
+                description: Name of the natural destination.
+                example: Alps
+              country_code:
+                type:
+                - 'null'
+                - string
+                description: ISO country code.
+                example: IT
+              type:
+                type: string
+                description: Type of the natural destination.
+                example: river
+                enum:
+                - continent
+                - country
+                - state
+                - region
+                - city
+                - national-park
+                - island
+                - mountain
+                - ocean
+                - river
+                - lake
+              latitude:
+                type:
+                - 'null'
+                - number
+                description: Latitude of the natural destination, if available.
+                example: '48.208176'
+              longitude:
+                type:
+                - 'null'
+                - number
+                description: Longitude of the natural destination, if available.
+                example: '16.373819'
+    ToursListPagination:
+      required:
+      - current_page
+      - items
+      type: object
+      properties:
+        current_page:
+          type: integer
+          description: Current page number
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ToursList'
+        next_page:
+          type: integer
+          description: If this attribute exists, then another page is available. To get more results, repeat the request with the number specified in the `page` parameter. If this attribute is not part of the response, then the last page has been reached.
+    ToursList:
+      type: object
+      properties:
+        links:
+          $ref: '#/components/schemas/ToursLinks'
+        budget:
+          type:
+          - string
+          - 'null'
+          description: A market term that defines the price category of the tour.
+          enum:
+          - budget
+          - flexible
+          - comfort
+          - luxury
+          example: comfort
+        images:
+          description: An array of images for the tour.
+          type: array
+          items:
+            type: object
+            properties:
+              url:
+                type: string
+                description: URL for the image on the TourRadar CDN.
+                example: https://cdn.tourradar.com/s3/tour/1500x800/14263_5df8b6cf672a0.jpg
+              thumbnail_url:
+                type: string
+                description: URL for the image thumbnail on the TourRadar CDN.
+                example: https://cdn.tourradar.com/s3/tour/200x200/14263_5df8b6cf672a0.jpg
+        locale:
+          type: string
+          description: Language locale the content is provided, default is `en_US` (English).
+          example: en_US
+        prices:
+          $ref: '#/components/schemas/TourPrice'
+        ratings:
+          type: object
+          description: Ratings are collected by TourRadar from customers, after the tour is completed, and in some occasions provided by the operator.
+          properties:
+            overall:
+              type: number
+              description: Rating out of 5 for the overall tour.
+              example: 4.4
+            itinerary:
+              type: number
+              description: Rating out of 5 for the itinerary of the tour.
+              example: 4.5
+            transport:
+              type: number
+              description: Rating out of 5 for included transport services.
+              example: 4.7
+            food:
+              type: number
+              description: Rating out of 5 for meals included in the tour.
+              example: 4
+            guide:
+              type: number
+              description: Rating out of 5 for the guiding services of the tour.
+              example: 4.8
+            accommodation:
+              type: number
+              description: Rating out of 5 for the included accommodation.
+              example: 4
+            operator:
+              type: number
+              description: Rating out of 5 for the tour operator.
+              example: 4.4
+        tour_id:
+          type: integer
+          description: Unique identifier for the tour in the TourRadar system (please note that this is different from the operator code).
+          example: 14263
+        end_city:
+          $ref: '#/components/schemas/TourCity'
+        language:
+          type: string
+          description: Language code the content is provided, default is `en` (English).
+          example: en
+        operator:
+          type: object
+          properties:
+            id:
+              type: integer
+              description: Unique identifier for the tour operator in the TourRadar system.
+              example: 1170
+            name:
+              type: string
+              description: Name of the tour operator.
+              example: Expat Explore Travel
+        is_active:
+          type: boolean
+          description: 'Determines if the tour is currently active, e.g. if it has departure dates that can be booked. Note: inactive tours are never returned by searching, but they could have existing bookings, so it''s possible to retrieve them directly by ID.'
+          example: 'true'
+        tour_name:
+          type: string
+          description: Name of the tour. Note that tour names are sometimes adjusted by TourRadar, and might not exactly match the name provided by the operator.
+          example: Europe Escape - 12 Days
+        start_city:
+          $ref: '#/components/schemas/TourCity'
+        tour_types:
+          type: array
+          description: List of the types this tour is categorised under.
+          items:
+            type: object
+            properties:
+              type_id:
+                type: integer
+                description: Unique identifier for the tour type in the TourRadar system. For a list of all values, use the **[/taxonomy/tours/types](#tag/Taxonomy/paths/~1v1~1taxonomy~1tours~1types/get)** endpoint.
+                example: 368
+              type_name:
+                type: string
+                description: Name of the tour type.
+                example: Private
+              group_id:
+                type: integer
+                description: Unique identifier for the tour type group in the TourRadar system. For a list of all values, use the **[/taxonomy/tours/types](#tag/Taxonomy/paths/~1v1~1taxonomy~1tours~1types/get)** endpoint.
+                example: 1
+              group_name:
+                type: string
+                description: Name of the tour type group.
+                example: Group
+        description:
+          type:
+          - 'null'
+          - string
+          description: Description of the tour, providing a summary of the itinerary and the key important selling points for the tour.
+          example: 'This is the flagship tour that started it all for Expat Explore! Journey to 8 of Europe''s most popular countries. Start off by getting to know the Italian way of life in Rome and the romantic Venice. Explore the gem that is Paris, and meander through the countryside of France. Cross borders to the heart of the Swiss Alps and see castle-lined riverbanks in Germany’s Rhine Valley. Explore the vibrant streets and beautiful canals of Amsterdam. There’s so much in store for you! Please note: there are changes to the itinerary for 2021 departures - see the itinerary and contact us for info'
+        destinations:
+          $ref: '#/components/schemas/TourDestinations'
+        max_group_size:
+          type: integer
+          description: Maximum number of passengers allowed on the tour.
+          example: 51
+        tour_length_days:
+          type: integer
+          description: Length of the tour, expressed in number of days.
+          example: 12
+        is_instant_confirmable:
+          type: boolean
+          description: If true, bookings related to this tour can be instantly confirmed by the operator.
+          example: true
+        age_range:
+          type: object
+          description: Age limits for this tour.
+          properties:
+            strict:
+              type: object
+              description: This is the operator restriction for passengers on the tour (passengers outside of this age range will not be accepted).
+              properties:
+                min_age:
+                  type: integer
+                  description: Minimum age limit for passengers on the tour.
+                  example: 15
+                max_age:
+                  type: integer
+                  description: Maximum age limit for passengers on the tour.
+                  example: 99
+            recommended:
+              type: object
+              description: This is the operator recommended age range, based on the activities part of the tour.
+              properties:
+                min_age:
+                  type:
+                  - integer
+                  - 'null'
+                  description: Minimum age limit for passengers on the tour.
+                  example: 18
+                max_age:
+                  type:
+                  - integer
+                  - 'null'
+                  description: Maximum age limit for passengers on the tour.
+                  example: 65
+    DefaultError401:
+      type: object
+      properties:
+        error:
+          type: string
+          description: The error code
+          enum:
+          - UNAUTHORIZED
+        message:
+          type: string
+          description: The error message, if available
+        context:
+          type: object
+          description: Additional data relative to the error condition
+        validation_errors:
+          type: array
+          description: In case of validation error, all the elements that didn't pass validation
+          items:
+            type: string
+    TourCity:
+      type: object
+      properties:
+        location_id:
+          type: integer
+          description: Unique identifier for the city in the TourRadar system.
+          example: 1938
+        city_name:
+          type: string
+          description: Name of the city.
+          example: Rome
+        country_code:
+          type: string
+          description: ISO code for the country where the city is located.
+          example: IT
+        latitude:
+          type: number
+          description: Geographic latitude.
+          example: 41.901766
+        longitude:
+          type: number
+          description: Geographic longitude.
+          example: 12.496777
+    DefaultError500:
+      type: object
+      properties:
+        error:
+          type: string
+          description: The error code
+          enum:
+          - UNKNOWN_ERROR
+        message:
+          type: string
+          description: The error message, if available
+        context:
+          type: object
+          description: Additional data relative to the error condition
+        validation_errors:
+          type: array
+          description: In case of validation error, all the elements that didn't pass validation
+          items:
+            type: string
+    ToursLinks:
+      type: array
+      items:
+        type: object
+        properties:
+          type:
+            type: string
+            description: Type of link
+            example: tour-page
+            enum:
+            - tour-page
+            - book-now
+          url:
+            type: string
+            description: URL to www.tourradar.com website
+            example: https://www.tourradar.com/t/1234?utm_source=partner-12345&utm_medium=api&partner=12345&utm_campaign=tour
+    TourItinerary:
+      description: Details the itinerary of the tour, with day-by-day description of the activities and the destinations visited.
+      type:
+      - array
+      - 'null'
+      items:
+        type: object
+        properties:
+          order:
+            type: integer
+            description: The order of the itinerary item.
+            example: 1
+          duration:
+            type:
+            - integer
+            - 'null'
+            description: The duration of this item in number of days.
+            example: 1
+          title:
+            type: string
+            description: Title of the itinerary item.
+            example: 'Day 1: Start of tour in Rome - Venice'
+          description:
+            type: string
+            description: Description of the itinerary item.
+            example: Welcome to your first day on tour! After meeting up with your tour leader and group it’s time to hit the road! Sit back and enjoy the scenery as we make our way from Rome to Venice! Vineyards and orchards flash in front of a majestic mountain backdrop as we drive. The diversity of the Italian landscapes will continue to impress. Venice is an unique city, perched across 118 islands, and known for its canals, gondolas, Venetian masks, piazzas, art and traditional glass and lace making. Your tour leader will introduce you to the city with an orientation walk so you can use your free time in the early evening to explore. See the world-famous St Mark's Square, Grand Canal and Rialto Bridge. The evening is yours to enjoy authentic Italian delights, with hundreds of fantastic local restaurants and bars to choose from. After an espresso, explore Venice the traditional way - from the canals. Take a gondola ride optional which gives you a completely different perspective and appreciation for the amazing structure of this supremely unique location. Please note - for 2021 departures the Rome Optional Free Day takes place at the beginning of the tour, rather than end.
+          locations:
+            type: array
+            description: Locations visited in this itinerary item.
+            items:
+              $ref: '#/components/schemas/TourCity'
+  securitySchemes:
+    application:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://oauth.api.sandbox.b2b.tourradar.com/oauth2/token
+          scopes:
+            com.tourradar.bookings/read: Read booking information
+            com.tourradar.bookings/write: Create new bookings
+            com.tourradar.bookings.affiliate/read: Read booking information
+            com.tourradar.operators/read: Read operators information
+            com.tourradar.tours/read: Read tours informations
+x-refined-from:
+- tourradar-partner-api-openapi.json
+- tourradar-openapi.yml

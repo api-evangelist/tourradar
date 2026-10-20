@@ -1,0 +1,514 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/tourradar/main/json-schema/tourradar-tour-departure-schema.json",
+  "title": "TourDeparture",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/tourradar-openapi.yml#/components/schemas/TourDeparture",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "description": "Identifier of the departure date (must be used for price calculation and booking creation)."
+    },
+    "date": {
+      "type": "string",
+      "description": "Date of the departure, in the format `YYYY-MM-DD`."
+    },
+    "departure_type": {
+      "type": "string",
+      "description": "Type of departure.",
+      "enum": [
+        "guaranteed",
+        "scheduled",
+        "request"
+      ]
+    },
+    "is_instant_confirmable": {
+      "type": "boolean",
+      "description": "If true, bookings related to this departure can be instantly confirmed by the operator."
+    },
+    "availability": {
+      "type": "integer",
+      "description": "Availability."
+    },
+    "guide_languages": {
+      "type": "array",
+      "description": "List of languages this tour is offered in (for their meaning, see **[/taxonomy/languages](#tag/Taxonomy/paths/~1v1~1taxonomy~1languages/get]**).",
+      "items": {
+        "type": "integer"
+      }
+    },
+    "links": {
+      "$ref": "#/$defs/ToursLinks"
+    },
+    "prices": {
+      "type": "object",
+      "description": "Pricing information.",
+      "properties": {
+        "currency": {
+          "type": "string",
+          "description": "Currency code for the reported prices."
+        },
+        "price_base": {
+          "type": "number",
+          "description": "Base price of the tour, also referenced as brochure price."
+        },
+        "price_addons": {
+          "type": "number",
+          "description": "Sum of the mandatory addons that the passenger will have to pay (both upfront and local payments)."
+        },
+        "price_promotion": {
+          "type": "number",
+          "description": "Discounted price, or base price minus the promotion."
+        },
+        "price_total": {
+          "type": "number",
+          "description": "Final sale price, composed by the base price, minus the applied promotion, plus the mandatory local and upfront addons."
+        },
+        "price_total_upfront": {
+          "type": "number",
+          "description": "Final sale price, composed by the base price, minus the applied promotion, plus the upfront addons."
+        },
+        "promotion": {
+          "$ref": "#/$defs/ToursDeparturePromotion"
+        },
+        "based_on": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "If available, the type of accommodation that the base price refers to."
+        },
+        "mandatory_addons": {
+          "type": "array",
+          "description": "List of the mandatory addons (extra price elements).",
+          "items": {
+            "$ref": "#/$defs/TourDepartureMandatoryAddon"
+          }
+        },
+        "payment_schedule": {
+          "type": "object",
+          "description": "Defines how the payment for the tour must be performed (deposit, pay by installments, final payment date).",
+          "properties": {
+            "deposit": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "description": "The amount that must be paid as deposit. If no deposit is required for this tour, the value will be `null`."
+            },
+            "pay_by_installments": {
+              "type": "boolean",
+              "description": "Indicates if pay by installments is available for this tour."
+            },
+            "final_payment_date": {
+              "type": [
+                "null",
+                "string"
+              ],
+              "description": "Date by which the price must be paid in full."
+            }
+          }
+        },
+        "accommodations": {
+          "type": "array",
+          "description": "Accommodation options available for this tour.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "description": "Identifier of the accommodation option in the TourRadar system."
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the accommodation option."
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of the accommodation option."
+              },
+              "payment_type": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "enum": [
+                  "upfront",
+                  "local"
+                ],
+                "description": "The payment type (upfront or local)."
+              },
+              "beds_number": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "description": "Number of beds."
+              },
+              "is_shared": {
+                "type": [
+                  "boolean",
+                  "null"
+                ],
+                "description": "If true, this accommodation is shared with other participants of the tour."
+              },
+              "value": {
+                "type": "integer",
+                "description": "Base price of the accommodation option."
+              },
+              "price_tiers": {
+                "type": "array",
+                "description": "Detailed information of all the pricing options for this accommodation.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "is_default": {
+                      "type": "boolean",
+                      "description": "If true, this is the default price tier (used to calculate the base price)."
+                    },
+                    "price_category_id": {
+                      "type": "integer",
+                      "description": "Identifier of the passenger category this price refers to (for example: adult, child). To retrieve the possible identifiers, use the **[/tours/{tourId}/prices](#tag/Pricing-and-Availability/paths/~1v1~1tours~1{tourId}~1prices/get)** endpoint."
+                    },
+                    "pax_min": {
+                      "type": [
+                        "integer",
+                        "null"
+                      ],
+                      "description": "Minimum number of passengers required for this price tier."
+                    },
+                    "pax_max": {
+                      "type": [
+                        "integer",
+                        "null"
+                      ],
+                      "description": "Maximum number of passengers allowed for this price tier."
+                    },
+                    "value": {
+                      "type": "number",
+                      "description": "Price for this item with this pricing option."
+                    },
+                    "local_currency": {
+                      "type": [
+                        "null",
+                        "string"
+                      ],
+                      "description": "For local payments, the currency this payment must be executed in."
+                    },
+                    "local_value": {
+                      "type": [
+                        "null",
+                        "number"
+                      ],
+                      "description": "The price of the accommodation option in the local currency."
+                    }
+                  }
+                }
+              },
+              "pax_restriction": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "description": "Maximum pax number to apply this promotion. If null - no limit."
+              },
+              "code": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Code of the addon."
+              }
+            }
+          }
+        },
+        "optional_extras": {
+          "type": "array",
+          "description": "List of optional extra items that can be booked together with the tour.",
+          "items": {
+            "$ref": "#/$defs/OptionalExtraItem"
+          }
+        },
+        "partner_info": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "properties": {
+            "calculation_base": {
+              "type": [
+                "null",
+                "string"
+              ],
+              "description": "Calculation base."
+            },
+            "contract_type": {
+              "type": "string",
+              "description": "Contract type."
+            },
+            "commission_rate": {
+              "type": "number",
+              "description": "Commission rate of the partner."
+            },
+            "commission_value": {
+              "type": "number",
+              "description": "Commission value of the partner."
+            },
+            "booking_fee_rate": {
+              "type": "number",
+              "description": "Booking fee rate of the partner."
+            },
+            "booking_fee_value": {
+              "type": "number",
+              "description": "Booking fee value of the partner."
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "OptionalExtraItem": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "An item of the pricing data.",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "Unique identifier of the price item in the TourRadar system."
+        },
+        "value": {
+          "type": "number",
+          "description": "Value of the price item."
+        },
+        "code": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Code of the item."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the item."
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the item."
+        },
+        "payment_type": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Payment type.",
+          "enum": [
+            "upfront",
+            "local"
+          ]
+        },
+        "pax_restriction": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "Maximum pax number to apply this promotion. If null - no limit."
+        },
+        "price_tiers": {
+          "$ref": "#/$defs/TourDeparturePriceTiers"
+        },
+        "allocation": {
+          "type": "string",
+          "enum": [
+            "per_passenger",
+            "per_booking"
+          ],
+          "description": "The allocation of this addon. If 'per_booking', the optional extra must be assigned to all the passengers"
+        }
+      }
+    },
+    "TourDepartureMandatoryAddon": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "Mandatory addon.",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "Unique identifier of the price item in the TourRadar system."
+        },
+        "value": {
+          "type": "number",
+          "description": "Value of the price item."
+        },
+        "code": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Code of the item."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the item."
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the item."
+        },
+        "payment_type": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Payment type.",
+          "enum": [
+            "upfront",
+            "local"
+          ]
+        },
+        "pax_restriction": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "Maximum pax number to apply this promotion. If null - no limit."
+        },
+        "price_tiers": {
+          "$ref": "#/$defs/TourDeparturePriceTiers"
+        },
+        "local_currency": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The used currency."
+        },
+        "local_value": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "The value in local currency."
+        }
+      }
+    },
+    "TourDeparturePriceTiers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "price_category_id": {
+            "type": "number",
+            "description": "Price category id."
+          },
+          "pax_min": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Minimum number of passengers needed to have access to this tier."
+          },
+          "pax_max": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Maximum number of passengers that allows access to this tier."
+          },
+          "value": {
+            "type": "number",
+            "description": "Value of the tier."
+          },
+          "value_promotion": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Value of the tier."
+          }
+        }
+      }
+    },
+    "ToursDeparturePromotion": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "Details about the promotion applied, if available.",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "Unique identifier of the promotion in the TourRadar system."
+        },
+        "discount": {
+          "type": "number",
+          "description": "Amount of the promotion (to subtract from the base price)."
+        },
+        "name": {
+          "type": "string",
+          "description": "Promotion name."
+        },
+        "type": {
+          "type": "string",
+          "description": "Type of the promotion (percentage discount, or 2-for-1 offer)."
+        },
+        "percentage": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "Amount of the promotion, when promotion is based on percentage discount."
+        },
+        "pax_restriction": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "Maximum pax number to apply this promotion. If null - no limit."
+        },
+        "value_type": {
+          "type": "string",
+          "enum": [
+            "percent",
+            "absolute"
+          ],
+          "description": "Type of the value, can be absolute or percent."
+        },
+        "valid_to": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Validity definition."
+        }
+      }
+    },
+    "ToursLinks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Type of link",
+            "enum": [
+              "tour-page",
+              "book-now"
+            ]
+          },
+          "url": {
+            "type": "string",
+            "description": "URL to www.tourradar.com website"
+          }
+        }
+      }
+    }
+  }
+}

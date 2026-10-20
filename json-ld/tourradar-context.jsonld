@@ -1,0 +1,897 @@
+{
+  "@context": {
+    "@vocab": "https://tourradar.com/schema#",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "tourradar": "https://tourradar.com/schema#",
+    "PartnerAdminMergePartnerOutput": "tourradar:PartnerAdminMergePartnerOutput",
+    "message": {
+      "@id": "tourradar:message",
+      "@type": "xsd:string"
+    },
+    "PartnersDomainInput": "tourradar:PartnersDomainInput",
+    "type": {
+      "@id": "tourradar:type",
+      "@type": "xsd:string"
+    },
+    "subdomain": {
+      "@id": "tourradar:subdomain",
+      "@type": "xsd:string"
+    },
+    "host": {
+      "@id": "tourradar:host",
+      "@type": "xsd:string"
+    },
+    "OperatorCredentialsSchema": "tourradar:OperatorCredentialsSchema",
+    "title": {
+      "@id": "tourradar:title",
+      "@type": "xsd:string"
+    },
+    "items": {
+      "@id": "tourradar:items"
+    },
+    "ToursPromotion": "tourradar:ToursPromotion",
+    "id": {
+      "@id": "tourradar:id",
+      "@type": "xsd:integer"
+    },
+    "discount": {
+      "@id": "tourradar:discount",
+      "@type": "xsd:decimal"
+    },
+    "name": {
+      "@id": "tourradar:name",
+      "@type": "xsd:string"
+    },
+    "percentage": {
+      "@id": "tourradar:percentage",
+      "@type": "xsd:decimal"
+    },
+    "pax_restriction": {
+      "@id": "tourradar:pax_restriction",
+      "@type": "xsd:decimal"
+    },
+    "value_type": {
+      "@id": "tourradar:value_type",
+      "@type": "xsd:string"
+    },
+    "valid_to": {
+      "@id": "tourradar:valid_to",
+      "@type": "xsd:string"
+    },
+    "OperatorCredentials": "tourradar:OperatorCredentials",
+    "store_id": {
+      "@id": "tourradar:store_id",
+      "@type": "xsd:string"
+    },
+    "operator_store_id": {
+      "@id": "tourradar:operator_store_id",
+      "@type": "xsd:string"
+    },
+    "last_checked_at": {
+      "@id": "tourradar:last_checked_at",
+      "@type": "xsd:string"
+    },
+    "credentials": {
+      "@id": "tourradar:credentials",
+      "@container": "@list"
+    },
+    "PartnerInfo": "tourradar:PartnerInfo",
+    "partner": {
+      "@id": "tourradar:partner",
+      "@type": "@id"
+    },
+    "user": {
+      "@id": "tourradar:user",
+      "@type": "@id"
+    },
+    "scopes": {
+      "@id": "tourradar:scopes",
+      "@type": "xsd:string"
+    },
+    "PartnerPaymentsMethodsMethod": "tourradar:PartnerPaymentsMethodsMethod",
+    "address": {
+      "@id": "tourradar:address",
+      "@type": "xsd:string"
+    },
+    "city": {
+      "@id": "tourradar:city",
+      "@type": "xsd:string"
+    },
+    "country": {
+      "@id": "tourradar:country",
+      "@type": "xsd:string"
+    },
+    "currency": {
+      "@id": "tourradar:currency",
+      "@type": "xsd:string"
+    },
+    "customer_id": {
+      "@id": "tourradar:customer_id",
+      "@type": "xsd:string"
+    },
+    "default": {
+      "@id": "tourradar:default",
+      "@type": "xsd:boolean"
+    },
+    "email": {
+      "@id": "tourradar:email",
+      "@type": "xsd:string"
+    },
+    "expired": {
+      "@id": "tourradar:expired",
+      "@type": "xsd:boolean"
+    },
+    "first_name": {
+      "@id": "tourradar:first_name",
+      "@type": "xsd:string"
+    },
+    "last_name": {
+      "@id": "tourradar:last_name",
+      "@type": "xsd:string"
+    },
+    "phone_number": {
+      "@id": "tourradar:phone_number",
+      "@type": "xsd:string"
+    },
+    "provider": {
+      "@id": "tourradar:provider",
+      "@type": "xsd:string"
+    },
+    "zip_code": {
+      "@id": "tourradar:zip_code",
+      "@type": "xsd:string"
+    },
+    "method": {
+      "@id": "tourradar:method"
+    },
+    "TourDeparturePriceInput": "tourradar:TourDeparturePriceInput",
+    "user_country": {
+      "@id": "tourradar:user_country",
+      "@type": "xsd:integer"
+    },
+    "passengers": {
+      "@id": "tourradar:passengers",
+      "@container": "@list"
+    },
+    "accommodations": {
+      "@id": "tourradar:accommodations",
+      "@container": "@list"
+    },
+    "optional_extras": {
+      "@id": "tourradar:optional_extras",
+      "@container": "@list"
+    },
+    "PartnerUser": "tourradar:PartnerUser",
+    "username": {
+      "@id": "tourradar:username",
+      "@type": "xsd:string"
+    },
+    "partner_id": {
+      "@id": "tourradar:partner_id",
+      "@type": "xsd:string"
+    },
+    "notes": {
+      "@id": "tourradar:notes",
+      "@type": "xsd:string"
+    },
+    "status": {
+      "@id": "tourradar:status"
+    },
+    "attributes": {
+      "@id": "tourradar:attributes",
+      "@container": "@list"
+    },
+    "BookingSearchPagination": "tourradar:BookingSearchPagination",
+    "current_page": {
+      "@id": "tourradar:current_page",
+      "@type": "xsd:integer"
+    },
+    "next_page": {
+      "@id": "tourradar:next_page",
+      "@type": "xsd:integer"
+    },
+    "PartnerAdminMergePartnerInput": "tourradar:PartnerAdminMergePartnerInput",
+    "source_id": {
+      "@id": "tourradar:source_id",
+      "@type": "xsd:string"
+    },
+    "destination_id": {
+      "@id": "tourradar:destination_id",
+      "@type": "xsd:string"
+    },
+    "TourDepartures": "tourradar:TourDepartures",
+    "date": {
+      "@id": "tourradar:date",
+      "@type": "xsd:string"
+    },
+    "availability": {
+      "@id": "tourradar:availability",
+      "@type": "xsd:integer"
+    },
+    "departure_type": {
+      "@id": "tourradar:departure_type",
+      "@type": "xsd:string"
+    },
+    "is_instant_confirmable": {
+      "@id": "tourradar:is_instant_confirmable",
+      "@type": "xsd:boolean"
+    },
+    "guide_languages": {
+      "@id": "tourradar:guide_languages",
+      "@container": "@list"
+    },
+    "links": {
+      "@id": "tourradar:links",
+      "@type": "@id"
+    },
+    "prices": {
+      "@id": "tourradar:prices"
+    },
+    "BookingSummary": "tourradar:BookingSummary",
+    "commission": {
+      "@id": "tourradar:commission",
+      "@container": "@list"
+    },
+    "ToursDeparturePromotion": "tourradar:ToursDeparturePromotion",
+    "AdminPartnersDomainInput": "tourradar:AdminPartnersDomainInput",
+    "PartnerRegisterInvitePartnerInfo": "tourradar:PartnerRegisterInvitePartnerInfo",
+    "token": {
+      "@id": "tourradar:token",
+      "@type": "xsd:string"
+    },
+    "OptionalExtraItem": "tourradar:OptionalExtraItem",
+    "value": {
+      "@id": "tourradar:value",
+      "@type": "xsd:decimal"
+    },
+    "code": {
+      "@id": "tourradar:code",
+      "@type": "xsd:string"
+    },
+    "description": {
+      "@id": "tourradar:description",
+      "@type": "xsd:string"
+    },
+    "payment_type": {
+      "@id": "tourradar:payment_type",
+      "@type": "xsd:string"
+    },
+    "price_tiers": {
+      "@id": "tourradar:price_tiers",
+      "@type": "@id"
+    },
+    "allocation": {
+      "@id": "tourradar:allocation",
+      "@type": "xsd:string"
+    },
+    "PartnersAppsClient": "tourradar:PartnersAppsClient",
+    "client_id": {
+      "@id": "tourradar:client_id",
+      "@type": "xsd:string"
+    },
+    "client_secret": {
+      "@id": "tourradar:client_secret",
+      "@type": "xsd:string"
+    },
+    "PartnerRegisterUsersInvite": "tourradar:PartnerRegisterUsersInvite",
+    "resend_token": {
+      "@id": "tourradar:resend_token",
+      "@type": "xsd:string"
+    },
+    "PartnersDomain": "tourradar:PartnersDomain",
+    "domain": {
+      "@id": "tourradar:domain",
+      "@type": "xsd:string"
+    },
+    "AdminPartnersDomain": "tourradar:AdminPartnersDomain",
+    "BookingTransfer": "tourradar:BookingTransfer",
+    "contract_type": {
+      "@id": "tourradar:contract_type",
+      "@type": "xsd:string"
+    },
+    "agent_email": {
+      "@id": "tourradar:agent_email",
+      "@type": "xsd:string"
+    },
+    "Booking": "tourradar:Booking",
+    "tour_id": {
+      "@id": "tourradar:tour_id",
+      "@type": "xsd:integer"
+    },
+    "tour": {
+      "@id": "tourradar:tour"
+    },
+    "departure_date": {
+      "@id": "tourradar:departure_date",
+      "@type": "xsd:string"
+    },
+    "return_date": {
+      "@id": "tourradar:return_date",
+      "@type": "xsd:string"
+    },
+    "created_at": {
+      "@id": "tourradar:created_at",
+      "@type": "xsd:string"
+    },
+    "hold_expire_at": {
+      "@id": "tourradar:hold_expire_at",
+      "@type": "xsd:string"
+    },
+    "total_value": {
+      "@id": "tourradar:total_value",
+      "@type": "xsd:decimal"
+    },
+    "main_passenger": {
+      "@id": "tourradar:main_passenger"
+    },
+    "confirmed_at": {
+      "@id": "tourradar:confirmed_at",
+      "@type": "xsd:string"
+    },
+    "locale_code": {
+      "@id": "tourradar:locale_code",
+      "@type": "xsd:string"
+    },
+    "last_message": {
+      "@id": "tourradar:last_message"
+    },
+    "partner_info": {
+      "@id": "tourradar:partner_info"
+    },
+    "operator_booking_code": {
+      "@id": "tourradar:operator_booking_code",
+      "@type": "xsd:string"
+    },
+    "partner_booking_code": {
+      "@id": "tourradar:partner_booking_code",
+      "@type": "xsd:string"
+    },
+    "custom_data": {
+      "@id": "tourradar:custom_data"
+    },
+    "status_reason": {
+      "@id": "tourradar:status_reason",
+      "@type": "@id"
+    },
+    "status_reason_text": {
+      "@id": "tourradar:status_reason_text",
+      "@type": "xsd:string"
+    },
+    "status_reason_context": {
+      "@id": "tourradar:status_reason_context"
+    },
+    "mandatory_addons": {
+      "@id": "tourradar:mandatory_addons",
+      "@container": "@list"
+    },
+    "other_items": {
+      "@id": "tourradar:other_items",
+      "@container": "@list"
+    },
+    "promotions": {
+      "@id": "tourradar:promotions",
+      "@container": "@list"
+    },
+    "TourDeparturesPagination": "tourradar:TourDeparturesPagination",
+    "PartnerPaymentsMethodsInfo": "tourradar:PartnerPaymentsMethodsInfo",
+    "methods": {
+      "@id": "tourradar:methods",
+      "@container": "@list"
+    },
+    "PartnersPartnerCustomizationsBranding": "tourradar:PartnersPartnerCustomizationsBranding",
+    "header_logo": {
+      "@id": "tourradar:header_logo"
+    },
+    "TaxonomyDestination": "tourradar:TaxonomyDestination",
+    "latitude": {
+      "@id": "tourradar:latitude",
+      "@type": "xsd:decimal"
+    },
+    "longitude": {
+      "@id": "tourradar:longitude",
+      "@type": "xsd:decimal"
+    },
+    "geoname_id": {
+      "@id": "tourradar:geoname_id",
+      "@type": "xsd:integer"
+    },
+    "country_code": {
+      "@id": "tourradar:country_code",
+      "@type": "xsd:string"
+    },
+    "currency_code": {
+      "@id": "tourradar:currency_code",
+      "@type": "xsd:string"
+    },
+    "currency_name": {
+      "@id": "tourradar:currency_name",
+      "@type": "xsd:string"
+    },
+    "electricity_outlets": {
+      "@id": "tourradar:electricity_outlets",
+      "@container": "@list"
+    },
+    "country_id": {
+      "@id": "tourradar:country_id",
+      "@type": "xsd:integer"
+    },
+    "parent_ids": {
+      "@id": "tourradar:parent_ids",
+      "@container": "@list"
+    },
+    "BookingExtra": "tourradar:BookingExtra",
+    "TourDeparturePrice": "tourradar:TourDeparturePrice",
+    "ToursListPagination": "tourradar:ToursListPagination",
+    "PartnersOperatorsCommission": "tourradar:PartnersOperatorsCommission",
+    "BookingInput": "tourradar:BookingInput",
+    "departure_id": {
+      "@id": "tourradar:departure_id",
+      "@type": "xsd:integer"
+    },
+    "PartnerRegisterInput": "tourradar:PartnerRegisterInput",
+    "captcha_token": {
+      "@id": "tourradar:captcha_token",
+      "@type": "xsd:string"
+    },
+    "TourDestinations": "tourradar:TourDestinations",
+    "cities": {
+      "@id": "tourradar:cities",
+      "@container": "@list"
+    },
+    "countries": {
+      "@id": "tourradar:countries",
+      "@container": "@list"
+    },
+    "natural_destinations": {
+      "@id": "tourradar:natural_destinations",
+      "@container": "@list"
+    },
+    "BookingSearch": "tourradar:BookingSearch",
+    "pax": {
+      "@id": "tourradar:pax",
+      "@type": "xsd:integer"
+    },
+    "Operator": "tourradar:Operator",
+    "has_integration": {
+      "@id": "tourradar:has_integration",
+      "@type": "xsd:boolean"
+    },
+    "terms_url": {
+      "@id": "tourradar:terms_url",
+      "@type": "xsd:string"
+    },
+    "terms_text": {
+      "@id": "tourradar:terms_text",
+      "@type": "xsd:string"
+    },
+    "TourCity": "tourradar:TourCity",
+    "location_id": {
+      "@id": "tourradar:location_id",
+      "@type": "xsd:integer"
+    },
+    "city_name": {
+      "@id": "tourradar:city_name",
+      "@type": "xsd:string"
+    },
+    "PartnersPresetStatus": "tourradar:PartnersPresetStatus",
+    "OperatorBulkFiles": "tourradar:OperatorBulkFiles",
+    "urls": {
+      "@id": "tourradar:urls",
+      "@container": "@list"
+    },
+    "expires_in": {
+      "@id": "tourradar:expires_in",
+      "@type": "xsd:integer"
+    },
+    "TourPrice": "tourradar:TourPrice",
+    "based_on": {
+      "@id": "tourradar:based_on",
+      "@type": "xsd:string"
+    },
+    "price_base": {
+      "@id": "tourradar:price_base",
+      "@type": "xsd:decimal"
+    },
+    "price_addons": {
+      "@id": "tourradar:price_addons",
+      "@type": "xsd:decimal"
+    },
+    "price_promotion": {
+      "@id": "tourradar:price_promotion",
+      "@type": "xsd:decimal"
+    },
+    "price_total_upfront": {
+      "@id": "tourradar:price_total_upfront",
+      "@type": "xsd:decimal"
+    },
+    "price_total": {
+      "@id": "tourradar:price_total",
+      "@type": "xsd:decimal"
+    },
+    "promotion": {
+      "@id": "tourradar:promotion",
+      "@type": "@id"
+    },
+    "PartnerUpdateInput": "tourradar:PartnerUpdateInput",
+    "role": {
+      "@id": "tourradar:role",
+      "@type": "xsd:string"
+    },
+    "payout_terms": {
+      "@id": "tourradar:payout_terms"
+    },
+    "is_whitelabel": {
+      "@id": "tourradar:is_whitelabel",
+      "@type": "xsd:boolean"
+    },
+    "PartnerUsersInviteToken": "tourradar:PartnerUsersInviteToken",
+    "TourDepartureMandatoryAddon": "tourradar:TourDepartureMandatoryAddon",
+    "local_currency": {
+      "@id": "tourradar:local_currency",
+      "@type": "xsd:string"
+    },
+    "local_value": {
+      "@id": "tourradar:local_value",
+      "@type": "xsd:decimal"
+    },
+    "PartnersOperatorsInfo": "tourradar:PartnersOperatorsInfo",
+    "operator_code": {
+      "@id": "tourradar:operator_code",
+      "@type": "xsd:string"
+    },
+    "operator_id": {
+      "@id": "tourradar:operator_id",
+      "@type": "xsd:integer"
+    },
+    "calculation": {
+      "@id": "tourradar:calculation",
+      "@container": "@list"
+    },
+    "calculation_base": {
+      "@id": "tourradar:calculation_base"
+    },
+    "permissions": {
+      "@id": "tourradar:permissions",
+      "@container": "@list"
+    },
+    "PartnersPayoutFields": "tourradar:PartnersPayoutFields",
+    "AUD": {
+      "@id": "tourradar:AUD",
+      "@container": "@list"
+    },
+    "CAD": {
+      "@id": "tourradar:CAD",
+      "@container": "@list"
+    },
+    "GBP": {
+      "@id": "tourradar:GBP",
+      "@container": "@list"
+    },
+    "EUR": {
+      "@id": "tourradar:EUR",
+      "@container": "@list"
+    },
+    "USD": {
+      "@id": "tourradar:USD",
+      "@container": "@list"
+    },
+    "BookingStatus": "tourradar:BookingStatus",
+    "BookingResponse": "tourradar:BookingResponse",
+    "reservation_details": {
+      "@id": "tourradar:reservation_details"
+    },
+    "TourDeparture": "tourradar:TourDeparture",
+    "Partner": "tourradar:Partner",
+    "terms_approved": {
+      "@id": "tourradar:terms_approved",
+      "@type": "xsd:boolean"
+    },
+    "usage_plan": {
+      "@id": "tourradar:usage_plan",
+      "@type": "xsd:string"
+    },
+    "Tour": "tourradar:Tour",
+    "locale": {
+      "@id": "tourradar:locale",
+      "@type": "xsd:string"
+    },
+    "codes": {
+      "@id": "tourradar:codes",
+      "@container": "@list"
+    },
+    "language": {
+      "@id": "tourradar:language",
+      "@type": "xsd:string"
+    },
+    "tour_name": {
+      "@id": "tourradar:tour_name",
+      "@type": "xsd:string"
+    },
+    "is_active": {
+      "@id": "tourradar:is_active",
+      "@type": "xsd:boolean"
+    },
+    "tour_length_days": {
+      "@id": "tourradar:tour_length_days",
+      "@type": "xsd:integer"
+    },
+    "start_point": {
+      "@id": "tourradar:start_point"
+    },
+    "end_point": {
+      "@id": "tourradar:end_point"
+    },
+    "budget": {
+      "@id": "tourradar:budget",
+      "@type": "xsd:string"
+    },
+    "max_group_size": {
+      "@id": "tourradar:max_group_size",
+      "@type": "xsd:integer"
+    },
+    "operator": {
+      "@id": "tourradar:operator"
+    },
+    "itinerary": {
+      "@id": "tourradar:itinerary",
+      "@type": "@id"
+    },
+    "start_city": {
+      "@id": "tourradar:start_city"
+    },
+    "end_city": {
+      "@id": "tourradar:end_city"
+    },
+    "destinations": {
+      "@id": "tourradar:destinations",
+      "@type": "@id"
+    },
+    "images": {
+      "@id": "tourradar:images",
+      "@container": "@list"
+    },
+    "tour_types": {
+      "@id": "tourradar:tour_types",
+      "@container": "@list"
+    },
+    "services": {
+      "@id": "tourradar:services"
+    },
+    "ratings": {
+      "@id": "tourradar:ratings"
+    },
+    "reviews_count": {
+      "@id": "tourradar:reviews_count",
+      "@type": "xsd:integer"
+    },
+    "age_range": {
+      "@id": "tourradar:age_range"
+    },
+    "has_machine_translated_content": {
+      "@id": "tourradar:has_machine_translated_content"
+    },
+    "departure_months": {
+      "@id": "tourradar:departure_months",
+      "@container": "@list"
+    },
+    "TaxonomyDestinationPagination": "tourradar:TaxonomyDestinationPagination",
+    "PartnerRegisterOutput": "tourradar:PartnerRegisterOutput",
+    "PartnerAdminFindDomain": "tourradar:PartnerAdminFindDomain",
+    "customizations": {
+      "@id": "tourradar:customizations",
+      "@type": "@id"
+    },
+    "related_partners": {
+      "@id": "tourradar:related_partners",
+      "@type": "@id"
+    },
+    "PartnersCustomizations": "tourradar:PartnersCustomizations",
+    "agency_name": {
+      "@id": "tourradar:agency_name",
+      "@type": "xsd:string"
+    },
+    "agents_domain": {
+      "@id": "tourradar:agents_domain",
+      "@type": "xsd:string"
+    },
+    "footer": {
+      "@id": "tourradar:footer",
+      "@type": "xsd:string"
+    },
+    "gtag": {
+      "@id": "tourradar:gtag",
+      "@type": "xsd:string"
+    },
+    "header": {
+      "@id": "tourradar:header",
+      "@type": "xsd:string"
+    },
+    "header_mode": {
+      "@id": "tourradar:header_mode",
+      "@type": "xsd:string"
+    },
+    "email_logo": {
+      "@id": "tourradar:email_logo"
+    },
+    "homepage": {
+      "@id": "tourradar:homepage",
+      "@type": "xsd:integer"
+    },
+    "question_page": {
+      "@id": "tourradar:question_page",
+      "@type": "xsd:integer"
+    },
+    "not_found_page": {
+      "@id": "tourradar:not_found_page",
+      "@type": "xsd:integer"
+    },
+    "tdp_page": {
+      "@id": "tourradar:tdp_page",
+      "@type": "xsd:integer"
+    },
+    "retargeting": {
+      "@id": "tourradar:retargeting",
+      "@type": "xsd:boolean"
+    },
+    "support": {
+      "@id": "tourradar:support",
+      "@type": "xsd:boolean"
+    },
+    "login": {
+      "@id": "tourradar:login",
+      "@type": "xsd:boolean"
+    },
+    "bnpHeaderColor": {
+      "@id": "tourradar:bnpHeaderColor",
+      "@type": "xsd:string"
+    },
+    "color": {
+      "@id": "tourradar:color",
+      "@type": "xsd:string"
+    },
+    "disableInsuranceOption": {
+      "@id": "tourradar:disableInsuranceOption",
+      "@type": "xsd:boolean"
+    },
+    "disableCoBrandedTdpBookability": {
+      "@id": "tourradar:disableCoBrandedTdpBookability",
+      "@type": "xsd:boolean"
+    },
+    "whitelabeled_bcp": {
+      "@id": "tourradar:whitelabeled_bcp",
+      "@type": "xsd:boolean"
+    },
+    "access_filter": {
+      "@id": "tourradar:access_filter"
+    },
+    "additional_operators_id": {
+      "@id": "tourradar:additional_operators_id",
+      "@container": "@list"
+    },
+    "direct_payment_info": {
+      "@id": "tourradar:direct_payment_info",
+      "@type": "xsd:string"
+    },
+    "bcp_direct_payment_info": {
+      "@id": "tourradar:bcp_direct_payment_info",
+      "@type": "xsd:string"
+    },
+    "allow_enquiry_create_op_dash": {
+      "@id": "tourradar:allow_enquiry_create_op_dash",
+      "@type": "xsd:boolean"
+    },
+    "allow_bnp_help_and_share": {
+      "@id": "tourradar:allow_bnp_help_and_share",
+      "@type": "xsd:boolean"
+    },
+    "bnp_header_background_color": {
+      "@id": "tourradar:bnp_header_background_color",
+      "@type": "xsd:string"
+    },
+    "has_customer_data_access": {
+      "@id": "tourradar:has_customer_data_access",
+      "@type": "xsd:boolean"
+    },
+    "bnp_terms_prefix": {
+      "@id": "tourradar:bnp_terms_prefix",
+      "@type": "xsd:string"
+    },
+    "payment_confirmation_page_info": {
+      "@id": "tourradar:payment_confirmation_page_info",
+      "@type": "xsd:string"
+    },
+    "ToursList": "tourradar:ToursList",
+    "Error": "tourradar:Error",
+    "error": {
+      "@id": "tourradar:error",
+      "@type": "xsd:string"
+    },
+    "context": {
+      "@id": "tourradar:context"
+    },
+    "validation_errors": {
+      "@id": "tourradar:validation_errors",
+      "@container": "@list"
+    },
+    "PartnerDetails": "tourradar:PartnerDetails",
+    "industry": {
+      "@id": "tourradar:industry"
+    },
+    "state": {
+      "@id": "tourradar:state",
+      "@type": "xsd:string"
+    },
+    "travel_accreditation_id": {
+      "@id": "tourradar:travel_accreditation_id",
+      "@type": "xsd:string"
+    },
+    "number_of_agents": {
+      "@id": "tourradar:number_of_agents",
+      "@type": "xsd:string"
+    },
+    "contact_username": {
+      "@id": "tourradar:contact_username",
+      "@type": "xsd:string"
+    },
+    "travel_accreditation_code": {
+      "@id": "tourradar:travel_accreditation_code"
+    },
+    "travel_accreditation_code_other": {
+      "@id": "tourradar:travel_accreditation_code_other",
+      "@type": "xsd:string"
+    },
+    "travel_accreditation_code_owner": {
+      "@id": "tourradar:travel_accreditation_code_owner",
+      "@type": "xsd:boolean"
+    },
+    "social_media": {
+      "@id": "tourradar:social_media",
+      "@container": "@list"
+    },
+    "website_monthly_visitors": {
+      "@id": "tourradar:website_monthly_visitors",
+      "@type": "xsd:string"
+    },
+    "affiliate_company_type": {
+      "@id": "tourradar:affiliate_company_type",
+      "@type": "xsd:string"
+    },
+    "affiliate_type": {
+      "@id": "tourradar:affiliate_type",
+      "@type": "xsd:string"
+    },
+    "hyperwallet": {
+      "@id": "tourradar:hyperwallet"
+    },
+    "payout": {
+      "@id": "tourradar:payout"
+    },
+    "BookingDeclineReason": "tourradar:BookingDeclineReason",
+    "HoldInput": "tourradar:HoldInput",
+    "TourPriceCategories": "tourradar:TourPriceCategories",
+    "price_categories": {
+      "@id": "tourradar:price_categories",
+      "@container": "@list"
+    },
+    "OperatorCreateInput": "tourradar:OperatorCreateInput",
+    "commission_group": {
+      "@id": "tourradar:commission_group",
+      "@type": "xsd:integer"
+    },
+    "ErrorResponse": "tourradar:ErrorResponse",
+    "PartnerCreateInput": "tourradar:PartnerCreateInput",
+    "PartnerRegisterShopAgent": "tourradar:PartnerRegisterShopAgent",
+    "PartnersRegisterBranding": "tourradar:PartnersRegisterBranding",
+    "DefaultError401": "tourradar:DefaultError401",
+    "DefaultError500": "tourradar:DefaultError500"
+  },
+  "@type": "schema:Dataset",
+  "schema:name": "TourRadar API JSON-LD context",
+  "schema:description": "A JSON-LD @context for the objects TourRadar's own API contract declares: one class per component schema, one property per declared field, typed from the contract. Derived by script (derive-json-ld.py, 2026-10-20) from openapi/tourradar-openapi.yml.",
+  "dcterms:created": "2026-10-20",
+  "dcterms:source": [
+    "openapi/tourradar-openapi.yml"
+  ]
+}

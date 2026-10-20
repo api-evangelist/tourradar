@@ -1,0 +1,483 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/tourradar/main/json-schema/tourradar-booking-schema.json",
+  "title": "Booking",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/tourradar-openapi.yml#/components/schemas/Booking",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "description": "Unique identifier of the booking in the TourRadar system."
+    },
+    "tour_id": {
+      "type": "integer",
+      "description": "Deprecated. Moved to `$.tour.tour_id`."
+    },
+    "tour": {
+      "type": "object",
+      "description": "Information about the tour that was booked.",
+      "properties": {
+        "tour_id": {
+          "type": "integer",
+          "description": "Unique identifier for the tour in the TourRadar system."
+        },
+        "tour_name": {
+          "type": "string",
+          "description": "Name of the tour."
+        },
+        "tour_length_days": {
+          "type": "integer",
+          "description": "Length of the tour, expressed in number of days."
+        },
+        "operator": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "description": "Unique identifier for the tour operator in the TourRadar system."
+            },
+            "name": {
+              "type": "string",
+              "description": "Name of the tour operator."
+            }
+          }
+        }
+      }
+    },
+    "departure_date": {
+      "type": "string",
+      "description": "Departure date that was booked, in the format `YYYY-MM-DD`."
+    },
+    "return_date": {
+      "type": "string",
+      "description": "Return date from the tour, in the format `YYYY-MM-DD`."
+    },
+    "email": {
+      "type": "string",
+      "description": "Email used for communications regarding the booking (agent or lead passenger)."
+    },
+    "created_at": {
+      "type": "string",
+      "description": "Exact timestamp of when the booking was created, in the ISO 8601 format."
+    },
+    "type": {
+      "type": "string",
+      "description": "Type of this booking record.",
+      "enum": [
+        "booking",
+        "question",
+        "hold"
+      ]
+    },
+    "hold_expire_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "If the booking record is a `hold`, this will be the exact timestamp of when the hold expires, in the ISO 8601 format."
+    },
+    "status": {
+      "type": "string",
+      "description": "Status of the booking.",
+      "enum": [
+        "open_question",
+        "open_hold",
+        "pending",
+        "confirmed",
+        "declined",
+        "cancelled",
+        "hold_expired",
+        "hold_declined"
+      ]
+    },
+    "currency": {
+      "type": "string",
+      "description": "Currency used for payments."
+    },
+    "total_value": {
+      "type": "number",
+      "description": "Total amount of the booking."
+    },
+    "main_passenger": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the main passenger."
+        }
+      }
+    },
+    "passengers": {
+      "type": "array",
+      "description": "List of passengers.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Unique identifier of the passenger."
+          },
+          "price_category": {
+            "type": "object",
+            "description": "Defines the price category applied for this passenger.",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "description": "Identifier of the passenger category."
+              },
+              "title": {
+                "type": "string",
+                "description": "Name of the passenger category (for example: adult, child)."
+              },
+              "age_min": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "description": "Minimum age requirement for this category, if applicable."
+              },
+              "age_max": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "description": "Maximum age requirement for this category, if applicable."
+              }
+            }
+          },
+          "fields": {
+            "type": "object",
+            "description": "Passenger data. A list of all possible field names and properties can be obtained using the **[/operators/{operatorId}/booking-fields](#tag/Operators/paths/~1v1~1operators~1{operator}~1booking-fields/get)** endpoint."
+          }
+        }
+      }
+    },
+    "confirmed_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Exact timestamp of when the booking was confirmed, in the ISO 8601 format. If the status of the booking is not `confirmed`, this field will be `null`."
+    },
+    "locale_code": {
+      "type": "string",
+      "description": "Identifier of the guide language for this booking."
+    },
+    "last_message": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "Information relative to the last message in this booking's conversation channel. Messages are not available for direct bookings.",
+      "properties": {
+        "author": {
+          "type": "string",
+          "description": "Author type of the message. `system` is for automatically generated notification messages, the other types reflect the role of the user who posted the message.",
+          "enum": [
+            "operator",
+            "agent",
+            "traveller",
+            "system"
+          ]
+        },
+        "created_at": {
+          "type": "string",
+          "description": "Exact timestamp of when the message was sent, in the ISO 8601 format."
+        }
+      }
+    },
+    "partner_info": {
+      "type": "object",
+      "description": "Information relative to the partner that made the booking.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier of the partner in the TourRadar system."
+        },
+        "agent_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Identifier of the agent (user) that made the booking. Note: this is only relevant for bookings made on the TourRadar website."
+        },
+        "store_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Identifier of the store, or agency, that made the booking. Note: this is only relevant for bookings made via the TourRadar Partner API."
+        },
+        "contract_type": {
+          "type": "string",
+          "description": "Contract type that was applied for this booking.",
+          "enum": [
+            "wholesale",
+            "organiser",
+            "affiliate",
+            "direct",
+            "shop"
+          ]
+        },
+        "calculation_base": {
+          "type": "string",
+          "enum": [
+            "accommodation",
+            "all_extras"
+          ],
+          "description": "Definition of the amount used as reference for the commission calculation."
+        },
+        "commission_rate": {
+          "type": "number",
+          "description": "The commission rate, expressed as multiplier. For example, a commission of 5% would be represented by `0.05`. If no commission will be paid for booking this tour, this will be `0`."
+        },
+        "commission_value": {
+          "type": "number",
+          "description": "The actual commission value, calculated on the price reported in this section."
+        },
+        "commission_status": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Commission withdrawal status.",
+          "enum": [
+            "paid_out",
+            "earned",
+            "cancelled",
+            "pending"
+          ]
+        },
+        "booking_fee_rate": {
+          "type": "number",
+          "description": "The booking fee rate, if any, expressed as multiplier. For example, a booking fee of 5% would be represented by `0.05`. If no booking fee will be due for booking this tour, this will be `0`."
+        },
+        "booking_fee_value": {
+          "type": "number",
+          "description": "The actual booking fee value, calculated on the price reported in this section."
+        },
+        "booking_fee_status": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Booking fee payment status.",
+          "enum": [
+            "paid",
+            "requested",
+            "cancelled",
+            "pending"
+          ]
+        }
+      }
+    },
+    "operator_booking_code": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Booking code or reference number in the operator system."
+    },
+    "partner_booking_code": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Booking code or reference number set by the partner when creating the booking."
+    },
+    "custom_data": {
+      "type": "object",
+      "description": "Additional info set by the partner when creating the booking. Up to 5 string properties can be set in it."
+    },
+    "links": {
+      "$ref": "#/$defs/BookingLinks"
+    },
+    "status_reason": {
+      "$ref": "#/$defs/BookingDeclineReason"
+    },
+    "status_reason_text": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The full description of the declination reason, if set."
+    },
+    "status_reason_context": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "Additional information related to the current status, if set."
+    },
+    "accommodations": {
+      "description": "The accommodations related to the booking.",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/BookingExtra"
+      }
+    },
+    "optional_extras": {
+      "description": "The optional extras related to the booking.",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/BookingExtra"
+      }
+    },
+    "mandatory_addons": {
+      "description": "The mandatory addons related to the booking.",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/BookingExtra"
+      }
+    },
+    "other_items": {
+      "description": "Related items with miscellaneous categories.",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/BookingExtra"
+      }
+    },
+    "promotions": {
+      "description": "Promotions applied to the booking.",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/BookingExtra"
+      }
+    }
+  },
+  "$defs": {
+    "BookingDeclineReason": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The reason of the declination, if set.",
+      "enum": [
+        "already_booked",
+        "alt_tour_selected",
+        "another_tour_found",
+        "border_restrictions",
+        "death_in_family",
+        "departure_cancelled",
+        "duplicate_booking",
+        "employment_status",
+        "employment_status_change",
+        "family_issues",
+        "health_issue",
+        "invalid_request",
+        "on_request_cancelled",
+        "operator_error",
+        "operator_timeout",
+        "other",
+        "pax_requested_decline",
+        "pax_unfit",
+        "plans_changed",
+        "price_incorrect",
+        "price_incorrect_deal_promotion",
+        "price_incorrect_single_supplement",
+        "requirements_unmet",
+        "server_error",
+        "suspected_fraud",
+        "system_error",
+        "tour_itinerary_details_incorrect",
+        "tour_unavailable",
+        "tour_unavailable_departure_soon",
+        "tour_unavailable_fully_booked",
+        "tour_unavailable_no_date",
+        "unknown_error",
+        "visa_declined",
+        "withdrawn_tour"
+      ]
+    },
+    "BookingExtra": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "description": "Id of the extra."
+        },
+        "type": {
+          "type": "string",
+          "description": "Type of the extra."
+        },
+        "currency": {
+          "type": "string",
+          "description": "Currency of the extra."
+        },
+        "payment_type": {
+          "type": "string",
+          "description": "Requested payment type."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the extra."
+        },
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Optional description of the extra."
+        },
+        "prices": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "price_category_id": {
+                "type": "number",
+                "description": "Id of the price category related to the price."
+              },
+              "pax_count": {
+                "type": "number",
+                "description": "Number of passenger for which this price is applied."
+              },
+              "price_per_pax": {
+                "type": "number",
+                "description": "Price of the extra for each passenger."
+              }
+            }
+          }
+        },
+        "passengers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "price_category_id": {
+                "type": "number",
+                "description": "Id of the price category related to the passenger."
+              },
+              "passenger_id": {
+                "type": "number",
+                "description": "Id of the passenger related to the extra."
+              }
+            }
+          }
+        }
+      }
+    },
+    "BookingLinks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Type of link",
+            "enum": [
+              "booking-page"
+            ]
+          },
+          "url": {
+            "type": "string",
+            "description": "Url"
+          }
+        }
+      }
+    }
+  }
+}

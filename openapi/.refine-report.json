@@ -1,0 +1,33 @@
+{
+  "provider": "tourradar",
+  "sources": [
+    "_original/tourradar-partner-api-openapi.json",
+    "tourradar-openapi.yml"
+  ],
+  "outputs": [
+    "tourradar-bookings-api-openapi.yml",
+    "tourradar-bulk-api-openapi.yml",
+    "tourradar-operators-api-openapi.yml",
+    "tourradar-pricing-availability-api-openapi.yml",
+    "tourradar-taxonomy-api-openapi.yml",
+    "tourradar-tours-api-openapi.yml"
+  ],
+  "archived": [
+    "archived openapi/tourradar-openapi.yml"
+  ],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "tourradar-partner-api-openapi.json: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
+    "tourradar-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
+    "tag 'Bookings' spans 2 source specs (tourradar-partner-api-openapi.json, tourradar-openapi.yml): per-path servers applied",
+    "tag 'Bulk' spans 2 source specs (tourradar-partner-api-openapi.json, tourradar-openapi.yml): per-path servers applied",
+    "tag 'Operators' spans 2 source specs (tourradar-partner-api-openapi.json, tourradar-openapi.yml): per-path servers applied",
+    "tag 'Pricing & Availability' spans 2 source specs (tourradar-partner-api-openapi.json, tourradar-openapi.yml): per-path servers applied",
+    "tag 'Taxonomy' spans 2 source specs (tourradar-partner-api-openapi.json, tourradar-openapi.yml): per-path servers applied",
+    "tag 'Tours' spans 2 source specs (tourradar-partner-api-openapi.json, tourradar-openapi.yml): per-path servers applied",
+    "apis.yml register: written (+6 apis, 6 total)"
+  ],
+  "skipped": []
+}
