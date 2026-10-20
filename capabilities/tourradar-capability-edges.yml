@@ -1,0 +1,44 @@
+slug: tourradar
+provider: TourRadar
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Travel & Hospitality
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 3
+edges:
+- tag: Bookings
+  spec_file: tourradar-bookings-api-openapi.yml
+  capability_id: BC-4020.10
+  capability_id_l1: BC-4020
+  capability_name: Reservation Capture
+  confidence: 0.85
+  evidence: POST /v1/bookings; schemas Booking, BookingInput, BookingStatus, BookingDeclineReason; GET
+    /v1/bookings/{bookingId}/status
+  reason: Operations create and retrieve bookings for tour departures and track booking status — reservation
+    capture and lifecycle lookup, the core of Reservation & Booking Management.
+- tag: Tours
+  spec_file: tourradar-tours-api-openapi.yml
+  capability_id: BC-4000.30
+  capability_id_l1: BC-4000
+  capability_name: Tour & Package Product Management
+  confidence: 0.75
+  evidence: GET /v1/tours/{tourId}; schemas Tour, TourItinerary, TourDestinations, ToursList
+  reason: Exposes the multi-day tour product definition including itinerary, destinations and promotions
+    — the packaged-itinerary product master for this marketplace, retrieved via search and detail endpoints.
+- tag: Taxonomy
+  spec_file: tourradar-taxonomy-api-openapi.yml
+  capability_id: BC-4000.60
+  capability_id_l1: BC-4000
+  capability_name: Travel Product Master Data Governance
+  confidence: 0.7
+  evidence: GET /v1/taxonomy/tours/types; GET /v1/taxonomy/destinations/{type}; schemas TaxonomyToursTypesList,
+    TaxonomyDestination
+  reason: Serves the reference taxonomy (tour types, destinations, currencies, languages) used to classify
+    tour products — product taxonomy and classification standards governance.
