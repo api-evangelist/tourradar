@@ -53,6 +53,9 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: CapabilityMap
+  url: capabilities/tourradar-capability-edges.yml
+  name: TourRadar Business Capability Map
 - type: AgenticAccess
   url: agentic-access/tourradar-agentic-access.yml
 - type: RateLimits
